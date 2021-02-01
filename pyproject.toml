@@ -6,6 +6,7 @@ authors = ["Jaehwan <dialektike@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+selenium = "^3.141.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
