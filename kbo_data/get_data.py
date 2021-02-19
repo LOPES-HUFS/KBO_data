@@ -6,8 +6,8 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
 
-from pasing_page import scoreboard,etc_info,looking_for_team_name
-from pasing_page import away_batter,home_batter,away_pitcher,home_pitcher
+from pasing_page import scoreboard, etc_info, looking_for_team_name
+from pasing_page import away_batter, home_batter, away_pitcher, home_pitcher
 
 
 config = configparser.ConfigParser()
