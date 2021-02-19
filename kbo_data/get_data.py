@@ -17,8 +17,12 @@ chromium_location = config["DEFAULT"]["chromium_location"]
 
 def getting_page(gameDate, gameld):
     """
-    단일 게임 자료를 받아오는 함수이다.
+    단일 게임 페이지를 다운받아서 단순하게 자료를 분류하는 함수다.
+    속도를 조금이나마 빠르게 하기 위해서 lxml을 사용하고 있다.
+    driver.implicitly_wait(3) : 이 정도 기다려야 페이지를 잘 받을 수 있다.
+
     :param gameDate: "20181010" 와 같이 경기 날짜를 문자열로 받는다.
+
     :param gameld: 경기를 하는 팀명으로 만들어진다.
         "WOOB0"과 같이 만드는데, WO, OB는 각각 팀명을 의미하고
         0은 더블헤더 경기가 아닌 것을 알려준다.
