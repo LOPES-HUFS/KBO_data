@@ -43,7 +43,7 @@ def looking_for_teams_name(teams):
     return (temp_0, temp_1)
 
 
-def ETC_info(tables, record_etc):
+def etc_info(tables, record_etc):
     record = {}
     header_list = tables[3].find_all("th")
     if len(header_list) != 0:

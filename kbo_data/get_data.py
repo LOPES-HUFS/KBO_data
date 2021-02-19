@@ -6,6 +6,9 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
 
+from pasing_page import scoreboard,etc_info,looking_for_team_name
+from pasing_page import away_batter,home_batter,away_pitcher,home_pitcher
+
 
 config = configparser.ConfigParser()
 # 설정파일을 읽어옵니다.
@@ -66,7 +69,7 @@ def get_data(date, gameld):
         "scoreboard": ast.literal_eval(temp_scoreboard.to_json(orient="records"))
     }
     temp_all.update(
-        {"ETC_info": ETC_info(temp_page["tables"], temp_page["record_etc"])}
+        {"ETC_info": etc_info(temp_page["tables"], temp_page["record_etc"])}
     )
     temp_all.update(
         {
