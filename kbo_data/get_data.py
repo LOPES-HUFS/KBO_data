@@ -15,7 +15,7 @@ url = config["DEFAULT"]["KBO_URL"]
 chromium_location = config["DEFAULT"]["chromium_location"]
 
 
-def getting_page(gameDate,gameld):
+def getting_page(gameDate, gameld):
     """
     단일 게임 자료를 받아오는 함수이다.
     :param gameDate: "20181010" 와 같이 경기 날짜를 문자열로 받는다.
@@ -28,19 +28,25 @@ def getting_page(gameDate,gameld):
         >>> temp_page=getting_page("20181010","KTLT1")
     """
     options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1920x1080')
+    options.add_argument("headless")
+    options.add_argument("window-size=1920x1080")
     options.add_argument("disable-gpu")
     # 혹은 options.add_argument("--disable-gpu")
- 
+
     driver = webdriver.Chrome(chromium_location, chrome_options=options)
-    temp_url = url+gameDate+"&gameId="+gameDate+gameld+"&section=REVIEW"
+    temp_url = url + gameDate + "&gameId=" + gameDate + gameld + "&section=REVIEW"
     driver.get(temp_url)
     driver.implicitly_wait(3)
-    soup = BeautifulSoup(driver.page_source,"lxml")
-    tables = soup.find_all('table')
-    record_etc = soup.findAll('div',{'class':'record-etc'})
-    box_score = soup.findAll('div',{'class':'box-score-wrap'})
+    soup = BeautifulSoup(driver.page_source, "lxml")
+    tables = soup.find_all("table")
+    record_etc = soup.findAll("div", {"class": "record-etc"})
+    box_score = soup.findAll("div", {"class": "box-score-wrap"})
     if len(box_score) == 1:
-        teams = box_score[0].findAll('span',{'class':'logo'})
-    return{'tables':tables, 'record_etc':record_etc, 'teams':teams, 'date':gameDate, 'id':gameld}
+        teams = box_score[0].findAll("span", {"class": "logo"})
+    return {
+        "tables": tables,
+        "record_etc": record_etc,
+        "teams": teams,
+        "date": gameDate,
+        "id": gameld,
+    }
