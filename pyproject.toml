@@ -8,6 +8,8 @@ authors = ["Jaehwan <dialektike@gmail.com>"]
 python = "^3.7.1"
 selenium = "^3.141.0"
 pandas = "^1.2.2"
+bs4 = "^0.0.1"
+lxml = "^4.6.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
