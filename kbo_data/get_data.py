@@ -41,8 +41,10 @@ def getting_page(gameDate, gameld):
     tables = soup.find_all("table")
     record_etc = soup.findAll("div", {"class": "record-etc"})
     box_score = soup.findAll("div", {"class": "box-score-wrap"})
+
     if len(box_score) == 1:
         teams = box_score[0].findAll("span", {"class": "logo"})
+
     return {
         "tables": tables,
         "record_etc": record_etc,
