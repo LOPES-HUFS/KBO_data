@@ -56,3 +56,17 @@ def getting_page(gameDate, gameld):
         "date": gameDate,
         "id": gameld,
     }
+
+def get_data(date,gameld):
+    temp_page = getting_page(date,gameld)
+    temp_scoreboard = scoreboard(temp_page['tables'], temp_page['teams'])
+
+    temp_all = {'scoreboard':ast.literal_eval(temp_scoreboard.to_json(orient='records'))}
+    temp_all.update({"ETC_info":ETC_info(temp_page['tables'],temp_page['record_etc'])})
+    temp_all.update({'away_batter':ast.literal_eval(away_batter(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
+    temp_all.update({'home_batter':ast.literal_eval(home_batter(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
+    temp_all.update({'away_pitcher':ast.literal_eval(away_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
+    temp_all.update({'home_pitcher':ast.literal_eval(home_pitcher(temp_page['tables'],temp_page['teams']).to_json(orient='records'))})
+
+    temp_name = temp_page['date']+'_'+temp_page['id']
+    return {temp_name:temp_all}
