@@ -20,7 +20,7 @@ chromium_location = config["DEFAULT"]["chromium_location"]
 
 def getting_page(gameDate, gameld):
     """
-    단일 게임 페이지를 다운받아서 단순하게 자료를 분류하는 함수다.
+    단일 게임 페이지를 chromium를 다운받아서 단순하게 자료를 분류하는 함수다.
     속도를 조금이나마 빠르게 하기 위해서 lxml을 사용하고 있다.
     driver.implicitly_wait(3) : 이 정도 기다려야 페이지를 잘 받을 수 있다.
 
@@ -61,7 +61,7 @@ def getting_page(gameDate, gameld):
     }
 
 
-def get_data(date, gameld):
+def single_game(date, gameld):
     temp_page = getting_page(date, gameld)
     temp_scoreboard = scoreboard(temp_page["tables"], temp_page["teams"])
 
