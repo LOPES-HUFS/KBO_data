@@ -26,7 +26,6 @@ jobs:
         pip install lxml
         pip install pandas
         pip install selenium
-
     - name: Run! # send_to_weather.py 파일을 실행하시오! 
       run: | 
         gh repo clone https://github.com/cli/cli
