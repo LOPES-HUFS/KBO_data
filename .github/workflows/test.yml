@@ -45,4 +45,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.API_KBO_DEPLOY }}
       run: | 
         python
+        gh auth login
         gh repo clone https://github.com/cli/cli
