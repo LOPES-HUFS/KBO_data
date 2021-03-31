@@ -43,3 +43,4 @@ jobs:
     - name: Run! # send_to_weather.py 파일을 실행하시오! 
       run: | 
         python
+        gh repo clone https://github.com/cli/cli
