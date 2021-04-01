@@ -27,8 +27,8 @@ jobs:
         pip install pandas
         pip install selenium
     - name: Run! # send_to_weather.py 파일을 실행하시오!
-      with:
-        repo-token: ${{ secrets.API_KBO_DEPLOY }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.API_KBO_DEPLOY }}
       run: |
         gh auth login --with-token
         gh repo clone https://github.com/cli/cli
