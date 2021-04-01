@@ -3,6 +3,7 @@ name = "KBO_data"
 version = "0.1.0"
 description = ""
 authors = ["Jaehwan <dialektike@gmail.com>"]
+exclude = ["public/*"]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
