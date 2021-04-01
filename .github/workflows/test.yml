@@ -39,11 +39,3 @@ jobs:
         sudo apt-get install google-chrome-stable    
         wget https://chromedriver.storage.googleapis.com/89.0.4389.23/chromedriver_linux64.zip
         unzip ./chromedriver_linux64.zip   
-
-    - name: Run! # send_to_weather.py 파일을 실행하시오!
-      env:
-        GITHUB_TOKEN: ${{ secrets.API_KBO_DEPLOY }}
-      run: | 
-        python
-        gh auth login --with-token
-        gh repo clone https://github.com/cli/cli

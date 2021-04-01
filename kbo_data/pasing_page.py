@@ -13,7 +13,6 @@ def scoreboard(tables, teams):
     )
     return temp_total
 
-
 def looking_for_team_name(string):
     # team_list={'HT':'기아','OB':'두산','LT':'롯데','NC':'NC','SK':'SK','LG':'LG','WO':'넥센','HH':'한화','SS':'삼성','KT':'KT'}
     # 2019년 버전
