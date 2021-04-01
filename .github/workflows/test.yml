@@ -53,3 +53,4 @@ jobs:
         mkdir ./public
         cd ./public
         touch a.html
+        ls
