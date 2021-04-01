@@ -42,6 +42,7 @@ jobs:
     - name: Build
       run: |
         cd kbo_data
+        ls
         python for_actions.py
         cp *.json ./public
 #        ls
