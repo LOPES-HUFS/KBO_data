@@ -41,11 +41,12 @@ jobs:
         unzip ./chromedriver_linux64.zip   
     - name: Build
       run: |
-        ls
-        cd ./public
-        touch a.html
-        ls
         python for_actions.py
+        cp *.json ./public
+#        ls
+#        cd ./public
+#        touch a.html
+#        ls
 # 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
 # https://github.com/peaceiris/actions-gh-pages
     - name: Deploy
