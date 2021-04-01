@@ -50,7 +50,6 @@ jobs:
     - name: Build
       run: |
         ls
-        mkdir ./public
         cd ./public
         touch a.html
         ls
