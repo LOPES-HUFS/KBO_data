@@ -39,23 +39,17 @@ jobs:
         sudo apt-get install google-chrome-stable    
         wget https://chromedriver.storage.googleapis.com/89.0.4389.23/chromedriver_linux64.zip
         unzip ./chromedriver_linux64.zip   
-
-#    - name: Run! # send_to_weather.py 파일을 실행하시오!
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.API_KBO_DEPLOY }}
-#      run: | 
-#        python
-#        gh auth login --with-token
-#        gh repo clone https://github.com/cli/cli
     - name: Build
       run: |
         ls
         cd ./public
         touch a.html
         ls
+        python for_actions.py
+# 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
+# https://github.com/peaceiris/actions-gh-pages
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        PUBLISH_BRANCH: main
         publish_dir: ./public

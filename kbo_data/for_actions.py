@@ -1,10 +1,10 @@
-import single_game
-import modifying_data
+import get_data
 import pandas as pd
 import json
 
-temp_page=single_game.getting_page("20181010","KTLT1")
+if __name__ == "__main__":
+    temp_page = get_data.getting_page("20181010", "KTLT1")
+    # print(temp_page)
 
-import json
-with open('test.json', 'w') as outfile:
-    json.dump(temp_page, outfile)
+    with open("test.json", "w") as outfile:
+        json.dump(temp_page, outfile)
