@@ -34,31 +34,40 @@ def getting_page(gameDate, gameld):
     사용법::
         >>> temp_page=getting_page("20181010","KTLT1")
     """
-    options = webdriver.ChromeOptions()
-    options.add_argument("headless")
-    options.add_argument("window-size=1920x1080")
-    options.add_argument("disable-gpu")
-    # 혹은 options.add_argument("--disable-gpu")
+    try:
+        options = webdriver.ChromeOptions()
+        options.add_argument("headless")
+        options.add_argument("window-size=1920x1080")
+        options.add_argument("disable-gpu")
+        # 혹은 options.add_argument("--disable-gpu")
 
-    driver = webdriver.Chrome(chromium_location, chrome_options=options)
-    temp_url = url + gameDate + "&gameId=" + gameDate + gameld + "&section=REVIEW"
-    driver.get(temp_url)
-    driver.implicitly_wait(3)
-    soup = BeautifulSoup(driver.page_source, "lxml")
-    tables = soup.find_all("table")
-    record_etc = soup.findAll("div", {"class": "record-etc"})
-    box_score = soup.findAll("div", {"class": "box-score-wrap"})
+        driver = webdriver.Chrome(chromium_location, chrome_options=options)
+        temp_url = url + gameDate + "&gameId=" + gameDate + gameld + "&section=REVIEW"
+        driver.get(temp_url)
+        driver.implicitly_wait(3)
+        soup = BeautifulSoup(driver.page_source, "lxml")
+        tables = soup.find_all("table")
+        record_etc = soup.findAll("div", {"class": "record-etc"})
+        box_score = soup.findAll("div", {"class": "box-score-wrap"})
 
-    if len(box_score) == 1:
-        teams = box_score[0].findAll("span", {"class": "logo"})
+        if len(box_score) == 1:
+            teams = box_score[0].findAll("span", {"class": "logo"})
 
-    return {
-        "tables": tables,
-        "record_etc": record_etc,
-        "teams": teams,
-        "date": gameDate,
-        "id": gameld,
-    }
+        return {
+            "tables": tables,
+            "record_etc": record_etc,
+            "teams": teams,
+            "date": gameDate,
+            "id": gameld,
+        }
+
+    except Exception as e:
+        print(e)
+        driver.quit()
+
+    finally:
+        print("finally...")
+        driver.quit()
 
 
 def single_game(date, gameld):

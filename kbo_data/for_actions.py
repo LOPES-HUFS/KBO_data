@@ -23,11 +23,4 @@ if __name__ == "__main__":
         with open("test.json", "w") as outfile:
             json.dump(temp_page, outfile)
 
-    try:
-        single_game_to_json("20181010", "KTLT1")
-
-    except Exception as e:
-        print(e)
-
-    finally:
-        print("finally...")
+    single_game_to_json("20181010", "KTLT1")
