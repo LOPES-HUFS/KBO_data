@@ -7,7 +7,7 @@ if __name__ == "__main__":
     def single_game_to_json(gameDate, gameld):
         """
         단일 게임 페이지를 받아서 JSON 파일로 저장하는 함수
-        
+
         :param gameDate: "20181010" 와 같이 경기 날짜를 문자열로 받는다.
 
         :param gameld: 경기를 하는 팀명으로 만들어진다.
@@ -22,5 +22,12 @@ if __name__ == "__main__":
 
         with open("test.json", "w") as outfile:
             json.dump(temp_page, outfile)
-    
-    single_game_to_json("20181010", "KTLT1")
+
+    try:
+        single_game_to_json("20181010", "KTLT1")
+
+    except Exception as e:
+        print(e)
+
+    finally:
+        print("finally...")
