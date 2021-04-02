@@ -43,13 +43,11 @@ jobs:
       run: |
         cd kbo_data
         ls
-        python for_actions.py
+        sudo python for_actions.py
         ls
-        cp *.json ./public
-#        ls
-#        cd ./public
-#        touch a.html
-#        ls
+        mv *.json ./public/*.json
+        cd ./public
+        ls
 # 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
 # https://github.com/peaceiris/actions-gh-pages
     - name: Deploy
