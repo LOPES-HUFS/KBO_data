@@ -25,11 +25,12 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install python package
       run: |
-        pip install requests
-        pip install bs4
-        pip install lxml
-        pip install pandas
-        pip install selenium
+        pip install -r requirements.txt
+#        pip install requests
+#        pip install bs4
+#        pip install lxml
+#        pip install pandas
+#        pip install selenium
 
     - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
       run: |        
