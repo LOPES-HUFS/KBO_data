@@ -15,7 +15,6 @@ if __name__ == "__main__":
 
     exporting_dict = {}
 
-    driver.implicitly_wait(3)
     soup = BeautifulSoup(html, "lxml")
 
     exporting_dict = {}
