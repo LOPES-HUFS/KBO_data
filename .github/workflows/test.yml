@@ -44,7 +44,7 @@ jobs:
       run: |
         cd kbo_data
         ls
-        sudo python get_today_schedule_for_request.py
+        sudo python for_actions.py
         ls
         mv * ./public/
         cd ./public
