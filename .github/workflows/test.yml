@@ -33,7 +33,7 @@ jobs:
 #        pip install selenium
 
     - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
-      run: |        
+      run: |
         sudo apt-get install fonts-unfonts-core
         sudo apt-get install fonts-unfonts-extra
         wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add        
@@ -44,9 +44,9 @@ jobs:
       run: |
         cd kbo_data
         ls
-        sudo python for_actions.py
+        sudo python get_today_schedule_for_request.py
         ls
-        mv *.json ./public/*.json
+        mv * ./public/
         cd ./public
         ls
 # 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
