@@ -37,11 +37,13 @@ jobs:
         sudo apt-get install fonts-unfonts-core
         sudo apt-get install fonts-unfonts-extra
         wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add        
-        sudo apt-get install google-chrome-stable    
+        sudo apt-get install google-chrome-stable
         wget https://chromedriver.storage.googleapis.com/89.0.4389.23/chromedriver_linux64.zip
-        unzip ./chromedriver_linux64.zip   
+        unzip ./chromedriver_linux64.zip
+        ls -la
     - name: Build
       run: |
+        chromium-browser --version
         cd kbo_data
         python for_actions.py
         cp *.json ../public/
