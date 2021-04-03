@@ -9,9 +9,9 @@ if __name__ == "__main__":
     config = configparser.ConfigParser()
     config.read("config.ini")
     temp_url = config["DEFAULT"]["naver_KBO_URL"]
-    req = requests.get
+    req = requests.get(temp_url)
+    print(req.status_code)
     html = req.text
-    print(html.status_code)
 
     exporting_dict = {}
 
@@ -40,4 +40,3 @@ if __name__ == "__main__":
     file_name = temp_date.replace(".", "_") + "_Schedule.json"
     with open(file_name, "w") as outfile:
         json.dump(exporting_dict, outfile)
-        
