@@ -23,8 +23,8 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Setup Chromedriver
-      uses: nanasess/setup-chromedriver@v1.0.1
+#    - name: Setup Chromedriver
+#      uses: nanasess/setup-chromedriver@v1.0.1
     - name: Install python package
       run: |
         pip install -r requirements.txt
@@ -34,19 +34,18 @@ jobs:
 #        pip install pandas
 #        pip install selenium
 
-#    - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
-#     run: |
-#        sudo apt-get install fonts-unfonts-core
-#        sudo apt-get install fonts-unfonts-extra
-#        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add        
-#        sudo apt-get install google-chrome-stable
-#        sudo apt-get install chromium-chromedriver
-#        wget https://chromedriver.storage.googleapis.com/89.0.4389.23/chromedriver_linux64.zip
-#        unzip ./chromedriver_linux64.zip
-#        ls -la
+    - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
+      run: |        
+        sudo apt-get install fonts-unfonts-core
+        sudo apt-get install fonts-unfonts-extra
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add        
+        sudo apt-get install google-chrome-stable    
+        wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
+        unzip ./chromedriver_linux64.zip   
     - name: Build
       run: |
         chromium-browser --version
+        ls
         cd kbo_data
         python for_actions.py
         cp *.json ../public/
