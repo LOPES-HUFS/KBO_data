@@ -33,7 +33,7 @@ jobs:
         cd kbo_data
         python get_today_schedule_for_request.py
         ls
-        mv *.json ./public/*.json
+        mv * ./public/
         cd ./public
         ls
 # 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
