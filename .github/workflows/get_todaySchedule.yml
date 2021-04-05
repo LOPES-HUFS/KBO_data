@@ -5,7 +5,7 @@ name: get_todaySchedule
 
 on:
   schedule:
-    - cron: '0 14 11 * *'
+    - cron: '11 14 * * *'
     # UST 가 default라고 합니다 예를 들어 UST 22:55는 한국시간 07:55
     # 현재 14는 한국시간 23시 입니다. 그리고 11분
 
