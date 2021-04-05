@@ -13,6 +13,7 @@ def scoreboard(tables, teams):
     )
     return temp_total
 
+
 def chang_name_into_id_2021(team_name):
     """2021년용 팀 이름을 팀 ID로 바꾸는 함수
 
@@ -22,15 +23,27 @@ def chang_name_into_id_2021(team_name):
 
     Args:
         team_name (str): 팀명
-    
+
     """
-    
-    list = {'KIA':'HT', '두산':'OB', '롯데':'LT', \
-            'NC':'NC', 'SSG':'SK', 'LG':'LG', \
-            '넥센': 'WO','키움':'WO', '히어로즈':'WO', '우리':'WO', \
-            '한화':'HH', '삼성': 'SS','KT':'KT'}
+
+    list = {
+        "KIA": "HT",
+        "두산": "OB",
+        "롯데": "LT",
+        "NC": "NC",
+        "SSG": "SK",
+        "LG": "LG",
+        "넥센": "WO",
+        "키움": "WO",
+        "히어로즈": "WO",
+        "우리": "WO",
+        "한화": "HH",
+        "삼성": "SS",
+        "KT": "KT",
+    }
 
     return list[team_name]
+
 
 def looking_for_team_name(string):
     # team_list={'HT':'기아','OB':'두산','LT':'롯데','NC':'NC','SK':'SK','LG':'LG','WO':'넥센','HH':'한화','SS':'삼성','KT':'KT'}
