@@ -27,10 +27,10 @@ if __name__ == "__main__":
         temp = gameDate + "_" + gameld
         # 자료가 잘 들어왔는지 스코어보드를 인쇄한다.
         print(temp_page[temp]["scoreboard"])
-        # 전체 파일명을 만든다. 
+        # 전체 파일명을 만든다.
         file_name = temp + ".json"
 
         with open(file_name, "w") as outfile:
             json.dump(temp_page, outfile)
 
-    single_game_to_json("20210404","LTSK0")
+    single_game_to_json("20210404", "LTSK0")
