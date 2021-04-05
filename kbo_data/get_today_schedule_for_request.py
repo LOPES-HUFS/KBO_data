@@ -3,7 +3,7 @@
 네이버에서 오늘 경기를 가져오는 모듈입니다.
 
 Example:
-    아래와 같이 실행하면, `04_06_Schedule.json`과 같은 이름으로 
+    아래와 같이 실행하면, `2021_04_06_Schedule.json`과 같은 이름으로 
     파일을 만들어 줍니다.
 
         $ python get_today_schedule_for_request.py
