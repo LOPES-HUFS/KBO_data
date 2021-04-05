@@ -16,6 +16,7 @@ TODO:
 
 import configparser
 import json
+from datetime import date
 
 import requests
 from bs4 import BeautifulSoup
@@ -36,6 +37,10 @@ if __name__ == "__main__":
     soup = BeautifulSoup(html, "lxml")
 
     exporting_dict = {}
+
+    # 현재 연도를 가져온다.
+    today = date.today()
+    exporting_dict["year"] = str(today.year)
 
     # 우선 현재 가져온 자료를 날짜를 찾는다.
     temp_date = soup.find("li", role="presentation", class_="on").find("em").text
@@ -61,7 +66,9 @@ if __name__ == "__main__":
             item.find("div", class_="vs_cnt").find_all("em", class_="state")[0].text.strip()
         }
         exporting_dict[i] = temp_list
-    print(exporting_dict)
-    file_name = temp_date.replace(".", "_") + "_Schedule.json"
+
+    #print(exporting_dict)
+    file_name = str(today.year) + "_" + temp_date.replace(".", "_") + "_Schedule.json"
+
     with open(file_name, "w") as outfile:
         json.dump(exporting_dict, outfile)
