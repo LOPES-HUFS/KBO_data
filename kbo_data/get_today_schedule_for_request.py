@@ -45,7 +45,7 @@ if __name__ == "__main__":
     # 우선 현재 가져온 자료를 날짜를 찾는다.
     temp_date = soup.find("li", role="presentation", class_="on").find("em").text
     exporting_dict["date"] = temp_date
-    
+
     # 다음으로 게임 상대를 찾는다.
     todaySchedule = soup.find_all("ul", id="todaySchedule")
     temp_todaySchedule = todaySchedule[0]
@@ -54,20 +54,19 @@ if __name__ == "__main__":
     for item in temp_todaySchedule.find_all("li"):
         i = i + 1
         temp_list = {
-            "away":
-            pasing_page.chang_name_into_id_2021(
+            "away": pasing_page.chang_name_into_id_2021(
                 item.find("div", class_="vs_lft").find_all("strong")[0].text
             ),
-            "home":
-            pasing_page.chang_name_into_id_2021(
+            "home": pasing_page.chang_name_into_id_2021(
                 item.find("div", class_="vs_rgt").find_all("strong")[0].text
             ),
-            "state":
-            item.find("div", class_="vs_cnt").find_all("em", class_="state")[0].text.strip()
+            "state": item.find("div", class_="vs_cnt")
+            .find_all("em", class_="state")[0]
+            .text.strip(),
         }
         exporting_dict[i] = temp_list
 
-    #print(exporting_dict)
+    # print(exporting_dict)
     file_name = str(today.year) + "_" + temp_date.replace(".", "_") + "_Schedule.json"
 
     with open(file_name, "w") as outfile:
