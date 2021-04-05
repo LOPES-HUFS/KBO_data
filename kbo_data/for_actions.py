@@ -1,6 +1,9 @@
+from datetime import date
+import json
+
 import get_data
 import pandas as pd
-import json
+
 
 if __name__ == "__main__":
 
@@ -20,7 +23,14 @@ if __name__ == "__main__":
 
         temp_page = get_data.single_game(gameDate, gameld)
 
-        with open("test.json", "w") as outfile:
+        # 파일 이름을 만들기 위하여 문자열을 생성한다.
+        temp = gameDate + "_" + gameld
+        # 자료가 잘 들어왔는지 스코어보드를 인쇄한다.
+        print(temp_page[temp]["scoreboard"])
+        # 전체 파일명을 만든다. 
+        file_name = temp + ".json"
+
+        with open(file_name, "w") as outfile:
             json.dump(temp_page, outfile)
 
-    single_game_to_json("20181010", "KTLT1")
+    single_game_to_json("20210404","LTSK0")
