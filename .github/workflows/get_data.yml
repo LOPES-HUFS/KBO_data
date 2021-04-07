@@ -2,8 +2,9 @@ name: get KBO data
 
 on:
   schedule:
-    - cron: '0 0 * * *' # UST 가 default라고 합니다 예를 들어 UST 22:55는 한국시간 07:55
-
+    - cron: '30 14 * * *'
+    # UST 가 default라고 합니다 예를 들어 UST 22:55는 한국시간 07:55
+    # 현재 14는 한국시간 23시 입니다. 그리고 11분
 
 jobs:
   build-linux:
@@ -21,20 +22,22 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install python package
       run: |
-        pip install requests
-        pip install bs4
-        pip install lxml
-        pip install pandas
-        pip install selenium
-#    - name: Run! # send_to_weather.py 파일을 실행하시오!
-#      with:
-#        repo-token: ${{ secrets.API_KBO_DEPLOY }}
-#      run: |
-#        gh auth login --with-token
-#        gh repo clone https://github.com/cli/cli
+        pip install -r requirements.txt
+    - name: Setup Chromedriver
+      uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
+        chromium-browser --version
         ls
-        mkdir ./public
-        cd ./public
-        touch a.html
+        cd kbo_data
+        ls
+        python for_actions.py
+        ls -l
+        cp *.json ../public/
+# 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
+# https://github.com/peaceiris/actions-gh-pages
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
