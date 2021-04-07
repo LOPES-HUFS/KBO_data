@@ -69,8 +69,16 @@ if __name__ == "__main__":
     today_schedule = get_game_schedule.today()
     game_schedule = parsing_game_schedule.changing_format(today_schedule)
 
+    game_date = {}
+
     for item in game_schedule:
         if item["state"] == "종료":
             single_game_to_json(item["gameDate"], item["gameld"])
+            game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
+
+    file_name = today_schedule["year"] + "_" + today_schedule["date"] + ".json"
+
+    with open(file_name, "w") as outfile:
+        json.dump(game_date, outfile)
