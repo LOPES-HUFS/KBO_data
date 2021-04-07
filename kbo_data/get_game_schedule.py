@@ -3,15 +3,13 @@
 KBO 경기 일정을 수집합니다. 오늘 경기 일정은 네이버에서 가져오고 있습니다.
 
 Example:
-    오늘 경기 일정은 아래와 같이 실행하면, `2021_04_06_Schedule.json`과 같은 이름으로 
-    파일을 만들어 줍니다.
+    오늘 경기 일정은 `today()`가 담당합니다.
 
+        >>> import get_game_schedule
         >>> temp = get_game_schedule.today()
         200
         >>> temp
         {'year': '2021', 'date': '04.07', 1: {'away': 'SS', 'home': 'OB', 'state': '18:30'}, 2: {'away': 'LT', 'home': 'NC', 'state': '18:30'}, 3: {'away': 'LG', 'home': 'KT', 'state': '18:30'}, 4: {'away': 'HT', 'home': 'WO', 'state': '18:30'}, 5: {'away': 'HH', 'home': 'SK', 'state': '18:30'}}
-
-        $ python get_today_schedule_for_request.py
 
 """
 
@@ -22,7 +20,7 @@ from datetime import date
 import requests
 from bs4 import BeautifulSoup
 
-import pasing_page
+import parsing_game_schedule
 
 
 def today():
@@ -57,11 +55,13 @@ def today():
     for item in temp_todaySchedule.find_all("li"):
         i = i + 1
         temp_list = {
-            "away": pasing_page.chang_name_into_id_2021(
-                item.find("div", class_="vs_lft").find_all("strong")[0].text
+            "away": parsing_game_schedule.chang_name_into_id(
+                item.find("div", class_="vs_lft").find_all("strong")[0].text,
+                exporting_dict["year"],
             ),
-            "home": pasing_page.chang_name_into_id_2021(
-                item.find("div", class_="vs_rgt").find_all("strong")[0].text
+            "home": parsing_game_schedule.chang_name_into_id(
+                item.find("div", class_="vs_rgt").find_all("strong")[0].text,
+                exporting_dict["year"],
             ),
             "state": item.find("div", class_="vs_cnt")
             .find_all("em", class_="state")[0]
