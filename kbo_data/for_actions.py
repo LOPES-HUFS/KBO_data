@@ -1,11 +1,20 @@
 from datetime import date
 import json
 
-import get_data
 import pandas as pd
 
+import get_data
+# import get_game_schedule
+import parsing_game_schedule
 
 if __name__ == "__main__":
+
+    test = {"year": "2021", "date": "04.06", 
+            "1": {"away": "SS", "home": "OB", "state": "종료"}, 
+            "2": {"away": "LT", "home": "NC", "state": "종료"}, 
+            "3": {"away": "LG", "home": "KT", "state": "종료"}, 
+            "4": {"away": "HT", "home": "WO", "state": "종료"}, 
+            "5": {"away": "HH", "home": "SK", "state": "18:30"}}
 
     def single_game_to_json(gameDate, gameld):
         """
@@ -18,7 +27,9 @@ if __name__ == "__main__":
         0은 더블헤더 경기가 아닌 것을 알려준다.
         만약 더불헤더 경기면 1차전은 "KTLT1"처럼 1로 표시하고
         2차전이면 "KTLT2"으로 표시한다.
-        사용법은 get_data.single_game과 같다.
+        
+        Example:
+            single_game_to_json("20210404", "LTSK0")
         """
 
         temp_page = get_data.single_game(gameDate, gameld)
@@ -33,4 +44,11 @@ if __name__ == "__main__":
         with open(file_name, "w") as outfile:
             json.dump(temp_page, outfile)
 
-    single_game_to_json("20210404", "LTSK0")
+#    single_game_to_json("20210404", "LTSK0")
+    game_schedule =  parsing_game_schedule.changing_format(test)
+    for item in game_schedule:
+        if item['state'] == "종료":
+            single_game_to_json(item['gameDate'], item['gameld'])
+        else:
+            print(item['state'])
+
