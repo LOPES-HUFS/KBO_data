@@ -76,19 +76,28 @@ def changing_format(schedule_dict):
         else:
             temp_teams = schedule_dict[item]["away"] + schedule_dict[item]["home"]
             if temp_teams in match_list:
-                results.append(
-                    {
-                        "gameDate": temp_date,
-                        "gameld": (temp_teams + "1"),
-                        "state": schedule_dict[item]["state"],
-                    }
-                )
+                if schedule_dict[item]["suspended"] == "DH1":
+                    results.append(
+                        {
+                            "gameDate": temp_date,
+                            "gameld": (temp_teams + "1"),
+                            "state": schedule_dict[item]["state"],
+                        }
+                    )
+                else:
+                    results.append(
+                        {
+                            "gameDate": temp_date,
+                            "gameld": (temp_teams + "2"),
+                            "state": schedule_dict[item]["state"],
+                        }
+                    )
             else:
                 match_list.append(temp_teams)
                 results.append(
                     {
                         "gameDate": temp_date,
-                        "gameld": (temp_teams + "0"),
+                        "gameld": (temp_teams + schedule_dict[item]["suspended"]),
                         "state": schedule_dict[item]["state"],
                     }
                 )

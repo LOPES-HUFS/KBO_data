@@ -54,6 +54,12 @@ def today():
 
     for item in temp_todaySchedule.find_all("li"):
         i = i + 1
+
+        if item.find("div", class_="vs_cnt").find("p", class_="suspended") == None :
+            suspended = "0"
+        else:
+            suspended = item.find("div", class_="vs_cnt").find("p", class_="suspended")
+
         temp_list = {
             "away": parsing_game_schedule.chang_name_into_id(
                 item.find("div", class_="vs_lft").find_all("strong")[0].text,
@@ -64,8 +70,8 @@ def today():
                 exporting_dict["year"],
             ),
             "state": item.find("div", class_="vs_cnt")
-            .find_all("em", class_="state")[0]
-            .text.strip(),
+            .find_all("em", class_="state")[0].text.strip(),
+            "suspended": suspended
         }
         exporting_dict[i] = temp_list
 
