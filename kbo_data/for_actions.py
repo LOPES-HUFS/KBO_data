@@ -80,7 +80,7 @@ if __name__ == "__main__":
         else:
             print(item["state"])
 
-    file_name = today_schedule["year"] + "_" + today_schedule["date"] + ".json"
+    file_name = today_schedule["year"] + "_" + today_schedule["date"] + "_games.json"
 
     with open(file_name, "w") as outfile:
         json.dump(game_date, outfile)
