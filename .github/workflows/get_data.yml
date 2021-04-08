@@ -2,7 +2,7 @@ name: get KBO data
 
 on:
   schedule:
-    - cron: '30 14 * * *'
+    - cron: '45 14 * * *'
     # UST 가 default라고 합니다 예를 들어 UST 22:55는 한국시간 07:55
     # 현재 14는 한국시간 23시 입니다. 그리고 11분
 
@@ -27,12 +27,8 @@ jobs:
       uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
-        chromium-browser --version
-        ls
         cd kbo_data
-        ls
         python for_actions.py
-        ls -l
         cp *.json ../public/
 # 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
 # https://github.com/peaceiris/actions-gh-pages
