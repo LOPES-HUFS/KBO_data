@@ -46,7 +46,6 @@ jobs:
       uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
-        chromium-browser --version
         ls
         cd kbo_data
         ls
