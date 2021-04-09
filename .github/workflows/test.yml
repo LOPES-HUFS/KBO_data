@@ -45,7 +45,7 @@ jobs:
       uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
-        http POST ${{ secrets.API_URL }} year=2021 date=04.04 --output today.json
+        http POST ${{secrets.API_URL}} year=2021 date=04.04 --output today.json
         ls
         cd kbo_data
         ls
@@ -57,5 +57,5 @@ jobs:
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.KBO_DEPLOY }}
         publish_dir: ./public
