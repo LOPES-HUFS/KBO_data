@@ -80,6 +80,7 @@ if __name__ == "__main__":
     r = requests.post(url, data = json.dumps(post_json))
     test_json = r.json()
     game_schedule = parsing_game_schedule.changing_format(test_json["body"])
+    print(game_schedule)
 
     game_date = {}
 
