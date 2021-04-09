@@ -32,8 +32,9 @@ jobs:
 #        pip install pandas
 #        pip install selenium
 
-#    - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
-#      run: |        
+    - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
+      run: |
+        sudo apt install httpie
 #        sudo apt-get install fonts-unfonts-core
 #        sudo apt-get install fonts-unfonts-extra
 #        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add        
@@ -44,7 +45,7 @@ jobs:
       uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
-        ${{ secrets.API_URL }}
+        http POST ${{ secrets.API_URL }} year=2021 date=04.04 --output today.json
         ls
         cd kbo_data
         ls
