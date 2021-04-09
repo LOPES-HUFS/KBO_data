@@ -32,6 +32,7 @@ from datetime import date
 import json
 
 import pandas as pd
+import requests
 
 import get_data
 import get_game_schedule
@@ -74,6 +75,9 @@ if __name__ == "__main__":
 
     url = str(sys.argv[1])
     print(url)
+
+    r = requests.post(url, data = {"year": "2021","date": "04.04"})
+    print(r.text)
 
     game_date = {}
 
