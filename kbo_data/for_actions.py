@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     url = str(sys.argv[1])
 
-    post_json = {"year": "2021", "date": "04.04"}
+    post_json = {"year": today_schedule["year"], "date": today_schedule["date"]}
 
     r = requests.post(url, data = json.dumps(post_json))
     test_json = r.json()
