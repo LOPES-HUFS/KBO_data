@@ -43,10 +43,8 @@ jobs:
     - name: Setup Chromedriver
       uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
-      with:
-        GITHUB_TOKEN: ${{ secrets.API_URL }}
       run: |
-        GITHUB_TOKEN
+        ${{ secrets.API_URL }}
         ls
         cd kbo_data
         ls
