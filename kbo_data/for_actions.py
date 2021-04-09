@@ -78,7 +78,7 @@ if __name__ == "__main__":
     post_json = {"year": "2021", "date": "04.04"}
 
     r = requests.post(url, data = json.dumps(post_json))
-    print(r.text)
+    print(r.json)
 
     game_date = {}
 
