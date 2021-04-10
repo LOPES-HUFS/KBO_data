@@ -70,14 +70,18 @@ if __name__ == "__main__":
 
     today_schedule = get_game_schedule.today()
     # 오늘 schedule이 잘 들어왔는지 확인
-    print(today_schedule)
+    # print(today_schedule)
     game_schedule = parsing_game_schedule.changing_format(today_schedule)
 
     url = str(sys.argv[1])
 
-    post_json = {"year": today_schedule["year"], "date": today_schedule["date"]}
+    post_json = {
+        "year": today_schedule["year"],
+        "date": today_schedule["date"],
+        "is_today": "True",
+    }
 
-    r = requests.post(url, data = json.dumps(post_json))
+    r = requests.post(url, data=json.dumps(post_json))
     test_json = r.json()
     game_schedule = parsing_game_schedule.changing_format(test_json["body"])
     print(game_schedule)
