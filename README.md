@@ -8,6 +8,18 @@ KBO 데이터를 가져와서 정리해 데이터 분석을 하기 쉽게 만드
 
 현재 이 프로젝트는 `python 3.7`을 기준으로 작성하고 있습니다. 이 버젼 이상을 사용하시면 무리없이 작동할 것입니다.
 
+### 오늘 게임 스케줄 가져오기
+
+오늘 KBO 경기 스케줄 가져 오는 방법
+
+```bash
+>>> import get_game_schedule
+>>> today_schedule = get_game_schedule.today()
+200
+>>> print(today_schedule)
+{'year': '2021', 'date': '04.10', 1: {'away': 'SK', 'home': 'LG', 'state': '6회초', 'suspended': '0'}, 2: {'away': 'KT', 'home': 'SS', 'state': '5회말', 'suspended': '0'}, 3: {'away': 'WO', 'home': 'LT', 'state': '17:00', 'suspended': '0'}, 4: {'away': 'OB', 'home': 'HH', 'state': '17:00', 'suspended': '0'}, 5: {'away': 'NC', 'home': 'HT', 'state': '17:00', 'suspended': '0'}}
+```
+
 ## 코드 작성시 참고할 점
 
 앞에서도 언급한 것처럼 현재 코드는 `python 3.7`을 기준으로 작성하고 있습니다. 그리고 `poetry`를 이용해서 파이썬 관련 패키지를 관리하고 있습니다.
