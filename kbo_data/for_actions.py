@@ -70,7 +70,7 @@ if __name__ == "__main__":
 
     today_schedule = get_game_schedule.today()
     # 오늘 schedule이 잘 들어왔는지 확인
-    # print(today_schedule)
+    print(today_schedule)
     game_schedule = parsing_game_schedule.changing_format(today_schedule)
 
     url = str(sys.argv[1])
