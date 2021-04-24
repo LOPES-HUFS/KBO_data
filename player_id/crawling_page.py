@@ -1,3 +1,26 @@
+""" 목표: 매 시합마다 출전하는 KBO 선수들의 이름들을 크롤링해서 문자열 리스트로 생성
+    
+    TODO:
+    - [x] KBO홈페이지에서 요일별로 크롤링하기
+    - [x] 데이터 정제하기
+    - [x] 문자열 데이터 정규표현식으로 나눠서 이름 리스트 생성하기
+    - [x] 각 요일마다 생성된 리스트 이름 기준 고유값으로 저장하기
+    - [ ] 리스트의 첫 번째 공백 문자열 제외하는 로직으로 디버그
+
+output
+-------
+> batters, pitchers = player_name("20210422", "20210424")
+> batters[:5]
+['', '노진혁', '프레이타스', '김지찬', '박병호']
+> pitchers[:5]
+['', '이준영', '문경찬', '임현준', '최원태']
+
+HOW TO USE
+-------
+1. 아래의 함수들을 정의한다.
+2. player_name()에 크롤링하고 싶은 시작과 끝 년월일을 입력한다.
+"""
+
 import requests
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -55,6 +78,6 @@ def player_name(start, end):
         batters += batter
         pitchers += pitcher
         batters = list(set(batters))
-        pitchers = list(set(batters))
+        pitchers = list(set(pitchers))
     
     return batters, pitchers
