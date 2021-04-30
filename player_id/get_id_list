@@ -6,7 +6,8 @@
     - [ ] 선수 id 목록 table로 정리하기
     output
 -------
-searching_players(batter_list)
+> batter_list, pitcher_list = crawling_page.player_name(20210421,20210423)
+> searching_players(batter_list)
 {'list': [{'51003': {'ID': '51003',
     '이름': '권동진',
     '현재 상태': 'KBO',
@@ -22,6 +23,49 @@ HOW TO USE
 4. error_list가 없다면 선수들의 id를 저장한다.
 """
 
-import crawling_page.py
+import crawling_page 
 import requests
 from bs4 import BeautifulSoup as bs
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config.ini')
+player_search_url = eval(config['DEFAULT']['player_search_URL'])
+
+def searching(name):
+    url = (f'{player_search_url}{name}')
+    r = requests.post(url)
+    try:
+        soup = BeautifulSoup(r.text, "lxml")
+        table = soup.find('table')
+        table_rows = table.find_all('a')
+        tds = table.find_all('td')
+        temp = [parsing_player_table(table_row, tds) for table_row in table_rows]
+        res = [{item['ID']:item} for item in temp]
+    except:
+        res = False
+    return (res)
+
+def parsing_player_table(table_row, tds):
+    if str(table_row).split('/')[1] == 'Futures':
+        status = 'Futures'
+    elif str(table_row).split('/')[2] == 'Retire':
+        status = '은퇴'
+    else:
+        status = 'KBO'
+    player_id = str(table_row).split('playerId=')[1].split('">')[0]
+    team = tds[2].get_text()
+    name = table_row.get_text()
+    return{"ID":player_id, "이름":name, "현재 상태":status, "team": team}
+
+def searching_players(players_list):
+    total = []
+    error_list =[]
+    
+    for name in players_list:
+        temp = searching(name)
+        if len(temp) == 0:
+            error_list.append(name)
+        else:
+            total += temp
+    return {"list":total, "error_list":error_list}
