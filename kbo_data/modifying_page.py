@@ -26,7 +26,8 @@ import json
 
 import scoreboards
 
+
 def input_data(data):
-    temp_data = { }
-    temp_data['scoreboards'] = scoreboards.input_data(data)
+    temp_data = {}
+    temp_data["scoreboards"] = scoreboards.input_data(data)
     return temp_data
