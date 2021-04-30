@@ -1,0 +1,27 @@
+""" 목표: 매 시합마다 출전하는 KBO 선수들의 선수 id를 크롤링해서 dict(list(dict)) 형식으로 저장하고 table 형태로 정리하기
+    
+    TODO:
+    - [x] 경기 별 등록 선수 목록을 크롤링 하기
+    - [x] 등록 선수 목록의 이름을 통해 선수 id 크롤링 하기
+    - [ ] 선수 id 목록 table로 정리하기
+    output
+-------
+searching_players(batter_list)
+{'list': [{'51003': {'ID': '51003',
+    '이름': '권동진',
+    '현재 상태': 'KBO',
+    'team': 'KT'}},
+  {'62415': {'ID': '62415', '이름': '박해민', '현재 상태': 'KBO', 'team': '삼성'}},
+  {'67341': {'ID': '67341', '이름': '이정후', '현재 상태': 'KBO', 'team': '키움'}},
+  ...
+HOW TO USE
+-------
+1. 필요한 라이브러리와 .py 파일을 읽어온다. 
+2. 선수 id를 크롤링하는 함수를 정의한다.
+3. searching_players 함수 사용시 만약 error_list가 발생한다면 해당 선수들만 다시 크롤링한다.
+4. error_list가 없다면 선수들의 id를 저장한다.
+"""
+
+import crawling_page.py
+import requests
+from bs4 import BeautifulSoup as bs
