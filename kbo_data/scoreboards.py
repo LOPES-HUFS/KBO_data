@@ -81,8 +81,6 @@ def modify(data):
     """
     i = 0
 
-    #    temp_data = {}
-
     for key, value in data.items():
         temp_p = pd.DataFrame(value["scoreboard"])
         game_info = get_game_info(key)
