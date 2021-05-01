@@ -1,12 +1,80 @@
 
 # Tables
 ### PlayerID  
-Columns: PlayerID, name
+PlayerID = Column(Integer)   
+name = Column(String(20))   
+
 ### TeamID  
- Columns: TeamIndex, name
+TeamID = Column(Integer)    
+name = Column(String(5))   
+
 ### Batters  
- Columns: PlayerID, position, TeamIndex, i_1, i_2, i_3, i_4, i_5, i_6, i_7, i_8, i_9, i_10, i_11,i_12, hit, bat_num, hit_prob, hit_get, own_get
+PlayerID = Column(Integer)    
+position = Column(String(3))  
+TeamID = Column(Integer)    
+i_1 = Column(Integer)    
+i_2 = Column(Integer)    
+i_3 = Column(Integer)    
+i_4 = Column(Integer)    
+i_5 = Column(Integer)    
+i_6 = Column(Integer)    
+i_7 = Column(Integer)    
+i_8 = Column(Integer)    
+i_9 = Column(Integer)    
+i_10 = Column(Integer)    
+i_11 = Column(Integer)    
+i_12 = Column(Integer)    
+hit = Column(Integer)    
+bat_num = Column(Integer)    
+hit_prob = Column(Integer)    
+hit_get = Column(Integer)    
+own_get = Column(Integer)   
+
 ### Pitchers 
- Columns: PlayerID, position, TeamIndex, join, inning, rest, win, lose, draw, save, hold, strikeout, deadball, losescore, earnedrun, pitchnum, hited, homerun, hitnum, hitter
+PlayerID = Column(Integer)    
+position = Column(String(3))   
+TeamID = Column(Integer)    
+join = Column(Integer)  
+inning = Column(Integer)  
+rest = Column(Integer)  
+result = Column(Integer)    
+save = Column(Integer)    
+hold = Column(Integer)    
+strikeout = Column(Integer)    
+deadball = Column(Integer)    
+losescore = Column(Integer)    
+earnedrun = Column(Integer)    
+pitchnum = Column(Integer)    
+hited = Column(Integer)    
+homerun = Column(Integer)    
+hitnum = Column(Integer)    
+hitter = Column(Integer)    
+
 ### Scoreboards
- Columns:TeamIndex, result, i_1, i_2, i_3, i_4, i_5, i_6, i_7, i_8, i_9, i_10, i_11, i_12, R, H, E, B, year, month, day, week, home, away, dbheader
+
+TeamID = Column(Integer)     
+result = Column(Integer)    
+i_1 = Column(Integer)    
+i_2 = Column(Integer)    
+i_3 = Column(Integer)    
+i_4 = Column(Integer)    
+i_5 = Column(Integer)    
+i_6 = Column(Integer)    
+i_7 = Column(Integer)    
+i_8 = Column(Integer)    
+i_9 = Column(Integer)    
+i_10 = Column(Integer)    
+i_11 = Column(Integer)    
+i_12 = Column(Integer)    
+R = Column(Integer)    
+H = Column(Integer)    
+E = Column(Integer)    
+B = Column(Integer)    
+year = Column(Integer)   
+month = Column(Integer)    
+day = Column(Integer)   
+week  = Column(Integer)     
+home = Column(Integer)   
+away = Column(Integer)   
+dbheader = Column(Integer)   
+
