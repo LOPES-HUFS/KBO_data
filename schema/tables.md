@@ -1,5 +1,5 @@
 
-# [Tables]
+# Tables
 ### PlayerID  
 Columns: PlayerID, name
 ### TeamID  
