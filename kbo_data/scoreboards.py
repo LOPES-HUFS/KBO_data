@@ -1,3 +1,13 @@
+"""스코어보드 정리 모듈
+
+   수집한 자료에서 스코어보드를 정리하기 위한 모듈입니다.
+
+   - `get_game_info()` : `modify(data)`가 사용하는 함수
+   - 
+
+
+"""
+
 import ast
 import datetime
 
