@@ -9,9 +9,9 @@ TeamID = Column(Integer)
 name = Column(String(5))   
 
 ### Batters  
-PlayerID   
-position   
-TeamID   
+PlayerID = Column(Integer)    
+position = Column(String(3)) 
+TeamID = Column(Integer)    
 i_1 = Column(Integer)    
 i_2 = Column(Integer)    
 i_3 = Column(Integer)    
@@ -31,30 +31,29 @@ hit_get = Column(Integer)
 own_get = Column(Integer)   
 
 ### Pitchers 
-PlayerID   
-position   
-TeamID   
-join   
-inning   
-rest   
-win   
-lose   
-draw   
-save   
-hold   
-strikeout   
-deadball   
-losescore   
-earnedrun   
-pitchnum   
-hited   
-homerun   
-hitnum   
-hitter   
+PlayerID = Column(Integer)    
+position = Column(String(3))   
+TeamID = Column(Integer)    
+join = Column(Integer) 
+inning = Column(Integer) 
+rest = Column(Integer) 
+result = Column(Integer)    
+save = Column(Integer)    
+hold = Column(Integer)    
+strikeout = Column(Integer)    
+deadball = Column(Integer)    
+losescore = Column(Integer)    
+earnedrun = Column(Integer)    
+pitchnum = Column(Integer)    
+hited = Column(Integer)    
+homerun = Column(Integer)    
+hitnum = Column(Integer)    
+hitter = Column(Integer)    
 
 ### Scoreboards
-TeamID   
-result   
+
+TeamID = Column(Integer)     
+result = Column(Integer)    
 i_1 = Column(Integer)    
 i_2 = Column(Integer)    
 i_3 = Column(Integer)    
@@ -67,14 +66,15 @@ i_9 = Column(Integer)
 i_10 = Column(Integer)    
 i_11 = Column(Integer)    
 i_12 = Column(Integer)    
-R   
-H   
-E   
-B   
-year   
-month   
-day   
-week   
-home   
-away   
-dbheader   
+R = Column(Integer)    
+H = Column(Integer)    
+E = Column(Integer)    
+B = Column(Integer)    
+year = Column(Integer)   
+month = Column(Integer)    
+day = Column(Integer)   
+week  = Column(Integer)     
+home = Column(Integer)   
+away = Column(Integer)   
+dbheader = Column(Integer)   
+
