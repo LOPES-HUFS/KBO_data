@@ -31,7 +31,7 @@ def get_game_info(game_list):
     return temp
 
 
-def input_data(data):
+def modify(data):
     """수집한 게임 자료에서 스코어보드만 뽑아서 정리하는 함수
 
     이 함수는 여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
@@ -81,7 +81,7 @@ def input_data(data):
     """
     i = 0
 
-    temp_data = {}
+    #    temp_data = {}
 
     for key, value in data.items():
         temp_p = pd.DataFrame(value["scoreboard"])
@@ -93,11 +93,26 @@ def input_data(data):
         temp_p.loc[:, "홈팀"] = game_info["홈팀"]
         temp_p.loc[:, "원정팀"] = game_info["원정팀"]
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
-        # print(list(data.keys())[i])
-        # print(ast.literal_eval(temp_p.to_json(orient='records')))
-        temp_data[list(data.keys())[i]] = ast.literal_eval(
+        temp_p.rename(
+            columns={
+                "1": "i_1",
+                "2": "i_2",
+                "3": "i_3",
+                "4": "i_4",
+                "5": "i_5",
+                "6": "i_6",
+                "7": "i_7",
+                "8": "i_8",
+                "9": "i_9",
+                "10": "i_10",
+                "11": "i_11",
+                "12": "i_12",
+            },
+            inplace=True,
+        )
+        data[list(data.keys())[i]]["scoreboard"] = ast.literal_eval(
             temp_p.to_json(orient="records")
         )
         i = i + 1
 
-    return temp_data
+    return data
