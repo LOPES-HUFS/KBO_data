@@ -43,15 +43,24 @@ def modify(data):
     이 함수는 여러 게임 자료(`data`)에서 스코어보드만 뽑아서 내용을 고치고 변경합니다.
     그런 다음 다시 이렇게 작업한 스코어보드를 다시 원 자료(`data`)에 끼워 넣는다.
 
-    ```python
-    import json
-    file_name = "2021_04.29_games.json"
-    temp_data = {}
-    with open(file_name) as json_file:
-            temp_data = json.load(json_file)
-    import scoreboards
-    temp_data_scoreboards_modified = scoreboards.modify(temp_data)
+    Examples:
+
+        ```python
+        import json
+        file_name = "2021_04.29_games.json"
+        temp_data = {}
+        with open(file_name) as json_file:
+                temp_data = json.load(json_file)
+        import scoreboards
+        temp_data_scoreboards_modified = scoreboards.modify(temp_data)
     ```
+    Note:
+        현재 수정하고 있는 컬럼 이름
+        - 이닝 이름 12개
+        - 승패
+        - 홈팀
+        - 원정팀
+        - 더블헤더
 
     Args:
         data (json): 수집한 하나 이상의 게임 자료
@@ -73,6 +82,7 @@ def modify(data):
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
         temp_p.rename(
             columns={
+                "승패": "result",
                 "1": "i_1",
                 "2": "i_2",
                 "3": "i_3",
@@ -85,6 +95,9 @@ def modify(data):
                 "10": "i_10",
                 "11": "i_11",
                 "12": "i_12",
+                "홈팀": "home",
+                "원정팀": "away",
+                "더블헤더": "dbheader",
             },
             inplace=True,
         )
