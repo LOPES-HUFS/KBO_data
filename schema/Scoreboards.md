@@ -31,3 +31,8 @@ home = Column(Integer)
 away = Column(Integer)
 dbheader = Column(Integer)
 ```
+
+## 각 컬럼 설명
+
+- i_1 ~ i_8 (Integer) : 점수 저장
+- i_9 ~ i_12 (Integer) : 값이 `-1`이 들어있을 수도 있다. 이런 경우는 해당 이닝 경기가 발생하지 않은 경우이다. `null`값으로 하지 않은 이유는 나중에 해당 열을 `(Integer)`로 변환하기 쉽게 하기 위해서이다.
