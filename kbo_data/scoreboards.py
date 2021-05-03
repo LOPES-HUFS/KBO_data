@@ -102,6 +102,7 @@ def modify(data):
             },
             inplace=True,
         )
+        temp_p.replace("-", -1, inplace=True)
         data[list(data.keys())[i]]["scoreboard"] = ast.literal_eval(
             temp_p.to_json(orient="records")
         )
