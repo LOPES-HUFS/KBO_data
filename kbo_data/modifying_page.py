@@ -1,4 +1,4 @@
-""" 가져온 KBO 자료를 적절하게 정리하고 DB나 파일로 저장하기 위한 모듈
+""" 가져온 KBO 자료를 가져와서 적절하게 정리하고 DB나 파일로 저장하기 위한 모듈
 
 
 연습용 json 파일 다운받기
@@ -18,7 +18,7 @@ wget https://gist.github.com/dialektike/\
             temp_data = json.load(json_file)
     import modifying_page
     temp = modifying_page.input_data(temp_data)
-    temp
+    temp_scoreboards = modifying_page.output(temp)
     ```
 """
 
@@ -28,6 +28,7 @@ import scoreboards
 
 
 def input_data(data):
-    temp_data = {}
-    temp_data["scoreboards"] = scoreboards.input_data(data)
-    return temp_data
+    return scoreboards.modify(data)
+
+def output(data):
+    return scoreboards.output(data)

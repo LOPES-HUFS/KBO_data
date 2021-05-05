@@ -1,13 +1,19 @@
+"""스코어보드 정리 모듈
+
+   수집한 자료에서 스코어보드를 정리하기 위한 모듈입니다.
+
+   - `get_game_info()` : `modify(data)`가 사용하는 함수
+   - 
+
+
+"""
+
 import ast
 import datetime
 
 import pandas as pd
 
 from pasing_page import looking_for_team_name
-
-
-def get(date):
-    pd.DataFrame(temp_data["20190320_HHNC0"]["scoreboard"])
 
 
 def get_game_info(game_list):
@@ -31,57 +37,39 @@ def get_game_info(game_list):
     return temp
 
 
-def input_data(data):
+def modify(data):
     """수집한 게임 자료에서 스코어보드만 뽑아서 정리하는 함수
 
-    이 함수는 여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
-    사용 사례를 다음과 같이 하루치 자료를 뽑아서 이 함수를 돌리면 확인할 수 있다.
+    이 함수는 여러 게임 자료(`data`)에서 스코어보드만 뽑아서 내용을 고치고 변경합니다.
+    그런 다음 다시 이렇게 작업한 스코어보드를 다시 원 자료(`data`)에 끼워 넣는다.
 
-    ```python
-    import json
-    file_name = "2021_04.29_games.json"
-    temp_data = {}
-    with open(file_name) as json_file:
-            temp_data = json.load(json_file)
-    import scoreboards
-    temp_scoreboards = scoreboards.input_data(temp_data)
-    temp_scoreboards['20210429_OBWO0']
-    ```
+    Examples:
 
-    다음과 같은 값을 반환한다. list로 되어 있는 이유는 아래와 같이 pandas를 염두에 두었기 때문이다.
-    ```python
-    [
-        {'팀': '두산', '승패': '승', '1': 9, '2': 0, '3': 4, '4': 0, '5': 0, '6': 0,
-            '7': 0, '8': 0, '9': 2, '10': '-', '11': '-', '12': '-',
-            'R': 15, 'H': 13, 'E': 0, 'B': 14,
-            'year': 2021, 'month': 4, 'day': 29, 'week': 3,
-            '홈팀': '두산', '원정팀': '키움', '더블헤더': 0},
-        {'팀': '키움', '승패': '패', '1': 0, '2': 1, '3': 0, '4': 1, '5': 0, '6': 1,
-            '7': 0, '8': 0, '9': 1, '10': '-', '11': '-', '12': '-',
-            'R': 4, 'H': 7, 'E': 0, 'B': 1,
-            'year': 2021, 'month': 4, 'day': 29, 'week': 3,
-            '홈팀': '두산', '원정팀': '키움', '더블헤더': 0}
-    ]
-    ```
+        ```python
+        import json
+        file_name = "2021_04.29_games.json"
+        temp_data = {}
+        with open(file_name) as json_file:
+                temp_data = json.load(json_file)
+        import scoreboards
+        temp_data_scoreboards_modified = scoreboards.modify(temp_data)
+        ```
 
-    다음과 같은 사용하면 쉽게 사용할 수 있다.
-    ```python
-    import pandas as pd
-    pd.DataFrame(temp_scoreboards['20210429_OBWO0'])
-
-        팀 승패  1  2  3  4  5  6  7  8  9 10 11 12   R   H  E   B  year  month  day  week  홈팀 원정팀  더블헤더
-    0  두산  승  9  0  4  0  0  0  0  0  2  -  -  -  15  13  0  14  2021      4   29     3  두산  키움     0
-    1  키움  패  0  1  0  1  0  1  0  0  1  -  -  -   4   7  0   1  2021      4   29     3  두산  키움     0
+    Note:
+        현재 수정하고 있는 컬럼 이름
+        - 이닝 이름 12개
+        - 승패
+        - 홈팀
+        - 원정팀
+        - 더블헤더
 
     Args:
-        data (json): pd.read_csv()함수로 읽은 다음과 같은 게임 리스트
+        data (json): 수집한 하나 이상의 게임 자료
 
     Returns:
-        (json): 리스트에 들어 있는 전체
+        data (json): scoreboard만 수정한 하나 이상의 게임 자료
     """
     i = 0
-
-    temp_data = {}
 
     for key, value in data.items():
         temp_p = pd.DataFrame(value["scoreboard"])
@@ -93,6 +81,136 @@ def input_data(data):
         temp_p.loc[:, "홈팀"] = game_info["홈팀"]
         temp_p.loc[:, "원정팀"] = game_info["원정팀"]
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
+        temp_p.rename(
+            columns={
+                "승패": "result",
+                "1": "i_1",
+                "2": "i_2",
+                "3": "i_3",
+                "4": "i_4",
+                "5": "i_5",
+                "6": "i_6",
+                "7": "i_7",
+                "8": "i_8",
+                "9": "i_9",
+                "10": "i_10",
+                "11": "i_11",
+                "12": "i_12",
+                "홈팀": "home",
+                "원정팀": "away",
+                "더블헤더": "dbheader",
+            },
+            inplace=True,
+        )
+        temp_p.replace("-", -1, inplace=True)
+        data[list(data.keys())[i]]["scoreboard"] = ast.literal_eval(
+            temp_p.to_json(orient="records")
+        )
+        i = i + 1
+
+    return data
+
+
+def output(data):
+    """수집한 게임 자료에서 스코어보드만 뽑아서 정리하는 함수
+
+    이 함수는 여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
+    사용 사례를 다음과 같이 하루치 자료를 뽑아서 이 함수를 돌리면 확인할 수 있다.
+
+    Examples:
+        ```python
+        import json
+        file_name = "2021_04.29_games.json"
+        temp_data = {}
+        with open(file_name) as json_file:
+                temp_data = json.load(json_file)
+        import scoreboards
+        temp_scoreboards = scoreboards.output(scoreboards.modify(temp_data))
+        temp_scoreboards['20210429_OBWO0']
+        ```
+
+    다음과 같은 값을 반환한다. `list`로 되어 있는 이유는 아래와 같이 pandas를 염두에 두었기 때문이다.
+
+    Examples:
+        ```python
+        [
+        {
+            "팀": "두산",
+            "result": "승",
+            "i_1": 9,
+            "i_2": 0,
+            "i_3": 4,
+            "i_4": 0,
+            "i_5": 0,
+            "i_6": 0,
+            "i_7": 0,
+            "i_8": 0,
+            "i_9": 2,
+            "i_10": "-",
+            "i_11": "-",
+            "i_12": "-",
+            "R": 15,
+            "H": 13,
+            "E": 0,
+            "B": 14,
+            "year": 2021,
+            "month": 4,
+            "day": 29,
+            "week": 3,
+            "home": "두산",
+            "away": "키움",
+            "dbheader": 0,
+        },
+        {
+            "팀": "키움",
+            "result": "패",
+            "i_1": 0,
+            "i_2": 1,
+            "i_3": 0,
+            "i_4": 1,
+            "i_5": 0,
+            "i_6": 1,
+            "i_7": 0,
+            "i_8": 0,
+            "i_9": 1,
+            "i_10": "-",
+            "i_11": "-",
+            "i_12": "-",
+            "R": 4,
+            "H": 7,
+            "E": 0,
+            "B": 1,
+            "year": 2021,
+            "month": 4,
+            "day": 29,
+            "week": 3,
+            "home": "두산",
+            "away": "키움",
+            "dbheader": 0,
+            },
+        ]
+        ```
+
+    pandas를 이용한 방법은 다음과 같다. 적절하게 `df`로 변환되는 것을 볼 수 있다.
+
+    Examples:
+        ```python
+        import pandas as pd
+        pd.DataFrame(temp_scoreboards['20210429_OBWO0'])
+        ```
+
+    Args:
+        data (json): 수집한 하나 이상의 게임 자료
+
+    Returns:
+        temp_data (json): '20210429_OBWO0'와 같은 단일 게임 key 와 scoreboard를 포함하고 있는 여러 게임 자료
+    """
+    temp_data = {}
+
+    i = 0
+
+    for key, value in data.items():
+        temp_p = pd.DataFrame(value["scoreboard"])
         # print(list(data.keys())[i])
         # print(ast.literal_eval(temp_p.to_json(orient='records')))
         temp_data[list(data.keys())[i]] = ast.literal_eval(
