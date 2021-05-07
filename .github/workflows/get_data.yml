@@ -3,9 +3,9 @@ name: get KBO data
 on:
   schedule:
 #    - cron: '45 14 * * *'
-    - cron: '5 1 * * *'
+    - cron: '5 2 * * *'
     # UST 가 default라고 합니다.
-    # 0시 5분에 돌아 가도록 했으니 한국 시간으로 9시 5분 실행됩니다.
+    # 2시 5분에 돌아 가도록 했으니 한국 시간으로 10시 5분 실행됩니다.
 
 jobs:
   build-linux:
