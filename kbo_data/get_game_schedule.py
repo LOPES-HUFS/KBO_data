@@ -58,7 +58,8 @@ def today():
         if item.find("div", class_="vs_cnt").find("p", class_="suspended") == None :
             suspended = "0"
         else:
-            suspended = item.find("div", class_="vs_cnt").find("p", class_="suspended")
+            temp_suspended = item.find("div", class_="vs_cnt").find("p", class_="suspended")
+            suspended = temp_suspended.text.strip()
 
         temp_list = {
             "away": parsing_game_schedule.chang_name_into_id(
