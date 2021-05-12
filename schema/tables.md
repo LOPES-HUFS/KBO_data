@@ -2,16 +2,18 @@
 # Tables schema
 
 ```bash
-[TeamID]                  [Scoreboards]
-- teamID(key) ㅡㅡㅡㅡㅡ - TeamID(foreign key)
-- name          
-                            
-                       
-[PlayerID]                [Batters]
-- playerID(key)ㅡㅣㅡㅡㅡ - playerID(foreign key)
-- name           ㅣ
-                 ㅣ       [Pitchers]
-                 ㅣㅡㅡㅡ - playerID(foreign key)
+                          [Scoreboards]
+[TeamID]                 - idx(key)  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅣ
+- teamID(key) ㅡㅡㅡㅡㅡ - TeamID(foreign key)           ㅣ
+- name                                                   ㅣ
+                                                         ㅣ
+                          [Batters]                      ㅣ
+[PlayerID]                - idx(foreign key) ㅡㅡㅡㅡㅡㅡㅣ
+- playerID(key)ㅡㅣㅡㅡㅡ - playerID(foreign key)        ㅣ
+- name           ㅣ                                      ㅣ
+                 ㅣ       [Pitchers]                     ㅣ
+                 ㅣ       - idx(foreign key) ㅡㅡㅡㅡㅡㅡㅣ
+                 ㅣㅡㅡㅡ - playerID(foreign key)       
 ```
 
 # Columns
@@ -25,6 +27,7 @@ teamID = Column(Integer)
 name = Column(String(5))   
 
 ### Batters  
+idx = Column(Integer)
 PlayerID = Column(Integer)    
 position = Column(String(3))   
 i_1 = Column(Integer)    
@@ -46,6 +49,7 @@ hit_get = Column(Integer)
 own_get = Column(Integer)   
 
 ### Pitchers 
+idx = Column(Integer)
 PlayerID = Column(Integer)    
 position = Column(String(3))      
 join = Column(Integer)  
@@ -65,7 +69,7 @@ hitnum = Column(Integer)
 hitter = Column(Integer)    
 
 ### Scoreboards
-
+idx = Column(Integer)
 TeamID = Column(Integer)     
 result = Column(Integer)    
 i_1 = Column(Integer)    
