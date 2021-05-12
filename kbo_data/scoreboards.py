@@ -200,7 +200,7 @@ def output(data):
         ```
 
     Args:
-        data (json): 수집한 하나 이상의 게임 자료
+        data (json): 수집된 한 게임 이상의 게임 자료
 
     Returns:
         temp_data (json): '20210429_OBWO0'와 같은 단일 게임 key 와 scoreboard를 포함하고 있는 여러 게임 자료
