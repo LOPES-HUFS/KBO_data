@@ -3,15 +3,15 @@
 
 ```bash
 [TeamID]                  [Scoreboards]
-- teamID(key) ㅡㅣㅡㅡㅡ - TeamID(foreign key)
-- name          ㅣ
-                ㅣ            
-                ㅣ       
-[PlayerID]      ㅣ        [Batters]
--playerID(key)ㅡㅣㅡㅡㅡ - playerID(foreign key)
--name           ㅣ
-                ㅣ        [Pitchers]
-                ㅣㅡㅡㅡ - playerID(foreign key)
+- teamID(key) ㅡㅡㅡㅡㅡ - TeamID(foreign key)
+- name          
+                            
+                       
+[PlayerID]                [Batters]
+- playerID(key)ㅡㅣㅡㅡㅡ - playerID(foreign key)
+- name           ㅣ
+                 ㅣ        [Pitchers]
+                 ㅣㅡㅡㅡ - playerID(foreign key)
 ```
 
 # Columns
