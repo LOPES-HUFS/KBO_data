@@ -44,7 +44,7 @@ def getting_page(gameDate, gameld):
         driver = webdriver.Chrome(chromium_location, chrome_options=options)
         temp_url = url + gameDate + "&gameId=" + gameDate + gameld + "&section=REVIEW"
         driver.get(temp_url)
-        driver.implicitly_wait(3)
+        driver.implicitly_wait(5)
         soup = BeautifulSoup(driver.page_source, "lxml")
         tables = soup.find_all("table")
         record_etc = soup.findAll("div", {"class": "record-etc"})
