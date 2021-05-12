@@ -1,11 +1,25 @@
 
-# Tables
+# Tables schema
+
+```bash
+[TeamID]                  [Batters]
+- teamID(key) ㅡㅣㅡㅡㅡ - teamID(foreign key)
+- name          ㅣㅡㅡㅡ - playerID(foreign key)
+                ㅣ       - 
+[PlayerID]      ㅣ
+-playerID(key)ㅡㅣ        [Pitchers]
+-name           ㅣㅡㅡㅡ - teamID(foreign key)
+                ㅣㅡㅡㅡ - playerID(foreign key)
+```
+
+# Columns
+
 ### PlayerID  
-PlayerID = Column(Integer)   
+playerID = Column(Integer)   
 name = Column(String(20))   
 
 ### TeamID  
-TeamID = Column(Integer)    
+teamID = Column(Integer)    
 name = Column(String(5))   
 
 ### Batters  
