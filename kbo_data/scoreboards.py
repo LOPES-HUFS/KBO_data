@@ -259,3 +259,50 @@ def output(data):
         i = i + 1
 
     return temp_data
+
+
+def output_to_pd(data):
+    """수집한 게임 자료에서 스코어보드만 뽑아서 정리해 pandas로 변환하는 함수
+
+    여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
+    처라한 자료를 pandas로 반환한다.
+    사용 사례는 다음과 같이 2021년 5월 자료를 뽑아서 이 함수를 돌리면 확인할 수 있다.
+
+    Examples:
+        ```python
+        import json
+        file_name = "temp_data_2021_5.json"
+        temp_data = {}
+        with open(file_name) as json_file:
+            temp_data = json.load(json_file)
+
+        import scoreboards
+        temp_5 = scoreboards.output_to_pd(scoreboards.modify(temp_data))
+        ```
+
+    pandas를 이용한 방법은 다음과 같다.
+    적절하게 `df`로 변환된 자료를 이용해
+    입력된 5월 자료에서 안타가 5개 미만이 팀만 뽑아봤다.
+
+    Examples:
+        ```python
+        temp_5['team'][temp_5.H < 5]
+        ```
+        ```csv
+        21    한화
+        26    KT
+        ```
+
+    Args:
+        data (json): 수집된 한 게임 이상의 게임 자료
+
+    Returns:
+        temp_data (df): scoreboard를 포함하고 있는 여러 게임 자료
+    """
+    temp_data = []
+
+    for key, value in data.items():
+        temp_p = pd.DataFrame(value["scoreboard"])
+        temp_data.extend(ast.literal_eval(temp_p.to_json(orient="records")))
+
+    return pd.DataFrame(temp_data)
