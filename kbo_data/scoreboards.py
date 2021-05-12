@@ -122,6 +122,7 @@ def modify(data):
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
         temp_p.rename(
             columns={
+                "팀": "team",
                 "승패": "result",
                 "1": "i_1",
                 "2": "i_2",
@@ -174,7 +175,7 @@ def output(data):
         ```python
         [
         {
-            "팀": "두산",
+            "team": "두산",
             "result": "승",
             "i_1": 9,
             "i_2": 0,
@@ -201,7 +202,7 @@ def output(data):
             "dbheader": 0,
         },
         {
-            "팀": "키움",
+            "team": "키움",
             "result": "패",
             "i_1": 0,
             "i_2": 1,
