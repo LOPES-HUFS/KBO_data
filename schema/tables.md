@@ -2,12 +2,12 @@
 # Tables schema
 
 ```bash
-[TeamID]                  [batter]
+[TeamID]                  [Batters]
 - teamID(key) ㅡㅣㅡㅡㅡ - teamID(foreign key)
 - name          ㅣㅡㅡㅡ - playerID(foreign key)
                 ㅣ       - 
 [PlayerID]      ㅣ
--playerID(key)ㅡㅣ        [pitcher]
+-playerID(key)ㅡㅣ        [Pitchers]
 -name           ㅣㅡㅡㅡ - teamID(foreign key)
                 ㅣㅡㅡㅡ - playerID(foreign key)
 ```
