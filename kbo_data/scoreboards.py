@@ -14,6 +14,7 @@ import datetime
 import pandas as pd
 
 from pasing_page import looking_for_team_name
+from modifying import changing_team_name_into_id
 
 
 def get_game_info(game_list):
@@ -35,6 +36,44 @@ def get_game_info(game_list):
     temp.update(temp_team)
 
     return temp
+
+
+def making_primary_key(team_name, year, month, day, dbheader):
+    """스코어보드 DB에서 사용할 Primary Key를 작성하는 함수
+
+    Examples:
+
+        ```python
+        year = 2021
+        month = 4
+        day = 29
+        team_name = '두산'
+        dbheader = 0
+
+        import scoreboards
+        scoreboards.making_primary_key(team_name, year, month, day, dbheader)
+        '20210429001'
+        ```
+
+    Args:
+        year (int):
+        month (int) :
+        day (int) :
+        team_name (str) : 팀명 EG: 두산
+        dbheader (int) : 더블해더 경기 유무.  아니다: 0, 1차전: 1, 2차전: 2
+
+    Returns:
+        (str): 숫자 길이가 11인 자연수. E.G.: '20210429001'
+    """
+    result = (
+        str(year)
+        + str(month).zfill(2)
+        + str(day).zfill(2)
+        + str(dbheader)
+        + changing_team_name_into_id(team_name).zfill(2)
+    )
+
+    return result
 
 
 def modify(data):
