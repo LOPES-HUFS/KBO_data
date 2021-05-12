@@ -72,16 +72,16 @@ def searching_players(players_list):
     return {"list":total, "error_list":error_list}
 
 def make_table(start_date,end_date,b_or_p):
-    batter_player_df = pd.DataFrame()
-    pitcher_player_df = pd.DataFrame()
     batter_list, pitcher_list = get_players.player_name(start_date,end_date)
     if b_or_p == True:
+        batter_player_df = pd.DataFrame()
         batter_player = searching_players(batter_list)
         for i in range(len(batter_player["list"])):
             batter_player_df = batter_player_df.append(pd.DataFrame(batter_player["list"][i]).T)
         return batter_player_df
     else:
+        pitcher_player_df = pd.DataFrame()
         pitcher_player = searching_players(pitcher_list)
         for i in range(len(pitcher_player["list"])):
-            pitcher_player_df = pitcher_player.append(pd.DataFrame(pitcher_player["list"][i]).T)
+            pitcher_player_df = pitcher_player_df.append(pd.DataFrame(pitcher_player["list"][i]).T)
         return pitcher_player_df
