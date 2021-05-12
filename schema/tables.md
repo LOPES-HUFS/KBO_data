@@ -10,7 +10,7 @@
 [PlayerID]                [Batters]
 - playerID(key)ㅡㅣㅡㅡㅡ - playerID(foreign key)
 - name           ㅣ
-                 ㅣ        [Pitchers]
+                 ㅣ       [Pitchers]
                  ㅣㅡㅡㅡ - playerID(foreign key)
 ```
 
