@@ -23,11 +23,11 @@ playerID = Column(Integer)
 name = Column(String(20))   
 
 ### TeamID  
-teamID = Column(Integer)    
+teamID = Column(Integer)     
 name = Column(String(5))   
 
 ### Batters  
-idx = Column(Integer)
+idx = Column(Integer)  
 PlayerID = Column(Integer)    
 position = Column(String(3))   
 i_1 = Column(Integer)    
@@ -49,7 +49,7 @@ hit_get = Column(Integer)
 own_get = Column(Integer)   
 
 ### Pitchers 
-idx = Column(Integer)
+idx = Column(Integer)  
 PlayerID = Column(Integer)    
 position = Column(String(3))      
 join = Column(Integer)  
@@ -69,7 +69,7 @@ hitnum = Column(Integer)
 hitter = Column(Integer)    
 
 ### Scoreboards
-idx = Column(Integer)
+idx = Column(Integer)  
 TeamID = Column(Integer)     
 result = Column(Integer)    
 i_1 = Column(Integer)    
