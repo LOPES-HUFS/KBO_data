@@ -6,7 +6,7 @@ def scoreboard(tables, teams):
     temp_df_0 = temp_df_0.rename(columns={"Unnamed: 0": "승패"})
     temp_df_1 = pd.read_html(str(tables[1]))[0]
     temp_df_2 = pd.read_html(str(tables[2]))[0]
-    temp_teams = looking_for_teams_name(teams)
+    temp_teams = looking_for_team_names(teams)
     temp_teams_df = pd.DataFrame({"팀": temp_teams})
     temp_total = pd.concat(
         [temp_teams_df, temp_df_0["승패"], temp_df_1, temp_df_2], axis=1
@@ -41,6 +41,35 @@ def looking_for_teams_name(teams):
     temp_0 = looking_for_team_name(str(teams[0]))
     temp_1 = looking_for_team_name(str(teams[1]))
     return (temp_0, temp_1)
+
+
+def looking_for_team_names(temp_teams):
+    """다음과 같은 HTML suop에서 팀명 "한화"만 뽑아오는 함수
+
+    실제로는 아래와 같은 것은 두 팀에서 각각 타자, 투수 총 4개가 나온다.
+    거기서 두 팀만 뽑으면 된다. 또한 아래처럼 "한화 이글스 타자 기록"에서 첫 번째 단어만 뽑으면 된다.
+
+    <h6 class="tit-team" id="lblAwayHitter">
+    <span class="logo">
+    <img src="//lgcxydabfbch3774324.cdn.ntruss.com/KBO_IMAGE/emblem/regular/2020/initial_HH_s.png" alt="한화 이글스">
+    </span>
+    한화 이글스 타자 기록</h6>
+
+        Args:
+            temp_teams (soup): 위에서 보여준 html soup
+
+        Returns:
+            temp_data (tuple): (두산, LG) 처럼 `str`이 두 개 들어있다.
+    """
+    temp_team_list = []
+
+    for team in temp_teams:
+        temp_team = team.get_text()
+        temp_team = temp_team.split(" ")
+        if (temp_team[0] in temp_team_list) == False:
+            temp_team_list.append(temp_team[0])
+
+    return (temp_team_list[0], temp_team_list[1])
 
 
 def etc_info(tables, record_etc):

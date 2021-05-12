@@ -49,6 +49,8 @@ def getting_page(gameDate, gameld):
         tables = soup.find_all("table")
         record_etc = soup.findAll("div", {"class": "record-etc"})
         box_score = soup.findAll("div", {"class": "box-score-wrap"})
+        # 2021년 5월 12일 현재, h6는 팀 명에서만 사용한다.
+        temp_teams = soup.findAll("h6")
 
         if len(box_score) == 1:
             teams = box_score[0].findAll("span", {"class": "logo"})
@@ -57,13 +59,13 @@ def getting_page(gameDate, gameld):
             "tables": tables,
             "record_etc": record_etc,
             "teams": teams,
+            "temp_teams": temp_teams,
             "date": gameDate,
             "id": gameld,
         }
 
     except Exception as e:
         print(e)
-        driver.quit()
 
     finally:
         print("finally...")
@@ -72,7 +74,8 @@ def getting_page(gameDate, gameld):
 
 def single_game(date, gameld):
     temp_page = getting_page(date, gameld)
-    temp_scoreboard = scoreboard(temp_page["tables"], temp_page["teams"])
+    temp_scoreboard = scoreboard(temp_page["tables"], temp_page["temp_teams"])
+    # print(temp_scoreboard)
 
     temp_all = {
         "scoreboard": ast.literal_eval(temp_scoreboard.to_json(orient="records"))
