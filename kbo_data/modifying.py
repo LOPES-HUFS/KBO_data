@@ -16,7 +16,7 @@ config.read("config.ini")
 
 def changing_team_name_into_id(team_name):
     """팀명을 팀 TeamID로 바꾸는 함수
-    
+
     Examples:
 
         ```python
@@ -32,4 +32,4 @@ def changing_team_name_into_id(team_name):
         (str): 자연수 숫자
     """
 
-    return(config["TEAM"][team_name])
+    return config["TEAM"][team_name]
