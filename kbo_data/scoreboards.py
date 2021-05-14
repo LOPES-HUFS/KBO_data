@@ -267,17 +267,25 @@ def output_to_pd(data):
     여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
     처라한 자료를 pandas로 반환한다.
     사용 사례는 다음과 같이 2021년 5월 자료를 뽑아서 이 함수를 돌리면 확인할 수 있다.
+    temp_data_2021_4.json 파일은 다음과 같이 다운받을 수 있습니다.
+
+    ```bash
+    wget https://raw.githubusercontent.com/LOPES-HUFS/KBO_data/main/sample_data/temp_data_2021_4.json
+    ```
+
 
     Examples:
         ```python
         import json
-        file_name = "temp_data_2021_5.json"
+        file_name = "temp_data_2021_4.json"
         temp_data = {}
         with open(file_name) as json_file:
             temp_data = json.load(json_file)
 
         import scoreboards
-        temp_5 = scoreboards.output_to_pd(scoreboards.modify(temp_data))
+        temp_4 = scoreboards.output_to_pd(scoreboards.modify(temp_data))
+        # csv 파일로 내보내기
+        temp_4.to_csv('out.csv', index=False)
         ```
 
     pandas를 이용한 방법은 다음과 같다.
@@ -286,12 +294,37 @@ def output_to_pd(data):
 
     Examples:
         ```python
-        temp_5['team'][temp_5.H < 5]
+        temp_4['team'][temp_4.H < 5]
         ```
         ```csv
-        21    한화
-        26    KT
-        ```
+        16     LG
+    17     KT
+    20     한화
+    31     SK
+    39     키움
+    40     한화
+    64     SK
+    65     LG
+    73     SK
+    75     기아
+    82     NC
+    87     키움
+    91     삼성
+    100    한화
+    101    삼성
+    117    롯데
+    119    LG
+    125    롯데
+    128    기아
+    151    LG
+    171    한화
+    191    한화
+    196    롯데
+    207    LG
+    210    한화
+    215    삼성
+    220    한화
+    ```
 
     Args:
         data (json): 수집된 한 게임 이상의 게임 자료
