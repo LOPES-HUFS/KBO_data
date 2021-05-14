@@ -45,6 +45,12 @@ def binding_json(json_file_list, year_str, month_str):
 def json_merge(main_file_name, sub_file_name):
     """
     두 파일을 열어서 앞 main_file 파일에 sub_file를 파일을 병합하는 함수
+
+    Examples:
+        ```python
+        import utility
+        utility.json_merge("temp_data_2021_5.json", "2021_05.07_games.json")
+        ```
     """
 
     with open(main_file_name) as json_file:
