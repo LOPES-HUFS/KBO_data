@@ -57,14 +57,10 @@ def getting_page(gameDate, gameld):
         temp_teams = soup.findAll("h6")
         teams = looking_for_team_names(temp_teams)
 
-        #if len(box_score) == 1:
-        #    teams = box_score[0].findAll("span", {"class": "logo"})
-
         return {
             "tables": tables,
             "record_etc": record_etc,
             "teams": teams,
-            #"temp_teams": temp_teams,
             "date": gameDate,
             "id": gameld,
         }

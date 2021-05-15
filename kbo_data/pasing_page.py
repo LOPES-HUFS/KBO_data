@@ -13,37 +13,8 @@ def scoreboard(tables, teams):
     return temp_total
 
 
-def looking_for_team_name(string):
-    # team_list={'HT':'기아','OB':'두산','LT':'롯데','NC':'NC','SK':'SK','LG':'LG','WO':'넥센','HH':'한화','SS':'삼성','KT':'KT'}
-    # 2019년 버전
-    team_list = {
-        "HT": "기아",
-        "OB": "두산",
-        "LT": "롯데",
-        "NC": "NC",
-        "SK": "SK",
-        "LG": "LG",
-        "WO": "키움",
-        "HH": "한화",
-        "SS": "삼성",
-        "KT": "KT",
-    }
-    temp = [string.find(team) for team in team_list.keys()]
-    temp[:] = [0 if ele != -1 else ele for ele in temp]
-    # -1: 없다 이고 나머지 숫자는 그것이 있는 자리다!
-    temp = temp.index(0)
-    temp = list(team_list.items())[temp]
-    return temp[1]
-
-
-def looking_for_teams_name(teams):
-    temp_0 = looking_for_team_name(str(teams[0]))
-    temp_1 = looking_for_team_name(str(teams[1]))
-    return (temp_0, temp_1)
-
-
 def looking_for_team_names(temp_teams):
-    """ 모은 HTML soup에서 시합한 두 팀명을 뽑는 함수 
+    """ 모은 HTML soup에서 시합한 두 팀명을 뽑는 함수
 
     다음과 같은 HTML soup에서  "한화"만 뽑아서 팀명을 찾는다.
 
@@ -64,6 +35,7 @@ def looking_for_team_names(temp_teams):
             temp_data (tuple): (두산, LG)처럼 `str`형식으로 두 팀 명,
                                 첫 번째 팀이 원정팀(두산), 두 번째 팀(LG)은 홈팀
     """
+
     temp_team_list = []
 
     for team in temp_teams:
