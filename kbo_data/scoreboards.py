@@ -14,6 +14,7 @@ import datetime
 import pandas as pd
 
 from pasing_page import looking_for_team_name
+from modifying import changing_team_name_into_id
 
 
 def get_game_info(game_list):
@@ -35,6 +36,44 @@ def get_game_info(game_list):
     temp.update(temp_team)
 
     return temp
+
+
+def making_primary_key(team_name, year, month, day, dbheader):
+    """스코어보드 DB에서 사용할 Primary Key를 작성하는 함수
+
+    Examples:
+
+        ```python
+        year = 2021
+        month = 4
+        day = 29
+        team_name = '두산'
+        dbheader = 0
+
+        import scoreboards
+        scoreboards.making_primary_key(team_name, year, month, day, dbheader)
+        '20210429001'
+        ```
+
+    Args:
+        year (int):
+        month (int) :
+        day (int) :
+        team_name (str) : 팀명 EG: 두산
+        dbheader (int) : 더블해더 경기 유무.  아니다: 0, 1차전: 1, 2차전: 2
+
+    Returns:
+        (str): 숫자 길이가 11인 자연수. E.G.: '20210429001'
+    """
+    result = (
+        str(year)
+        + str(month).zfill(2)
+        + str(day).zfill(2)
+        + str(dbheader)
+        + changing_team_name_into_id(team_name).zfill(2)
+    )
+
+    return result
 
 
 def modify(data):
@@ -83,6 +122,7 @@ def modify(data):
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
         temp_p.rename(
             columns={
+                "팀": "team",
                 "승패": "result",
                 "1": "i_1",
                 "2": "i_2",
@@ -135,7 +175,7 @@ def output(data):
         ```python
         [
         {
-            "팀": "두산",
+            "team": "두산",
             "result": "승",
             "i_1": 9,
             "i_2": 0,
@@ -162,7 +202,7 @@ def output(data):
             "dbheader": 0,
         },
         {
-            "팀": "키움",
+            "team": "키움",
             "result": "패",
             "i_1": 0,
             "i_2": 1,
@@ -200,7 +240,7 @@ def output(data):
         ```
 
     Args:
-        data (json): 수집한 하나 이상의 게임 자료
+        data (json): 수집된 한 게임 이상의 게임 자료
 
     Returns:
         temp_data (json): '20210429_OBWO0'와 같은 단일 게임 key 와 scoreboard를 포함하고 있는 여러 게임 자료
@@ -219,3 +259,83 @@ def output(data):
         i = i + 1
 
     return temp_data
+
+
+def output_to_pd(data):
+    """수집한 게임 자료에서 스코어보드만 뽑아서 정리해 pandas로 변환하는 함수
+
+    여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
+    처라한 자료를 pandas로 반환한다.
+    사용 사례는 다음과 같이 2021년 5월 자료를 뽑아서 이 함수를 돌리면 확인할 수 있다.
+    temp_data_2021_4.json 파일은 다음과 같이 다운받을 수 있습니다.
+
+    ```bash
+    wget https://raw.githubusercontent.com/LOPES-HUFS/KBO_data/main/sample_data/temp_data_2021_4.json
+    ```
+
+
+    Examples:
+        ```python
+        import json
+        file_name = "temp_data_2021_4.json"
+        temp_data = {}
+        with open(file_name) as json_file:
+            temp_data = json.load(json_file)
+
+        import scoreboards
+        temp_4 = scoreboards.output_to_pd(scoreboards.modify(temp_data))
+        # csv 파일로 내보내기
+        temp_4.to_csv('out.csv', index=False)
+        ```
+
+    pandas를 이용한 방법은 다음과 같다.
+    적절하게 `df`로 변환된 자료를 이용해
+    입력된 5월 자료에서 안타가 5개 미만이 팀만 뽑아봤다.
+
+    Examples:
+        ```python
+        temp_4['team'][temp_4.H < 5]
+        ```
+        ```csv
+        16     LG
+    17     KT
+    20     한화
+    31     SK
+    39     키움
+    40     한화
+    64     SK
+    65     LG
+    73     SK
+    75     기아
+    82     NC
+    87     키움
+    91     삼성
+    100    한화
+    101    삼성
+    117    롯데
+    119    LG
+    125    롯데
+    128    기아
+    151    LG
+    171    한화
+    191    한화
+    196    롯데
+    207    LG
+    210    한화
+    215    삼성
+    220    한화
+    ```
+
+    Args:
+        data (json): 수집된 한 게임 이상의 게임 자료
+
+    Returns:
+        temp_data (df): scoreboard를 포함하고 있는 여러 게임 자료
+    """
+    temp_data = []
+
+    for key, value in data.items():
+        temp_p = pd.DataFrame(value["scoreboard"])
+        temp_data.extend(ast.literal_eval(temp_p.to_json(orient="records")))
+
+    return pd.DataFrame(temp_data)
