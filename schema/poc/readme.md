@@ -1,6 +1,7 @@
 
 ## Proof of concept about database schema
 
+### schema
 ```bash
                           [Scoreboards]
 [TeamID]                 - idx(key)  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅣ
@@ -15,3 +16,8 @@
                  ㅣ       - idx(foreign key) ㅡㅡㅡㅡㅡㅡㅣ
                  ㅣㅡㅡㅡ - playerID(foreign key)       
 ```
+
+### environment
+
+- mariaDB in docker container
+- os: ubuntu
