@@ -122,7 +122,7 @@ def get_KBO_data(game_list_file_name):
     # 수집한 자료를 저장하기 위한 파일 명 만들기
     if game_list_file_name.find("temp_schedule_") != -1:
         file_name = game_list_file_name.replace("schedule", "data")
-        file_name = game_list_file_name.replace("csv", "json")
+        file_name = file_name.replace("csv", "json")
     else:
         file_name = "game_data.json"
 
