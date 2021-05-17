@@ -46,14 +46,23 @@ def binding_json(json_file_list, year_str, month_str):
 
 
 def json_merge(main_file_name, sub_file_name):
-    """
-    두 파일을 열어서 앞 main_file 파일에 sub_file를 파일을 병합하는 함수
+    """main_file 파일에 sub_file에 들어 있는 자료를 병합하는 함수
+
+    기본적으로 main_file_name 인 json 파일을 dict로 열고
+    거기에 sub_file_name 인 jjson 파일을 dict로 열어서 윗쪽 dict에 병합한 다음
+    이를 main_file_name으로 입력된 파일에 다시 json 파일로 저장합니다.ㄴ
+
 
     Examples:
         ```python
         import utility
         utility.json_merge("temp_data_2021_5.json", "2021_05.07_games.json")
         ```
+
+    Args:
+        - main_file_name (json): KBO 게임 내용이 들어 있는 파일 이름
+        - sub_file_name (json): KBO 게임 내용이 들어 있는 파일 이름
+
     """
 
     with open(main_file_name) as json_file:
@@ -63,9 +72,7 @@ def json_merge(main_file_name, sub_file_name):
         json_data = json.load(json_file)
         main_json_data.update(json_data)
 
-    file_name = main_file_name
-
-    with open(file_name, "w") as outfile:
+    with open(main_file_name, "w") as outfile:
         json.dump(main_json_data, outfile)
 
 
