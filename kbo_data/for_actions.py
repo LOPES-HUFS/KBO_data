@@ -78,7 +78,7 @@ if __name__ == "__main__":
     post_json = {
         "year": today_schedule["year"],
         "date": today_schedule["date"],
-        "is_today": "True",
+        "is_latest": "True",
     }
 
     r = requests.post(url, data=json.dumps(post_json))
