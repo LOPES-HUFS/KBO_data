@@ -1,7 +1,7 @@
 ## Batters
 타자들의 정보를 담은 테이블
 
-#### schema
+### schema
 
 ```sql
 idx = Column(Integer)
@@ -31,7 +31,7 @@ own_get = Column(Integer)
 ## PlayerID
 각 선수들의 아이디와 이름을 매칭하는 테이블
 
-#### schema
+### schema
 ```sql
 playerID = Column(Integer)
 name = Column(String(20))
