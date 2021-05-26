@@ -26,7 +26,9 @@ hit_get = Column(Integer)
 own_get = Column(Integer)
 ```
 
-#### 
+### Info
+
+
 
 ## PlayerID
 각 선수들의 아이디와 이름을 매칭하는 테이블
