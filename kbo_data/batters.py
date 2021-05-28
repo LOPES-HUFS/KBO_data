@@ -23,3 +23,12 @@ import configparser
 
 Batter_factor = config["BATTER"]
 
+def change_record(temp,column):
+    for i in list(Batter_factor.keys()):
+        temp = temp.replace(i,Batter_factor[i])
+    for i in range(0,len(temp[[str(column)]])):
+        if "/" in list(str(temp[str(column)].tolist()[i])):
+            temp1 = Batter_factor[str(temp[str(column)].tolist()[i].split("/ ")[0].split("\\")[0])]
+            temp2 = Batter_factor[str(temp[str(column)].tolist()[i].split("/ ")[1])]
+            temp.loc[i,str(column)] = str(temp1)+str(temp2)
+    return temp
