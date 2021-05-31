@@ -2,7 +2,7 @@
 
 INSERT INTO TeamID 
 VALUES
-(1,'SSG'), (2. 'HH'), (3, 'DS');
+(1,'SSG'), (2, 'HH'), (3, 'DS');
 
 /*PlayerID*/
 
