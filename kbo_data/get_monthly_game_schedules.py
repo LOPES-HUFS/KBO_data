@@ -217,7 +217,7 @@ def output_to_csv(data):
         20210502,SKOB0
         20210502,HHLT0
         20210502,LGSS0
-        ...  
+        ...
         ```
 
     """
