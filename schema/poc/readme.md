@@ -4,17 +4,17 @@
 ### schema
 ```bash
                           [Scoreboards]
-[TeamID]                 - idx(key)  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅣ
-- teamID(key) ㅡㅡㅡㅡㅡ - TeamID(foreign key)           ㅣ
-- name                                                   ㅣ
-                                                         ㅣ
-                          [Batters]                      ㅣ
-[PlayerID]                - idx(foreign key) ㅡㅡㅡㅡㅡㅡㅣ
-- playerID(key)ㅡㅣㅡㅡㅡ - playerID(foreign key)        ㅣ
-- name           ㅣ                                      ㅣ
-                 ㅣ       [Pitchers]                     ㅣ
-                 ㅣ       - idx(foreign key) ㅡㅡㅡㅡㅡㅡㅣ
-                 ㅣㅡㅡㅡ - playerID(foreign key)       
+[TeamID]                 - idx(key)--------------------ㅣ
+- teamID(key) ---------- - TeamID(foreign key)         ㅣ
+- name                                                 ㅣ
+                                                       ㅣ
+                          [Batters]                    ㅣ
+[PlayerID]                - idx(foreign key) ----------ㅣ
+- playerID(key) -ㅣ------- - playerID(foreign key)      ㅣ
+- name           ㅣ                                     ㅣ
+                 ㅣ       [Pitchers]                    ㅣ
+                 ㅣ       - idx(foreign key) -----------ㅣ
+                 ㅣ------ - playerID(foreign key)       
 ```
 
 ### environment
