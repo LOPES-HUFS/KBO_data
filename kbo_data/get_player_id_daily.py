@@ -24,64 +24,72 @@ HOW TO USE
 
 """
 
-import get_players 
+import get_players
 import requests
 from bs4 import BeautifulSoup as bs
 import configparser
 
 config = configparser.ConfigParser()
-config.read('config.ini')
-player_search_url = eval(config['DEFAULT']['player_search_URL'])
+config.read("config.ini")
+player_search_url = eval(config["DEFAULT"]["player_search_URL"])
+
 
 def searching(name):
-    url = (f'{player_search_url}{name}')
+    url = f"{player_search_url}{name}"
     r = requests.post(url)
     try:
         soup = BeautifulSoup(r.text, "lxml")
-        table = soup.find('table')
-        table_rows = table.find_all('a')
-        tds = table.find_all('td')
+        table = soup.find("table")
+        table_rows = table.find_all("a")
+        tds = table.find_all("td")
         temp = [parsing_player_table(table_row, tds) for table_row in table_rows]
-        res = [{item['ID']:item} for item in temp]
+        res = [{item["ID"]: item} for item in temp]
     except:
         res = False
-    return (res)
+    return res
+
 
 def parsing_player_table(table_row, tds):
-    if str(table_row).split('/')[1] == 'Futures':
-        status = 'Futures'
-    elif str(table_row).split('/')[2] == 'Retire':
-        status = '은퇴'
+    if str(table_row).split("/")[1] == "Futures":
+        status = "Futures"
+    elif str(table_row).split("/")[2] == "Retire":
+        status = "은퇴"
     else:
-        status = 'KBO'
-    player_id = str(table_row).split('playerId=')[1].split('">')[0]
+        status = "KBO"
+    player_id = str(table_row).split("playerId=")[1].split('">')[0]
     team = tds[2].get_text()
     name = table_row.get_text()
-    return{"ID":player_id, "이름":name, "현재 상태":status, "team": team}
+    return {"ID": player_id, "이름": name, "현재 상태": status, "team": team}
+
 
 def searching_players(players_list):
     total = []
-    error_list =[]
-    
+    error_list = []
+
     for name in players_list:
         temp = searching(name)
         if len(temp) == 0:
             error_list.append(name)
         else:
             total += temp
-    return {"list":total, "error_list":error_list}
+    return {"list": total, "error_list": error_list}
 
-def make_table(start_date,end_date,b_or_p):
-    batter_list, pitcher_list = get_players.player_name(start_date,end_date)
+
+def make_table(start_date, end_date, b_or_p):
+    batter_list, pitcher_list = get_players.player_name(start_date, end_date)
     if b_or_p == True:
         batter_player_df = pd.DataFrame()
         batter_player = searching_players(batter_list)
         for i in range(len(batter_player["list"])):
-            batter_player_df = batter_player_df.append(pd.DataFrame(batter_player["list"][i]).T)
+            batter_player_df = batter_player_df.append(
+                pd.DataFrame(batter_player["list"][i]).T
+            )
         return batter_player_df
     else:
         pitcher_player_df = pd.DataFrame()
         pitcher_player = searching_players(pitcher_list)
         for i in range(len(pitcher_player["list"])):
-            pitcher_player_df = pitcher_player_df.append(pd.DataFrame(pitcher_player["list"][i]).T)
+            pitcher_player_df = pitcher_player_df.append(
+                pd.DataFrame(pitcher_player["list"][i]).T
+            )
         return pitcher_player_df
