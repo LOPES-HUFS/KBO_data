@@ -26,8 +26,9 @@ HOW TO USE
 
 import get_players
 import requests
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup 
 import configparser
+import pandas as pd
 
 config = configparser.ConfigParser()
 config.read("config.ini")
