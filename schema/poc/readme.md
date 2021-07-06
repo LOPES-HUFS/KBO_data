@@ -4,9 +4,9 @@
 ### schema
 ```bash
                           [Scoreboards]
-[TeamID]                 - idx(key)--------------------ㅣ
-- teamID(key) ---------- - TeamID(foreign key)         ㅣ
-- name                                                 ㅣ
+                         - idx(key)--------------------ㅣ
+                         - Teamname                    ㅣ
+                                                       ㅣ
                                                        ㅣ
                           [Batters]                    ㅣ
 [PlayerID]                - idx(foreign key) ----------ㅣ
@@ -14,7 +14,7 @@
 - name           ㅣ                                     ㅣ
                  ㅣ       [Pitchers]                    ㅣ
                  ㅣ       - idx(foreign key) -----------ㅣ
-                 ㅣ------ - playerID(foreign key)       
+                 ㅣ------ - playerID(foreign key)
 ```
 
 ### environment
