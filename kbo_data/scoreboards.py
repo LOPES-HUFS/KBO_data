@@ -280,7 +280,7 @@ def output_to_pd(data):
         import scoreboards
         temp_2020 = scoreboards.output_to_pd(scoreboards.modify(temp_data))
         # csv 파일로 내보내기
-        temp_4.to_csv('out.csv', index=False)
+        temp_2020.to_csv('out.csv', index=False)
         ```
 
     pandas를 이용한 방법은 다음과 같다.
