@@ -82,11 +82,8 @@ def modify(data):
     Examples:
 
         ```python
-        import json
-        file_name = "2021_04.29_games.json"
-        temp_data = {}
-        with open(file_name) as json_file:
-                temp_data = json.load(json_file)
+        import utility
+        temp_data = utility.get_one_day_game_data()
         import scoreboards
         temp_data_scoreboards_modified = scoreboards.modify(temp_data)
         ```
@@ -114,6 +111,8 @@ def modify(data):
         temp_p.loc[:, "month"] = game_info["month"]
         temp_p.loc[:, "day"] = game_info["day"]
         temp_p.loc[:, "week"] = game_info["week"]
+        temp_p.loc[:, "홈팀"] = value['scoreboard'][1]['팀']
+        temp_p.loc[:, "원정팀"] = value['scoreboard'][0]['팀']
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
         temp_p.rename(
             columns={
