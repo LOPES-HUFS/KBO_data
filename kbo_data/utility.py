@@ -150,12 +150,12 @@ def get_KBO_data(game_list_file_name):
 
 
 def get_one_day_game_data():
-    """ 2021년 4월 8일자 KBO 경기 자료를 가져오는 함수
+    """2021년 4월 8일자 KBO 경기 자료를 가져오는 함수
 
     코딩 테스트를 위하여 하루치 경기를 인터넷에서 가져옵니다.
 
     Example:
-    
+
         ```python
         import utility
         temp_data = utility.get_one_day_game_data()
@@ -174,7 +174,7 @@ def get_one_day_game_data():
         "3": {"away": "LG", "home": "KT", "state": "종료", "suspended": "0"},
         "4": {"away": "HT", "home": "WO", "state": "종료", "suspended": "0"},
         "5": {"away": "HH", "home": "SK", "state": "종료", "suspended": "0"},
-        }
+    }
 
     game_schedule = changing_format(temp_schedule)
 
@@ -186,5 +186,5 @@ def get_one_day_game_data():
             game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
-    
+
     return game_date
