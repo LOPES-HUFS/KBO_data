@@ -13,7 +13,6 @@ import datetime
 
 import pandas as pd
 
-from pasing_page import looking_for_team_name
 from modifying import changing_team_name_into_id
 
 
@@ -29,8 +28,6 @@ def get_game_info(game_list):
     }
     temp_team = game_list.split("_")[1]
     temp_team = {
-        "홈팀": looking_for_team_name(temp_team[0:2]),
-        "원정팀": looking_for_team_name(temp_team[2:4]),
         "더블헤더": int(temp_team[4:]),
     }
     temp.update(temp_team)
@@ -117,8 +114,6 @@ def modify(data):
         temp_p.loc[:, "month"] = game_info["month"]
         temp_p.loc[:, "day"] = game_info["day"]
         temp_p.loc[:, "week"] = game_info["week"]
-        temp_p.loc[:, "홈팀"] = game_info["홈팀"]
-        temp_p.loc[:, "원정팀"] = game_info["원정팀"]
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
         temp_p.rename(
             columns={
