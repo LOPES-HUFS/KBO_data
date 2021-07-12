@@ -3,7 +3,6 @@
    수집한 자료에서 스코어보드를 정리하기 위한 모듈입니다.
 
    - `get_game_info()` : `modify(data)`가 사용하는 함수
-   - 
 
 
 """
@@ -332,3 +331,124 @@ def output_to_pd(data):
         temp_data.extend(ast.literal_eval(temp_p.to_json(orient="records")))
 
     return pd.DataFrame(temp_data)
+
+
+def output_to_raw_list(data):
+
+    """수집한 게임 자료에서 스코어보드만 뽑아 정리해서 dict가 들어 있는 list로 반환하는 함수
+
+    여러 게임 자료를 같이 들어가 있는 자료를 modify()을 이용하여 스코어보드 부분만 정리합니다.
+    그런 다음 그 게임 자료에서 스코어보드만 뽑아서 dict로 변환한다. 다음과 같이 변합니다.
+
+        {
+        "team": "두산",
+        "result": "패",
+        "i_1": 0,
+        "i_2": 0,
+        "i_3": 0,
+        "i_4": 1,
+        "i_5": 0,
+        "i_6": 0,
+        "i_7": 0,
+        "i_8": 0,
+        "i_9": "1",
+        "i_10": -1,
+        "i_11": -1,
+        "i_12": -1,
+        "R": 2,
+        "H": 6,
+        "E": 0,
+        "B": 3,
+        "year": 2020,
+        "month": 5,
+        "day": 5,
+        "week": 1,
+        "home": "LG",
+        "away": "두산",
+        "dbheader": 0,
+    }
+
+    각 게임 당 2개가 됩니다. 결국 이런 dict가 차례차례로 들어 있는 list을 반환합니다.
+    사용 사례는 다음과 같이 2020년 전체 자료를 뽑아서 이 함수를 돌리면 확인할 수 있습니다.
+    temp_data_2020.json 파일은 다음과 같이 다운받을 수 있습니다.
+
+    ```bash
+    wget https://raw.githubusercontent.com/LOPES-HUFS/KBO_data/main/sample_data/temp_data_2020.json
+    ```
+
+    앞에서 다운받은 파일을 이용하면, 아래 Examples를 실행하실 수 있습니다.
+
+    Examples:
+        ```python
+        import json
+        file_name = "temp_data_2020.json"
+        temp_data = {}
+        with open(file_name) as json_file:
+            temp_data = json.load(json_file)
+
+        import scoreboards
+        temp_2020 = scoreboards.output_to_raw_list(temp_data)
+        ```
+
+    결과는 앞에서 보여드린 `dict` 형식의 게임 스코어 자료가 들어있는 `list`로 나올 것입니다.
+
+    Args:
+        data (dict): 수집한 한 게임 이상의 KBO 게임 자료
+
+    Returns:
+        temp_data (list): scoreboard를 포함하고 있는 여러 게임 자료
+    """
+
+    data = modify(data)
+
+    temp = [value["scoreboard"] for key, value in data.items()]
+
+    result = []
+
+    for item in temp:
+        result.append(item[0])
+        result.append(item[1])
+    return result
+
+
+def output_to_csv(data, file_name="kbo_scoreboards"):
+    """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 csv 형식 파일로 출력하는 함수
+
+    앞의 `output_to_raw_list()`을 이용해서 스코어보드만 뽑아 정리합니다.
+    그리고 이렇게 뽑아 정리한 자료를 csv 형식 파일로 출력합니다.
+
+    사용 사례는 다음과 같이 2020년 전체 자료를 뽑아서 이 함수를 돌리면 확인할 수 있습니다.
+    temp_data_2020.json 파일은 다음과 같이 다운받을 수 있습니다.
+
+    ```bash
+    wget https://raw.githubusercontent.com/LOPES-HUFS/KBO_data/main/sample_data/temp_data_2020.json
+    ```
+
+    앞에서 다운받은 파일을 이용하면, 아래 Examples를 실행하실 수 있습니다.
+
+    Example:
+        ```python
+        import json
+        file_name = "temp_data_2020.json"
+        temp_data = {}
+        with open(file_name) as json_file:
+            temp_data = json.load(json_file)
+
+        import scoreboards
+        temp_file_name = "kbo_scoreboards_2020"
+        scoreboards.output_to_csv(temp_data, file_name = temp_file_name)
+        ```
+
+    앞의 Example를 실행하면
+    현재 폴더에 `kbo_scoreboards_2020.csv`이라는 파일이 생성됩니다.
+
+    Args:
+        data (json): 수집한 한 게임 이상의 게임 자료
+        file_name (str): csv로 출력할 때 확장자를 제외한 파일명
+
+    """
+
+    temp = output_to_raw_list(data)
+    temp = pd.DataFrame(temp)
+    temp_file_name = file_name + ".csv"
+    return temp.to_csv(temp_file_name, index=False)
