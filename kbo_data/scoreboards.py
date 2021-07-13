@@ -12,7 +12,7 @@ import datetime
 
 import pandas as pd
 
-from modifying import changing_team_name_into_id
+from modifying import changing_team_name_into_id, changing_win_or_loss_to_int
 
 
 def get_game_info(game_list):
@@ -452,3 +452,67 @@ def output_to_csv(data, file_name="kbo_scoreboards"):
     temp = pd.DataFrame(temp)
     temp_file_name = file_name + ".csv"
     return temp.to_csv(temp_file_name, index=False)
+
+
+def output_to_tuples(data):
+    """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 DB에 입력하기 위해 tuples로 형식으로 정리하는 함수
+
+    Examples:
+
+        ```python
+        import utility
+        temp_data = utility.get_one_day_game_data()
+        import scoreboards
+        temp = scoreboards.output_to_tuples(temp_data)
+        print(temp)
+        ```
+
+    Args:
+        data (json): 수집한 한 게임 이상의 게임 자료
+
+    Returns:
+        (list): tuple로 바꾼 scoreboard 자료
+
+    """
+
+    temp = output_to_raw_list(data)
+
+    results = []
+
+    for item in temp:
+        temp_primary_key = making_primary_key(
+            item["team"], item["year"], item["month"], item["day"], item["dbheader"]
+        )
+        temp_list = [item.values()]
+        temp = (
+            int(temp_primary_key),
+            item["team"],
+            changing_win_or_loss_to_int(item["result"]),
+            item["i_1"],
+            item["i_2"],
+            item["i_3"],
+            item["i_4"],
+            item["i_5"],
+            item["i_6"],
+            item["i_7"],
+            item["i_8"],
+            item["i_9"],
+            item["i_10"],
+            item["i_11"],
+            item["i_12"],
+            item["R"],
+            item["H"],
+            item["E"],
+            item["B"],
+            item["year"],
+            item["month"],
+            item["day"],
+            item["week"],
+            item["home"],
+            item["away"],
+            item["dbheader"],
+        )
+
+        results.append(temp)
+
+    return results
