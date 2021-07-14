@@ -59,3 +59,51 @@ def changing_win_or_loss_to_int(win_or_loss):
         return -1
     else:
         return 0
+
+def changing_dbheader_to_bool(dbheader):
+    """더블헤더경기인지 아닌지를 int 형으로 바꾸는 함수
+
+    Examples:
+
+        ```python
+        temp = ["승", "패", "무승부"]
+        temp_list = [changing_win_or_loss_to_int(item) for item in temp]
+        print(temp_list)
+        ```
+
+    Args:
+        win_or_loss (str): ["승", "패", "무승부"]와 같은 문자열
+
+    Returns:
+        (int): 1 or -1 or 0
+    """
+
+    if win_or_loss == "승":
+        return 1
+    elif win_or_loss == "패":
+        return -1
+    else:
+        return 0
+
+def changing_dbheader_to_bool(dbheader):
+    """더블헤더경기인지 아닌지를 bool 형으로 바꾸는 함수
+
+    Examples:
+
+        ```python
+        temp = [0, 1, 2]
+        temp_list = [changing_dbheader_to_bool(item) for item in temp]
+        print(temp_list)
+        ```
+
+    Args:
+        dbheader (int)
+
+    Returns:
+        (bool): False or True
+    """
+
+    if dbheader == 1:
+        return True
+    else:
+        return False

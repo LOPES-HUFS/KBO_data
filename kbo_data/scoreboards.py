@@ -12,7 +12,9 @@ import datetime
 
 import pandas as pd
 
-from modifying import changing_team_name_into_id, changing_win_or_loss_to_int
+from modifying import changing_team_name_into_id
+from modifying import changing_win_or_loss_to_int
+from modifying import changing_dbheader_to_bool
 
 
 def get_game_info(game_list):
@@ -510,7 +512,7 @@ def output_to_tuples(data):
             item["week"],
             item["home"],
             item["away"],
-            item["dbheader"],
+            changing_dbheader_to_bool(item["dbheader"]),
         )
 
         results.append(temp)
