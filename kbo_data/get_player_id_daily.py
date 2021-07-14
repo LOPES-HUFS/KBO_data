@@ -24,7 +24,7 @@ HOW TO USE
 
 """
 
-import get_players
+from get_players import player_name
 import requests
 from bs4 import BeautifulSoup 
 import configparser
@@ -77,7 +77,7 @@ def searching_players(players_list):
 
 
 def make_table(start_date, end_date, b_or_p):
-    batter_list, pitcher_list = get_players.player_name(start_date, end_date)
+    batter_list, pitcher_list = player_name(start_date, end_date)
     if b_or_p == True:
         batter_player_df = pd.DataFrame()
         batter_player = searching_players(batter_list)
