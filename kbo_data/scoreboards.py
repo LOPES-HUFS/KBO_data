@@ -15,6 +15,7 @@ import pandas as pd
 from modifying import changing_team_name_into_id
 from modifying import changing_win_or_loss_to_int
 from modifying import changing_dbheader_to_bool
+from modifying import is_exist_inning
 
 
 def get_game_info(game_list):
@@ -498,10 +499,10 @@ def output_to_tuples(data):
             item["i_6"],
             item["i_7"],
             item["i_8"],
-            item["i_9"],
-            item["i_10"],
-            item["i_11"],
-            item["i_12"],
+            is_exist_inning(item["i_9"]),
+            is_exist_inning(item["i_10"]),
+            is_exist_inning(item["i_11"]),
+            is_exist_inning(item["i_12"]),
             item["R"],
             item["H"],
             item["E"],

@@ -60,6 +60,7 @@ def changing_win_or_loss_to_int(win_or_loss):
     else:
         return 0
 
+
 def changing_dbheader_to_bool(dbheader):
     """더블헤더경기인지 아닌지를 int 형으로 바꾸는 함수
 
@@ -85,6 +86,7 @@ def changing_dbheader_to_bool(dbheader):
     else:
         return 0
 
+
 def changing_dbheader_to_bool(dbheader):
     """더블헤더경기인지 아닌지를 bool 형으로 바꾸는 함수
 
@@ -107,3 +109,27 @@ def changing_dbheader_to_bool(dbheader):
         return True
     else:
         return False
+
+
+def is_exist_inning(inning_num):
+    """해당 이닝에 경기를 했는지 안 했는지 파악하는 함수
+
+    Examples:
+
+        ```python
+        temp = [0, 1, 2]
+        temp_list = [is_exist_inning(item) for item in temp]
+        print(temp_list)
+        ```
+
+    Args:
+        inning_num (int): 해당 이닝 득점인데, 만약 -1이면 해당 이닝 경기가 없다는 의미
+
+    Returns:
+        None, or int
+    """
+
+    if inning_num == -1:
+        return None
+    else:
+        return inning_num
