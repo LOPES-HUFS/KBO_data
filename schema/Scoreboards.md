@@ -19,6 +19,12 @@ i_9 = Column(Integer)
 i_10 = Column(Integer)
 i_11 = Column(Integer)
 i_12 = Column(Integer)
+i_13 = Column(Integer)
+i_14 = Column(Integer)
+i_15 = Column(Integer)
+i_16 = Column(Integer)
+i_17 = Column(Integer)
+i_18 = Column(Integer)
 R = Column(Integer)
 H = Column(Integer)
 E = Column(Integer)
@@ -96,6 +102,12 @@ scoreboard = sa.Table(
     sa.Column("i_10", sa.Integer),
     sa.Column("i_11", sa.Integer),
     sa.Column("i_12", sa.Integer),
+    sa.Column("i_13", sa.Integer),
+    sa.Column("i_14", sa.Integer),
+    sa.Column("i_15", sa.Integer),
+    sa.Column("i_16", sa.Integer),
+    sa.Column("i_17", sa.Integer),
+    sa.Column("i_18", sa.Integer),
     sa.Column("r", sa.Integer),
     sa.Column("h", sa.Integer),
     sa.Column("e", sa.Integer),
