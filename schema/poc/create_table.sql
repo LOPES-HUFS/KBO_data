@@ -1,14 +1,8 @@
-/*teamID*/
-CREATE TABLE TeamID (
-    teamid INT(3) NOT NULL , 
-    teamname VARCHAR(10),
-     PRIMARY KEY (teamid));
-
 /*PlayerID*/
 CREATE TABLE PlayerID (
     playerid INT(10) NOT NULL , 
     playername VARCHAR(30),
-     PRIMARY KEY (playerid));
+    PRIMARY KEY (playerid));
 
 /*scoreboards*/
 CREATE TABLE scoreboards(
@@ -17,9 +11,7 @@ CREATE TABLE scoreboards(
     teamid INT NOT NULL,
     year INT(4) NOT NULL,
     month INT(3) NOT NULL,
-    day INT(3) NOT NULL,
-    CONSTRAINT TeamID_teamid_fk FOREIGN KEY (teamid) REFERENCES TeamID (teamid)
-);
+    day INT(3) NOT NULL);
 
 /*batters*/
 CREATE TABLE batters(
