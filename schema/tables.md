@@ -3,17 +3,17 @@
 
 ```bash
                           [Scoreboards]
-[TeamID]                 - idx(key)  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅣ
-- teamID(key) ㅡㅡㅡㅡㅡ - TeamID(foreign key)           ㅣ
-- name                                                   ㅣ
-                                                         ㅣ
-                          [Batters]                      ㅣ
-[PlayerID]                - idx(foreign key) ㅡㅡㅡㅡㅡㅡㅣ
-- playerID(key)ㅡㅣㅡㅡㅡ - playerID(foreign key)        ㅣ
-- name           ㅣ                                      ㅣ
-                 ㅣ       [Pitchers]                     ㅣ
-                 ㅣ       - idx(foreign key) ㅡㅡㅡㅡㅡㅡㅣ
-                 ㅣㅡㅡㅡ - playerID(foreign key)       
+                         - idx(key)--------------------ㅣ
+                         - Team_name                   ㅣ
+                                                       ㅣ
+                                                       ㅣ
+                          [Batters]                    ㅣ
+[PlayerID]                - idx(foreign key) ----------ㅣ
+- playerID(key) -ㅣ------ - playerID(foreign key)       ㅣ
+- name           ㅣ                                     ㅣ
+                 ㅣ       [Pitchers]                    ㅣ
+                 ㅣ       - idx(foreign key) -----------ㅣ
+                 ㅣ------ - playerID(foreign key)
 ```
 
 # Columns
@@ -21,10 +21,6 @@
 ### PlayerID  
 playerID = Column(Integer)   
 name = Column(String(20))   
-
-### TeamID  
-teamID = Column(Integer)     
-name = Column(String(5))   
 
 ### Batters  
 idx = Column(Integer)  
@@ -41,7 +37,13 @@ i_8 = Column(Integer)
 i_9 = Column(Integer)    
 i_10 = Column(Integer)    
 i_11 = Column(Integer)    
-i_12 = Column(Integer)    
+i_12 = Column(Integer)  
+i_13 = Column(Integer)    
+i_14 = Column(Integer)    
+i_15 = Column(Integer)    
+i_16 = Column(Integer)    
+i_17 = Column(Integer)    
+i_18 = Column(Integer)    
 hit = Column(Integer)    
 bat_num = Column(Integer)    
 hit_prob = Column(Integer)    
@@ -83,7 +85,13 @@ i_8 = Column(Integer)
 i_9 = Column(Integer)    
 i_10 = Column(Integer)    
 i_11 = Column(Integer)    
-i_12 = Column(Integer)    
+i_12 = Column(Integer)  
+i_13 = Column(Integer)    
+i_14 = Column(Integer)    
+i_15 = Column(Integer)    
+i_16 = Column(Integer)    
+i_17 = Column(Integer)    
+i_18 = Column(Integer)  
 R = Column(Integer)    
 H = Column(Integer)    
 E = Column(Integer)    

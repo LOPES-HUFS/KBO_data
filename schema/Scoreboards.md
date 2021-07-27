@@ -5,7 +5,7 @@
 ## schema
 
 ```python
-TeamID = Column(Integer)
+Idx = Column(String)
 result = Column(Integer)
 i_1 = Column(Integer)
 i_2 = Column(Integer)
@@ -38,31 +38,12 @@ away = Column(Integer)
 dbheader = Column(Boolean)
 ```
 
-## TeamID
-
-아래 링크를 참고하면 KBO 자료가 2001년 4월부터 있습니다. 그리고 결과적으로 2000년에 SK, 2001년에 KIA가 창단되었으니, 그 전에 사라진 구단 ID는 필요없을 것 같습니다. 그러니 SK만 추가하여 TeamID를 아래와 같이 11개로 만들었습니다.
-
-```ini
-[TEAM]
-두산: 1
-롯데: 2
-삼성: 3
-한화: 4
-LG: 5
-KIA: 6
-SK: 7
-키움: 8
-NC: 9
-KT: 10
-SSG: 11
-```
-
 ## 각 컬럼 설명
 
-- TeamID: 해당 팀의 이름을 대신하여 팀 정보를 나타낸다. TeamID 테이블과 연동된 외부키로 해당 테이블에서 ID 별 팀 이름을 확인할 수 있다.
+- Idx: 해당 경기의 값들을 조합하여 만든 primary key. 선수들 table과 연결
 - result: 해당 팀 승리는 `int 1`, 패배는 `int -1`, 무승부는 `int 1` 로 저장
 - i_1 ~ i_8 (Integer) : 점수 저장
-- i_9 ~ i_12 (Integer) : 값이 `-1`이 들어있을 수도 있다. 이런 경우는 해당 이닝 경기가 발생하지 않은 경우이다. `null`값으로 하지 않은 이유는 나중에 해당 열을 `(Integer)`로 변환하기 쉽게 하기 위해서이다.
+- i_9 ~ i_18 (Integer) : 값이 `-1`이 들어있을 수도 있다. 이런 경우는 해당 이닝 경기가 발생하지 않은 경우이다. `null`값으로 하지 않은 이유는 나중에 해당 열을 `(Integer)`로 변환하기 쉽게 하기 위해서이다.
 - R: 해당 팀이 경기에서 얻은 총 득점의 수를 나타냅니다.
 - H: 해당 팀이 경기에서 얻은 총 안타의 수를 나타냅니다.
 - E: 해당 팀이 경기에서 발생한 총 실책의 수를 나타냅니다.
