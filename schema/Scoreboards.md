@@ -35,7 +35,7 @@ day = Column(Integer)
 week = Column(Integer)
 home = Column(Integer)
 away = Column(Integer)
-dbheader = Column(Boolean)
+dbheader = Column(Integer)
 ```
 
 ## 각 컬럼 설명
@@ -53,7 +53,7 @@ dbheader = Column(Boolean)
 - day: 해당 경기가 진행한 날짜 중 일을 나타냅니다.
 - week: 해당 경기가 진행한 날의 요일을 나타냅니다. 1~6까지의 값이 있습니다. 1은 화요일, 2는 수요일 3은 목요일 ... 6은 일요일 입니다. 월요일은 경기가 진행되지 않기에 0번이 빠집니다.
 - home ~ away: 해당 경기의 홈팀과 원정팀이 어떤 팀인지 TeamID의 값을 통해 나타냅니다.
-- dbheader: 경기가 더블헤더로 진행된 경기인지 아닌지를 나타냅니다.
+- dbheader: 더불헤더가 아닌 날짜의 경기는 0, 더블헤더 경기 중 첫 번째 경기는 1, 두 번째 경기는 2를 나타냅니다.
 
 ## SQLite로 kbo DB를 만들어 테스트 하기
 
