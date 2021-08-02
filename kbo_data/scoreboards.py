@@ -80,6 +80,9 @@ def modify(data):
 
     이 함수는 여러 게임 자료(`data`)에서 스코어보드만 뽑아서 내용을 고치고 변경합니다.
     그런 다음 다시 이렇게 작업한 스코어보드를 다시 원 자료(`data`)에 끼워 넣는다.
+    아래 긴 `for`문은 18회까지 연장하기 위한 방법입니다.
+    기본적으로 정규 이닝은 13회까지밖에 없지만, 예전 리크에서 18회까지 있는 경우가 있어
+    이를 반영했습니다. 
 
     Examples:
 
@@ -107,7 +110,33 @@ def modify(data):
     i = 0
 
     for key, value in data.items():
-        temp_p = pd.DataFrame(value["scoreboard"])
+        temp = value["scoreboard"]
+        for item in temp:
+            if "13" in item:
+                pass
+            else:
+                item["13"] = "-"
+            if "14" in item:
+                pass
+            else:
+                item["14"] = "-"
+            if "15" in item:
+                pass
+            else:
+                item["15"] = "-"
+            if "16" in item:
+                pass
+            else:
+                item["16"] = "-"
+            if "17" in item:
+                pass
+            else:
+                item["17"] = "-"
+            if "18" in item:
+                pass
+            else:
+                item["18"] = "-"
+        temp_p = pd.DataFrame(temp)
         game_info = get_game_info(key)
         temp_p.loc[:, "year"] = game_info["year"]
         temp_p.loc[:, "month"] = game_info["month"]
@@ -132,6 +161,12 @@ def modify(data):
                 "10": "i_10",
                 "11": "i_11",
                 "12": "i_12",
+                "13": "i_13",
+                "14": "i_14",
+                "15": "i_15",
+                "16": "i_16",
+                "17": "i_17",
+                "18": "i_18",
                 "홈팀": "home",
                 "원정팀": "away",
                 "더블헤더": "dbheader",
@@ -503,6 +538,12 @@ def output_to_tuples(data):
             is_exist_inning(item["i_10"]),
             is_exist_inning(item["i_11"]),
             is_exist_inning(item["i_12"]),
+            is_exist_inning(item["i_13"]),
+            is_exist_inning(item["i_14"]),
+            is_exist_inning(item["i_15"]),
+            is_exist_inning(item["i_16"]),
+            is_exist_inning(item["i_17"]),
+            is_exist_inning(item["i_18"]),
             item["R"],
             item["H"],
             item["E"],
