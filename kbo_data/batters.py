@@ -25,24 +25,25 @@ config = configparser.ConfigParser()
 config.read('code_list.ini')
 Batter_factor = config["BATTER"]
 
-def change_record(temp,column):
+def change_record(temp):
 
     '''
     temp: 타자 DataFrame 파일을 의미한다.
-    column: 선수의 타격 기록이 있는 이닝 열을 의미한다. 
     사용방법
     import pandas as pd
     temp = pd.read_json("20210409_KTSS0.json")
     batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
-    change_record(batter,1)
+    change_record(batter)
     '''
+
     for i in list(Batter_factor.keys()):
         temp = temp.replace(i,Batter_factor[i])
-    for i in range(0,len(temp[[str(column)]])):
-        if "/" in list(str(temp[str(column)].tolist()[i])):
-            temp1 = Batter_factor[str(temp[str(column)].tolist()[i].split("/ ")[0].split("\\")[0])]
-            temp2 = Batter_factor[str(temp[str(column)].tolist()[i].split("/ ")[1])]
-            temp.loc[i,str(column)] = str(temp1)+str(temp2)
+    for j in range(1,19):
+        for i in range(0,len(temp[[str(j)]])):
+            if "/" in list(str(temp[str(j)].tolist()[i])):
+                temp1 = Batter_factor[str(temp[str(j)].tolist()[i].split("/ ")[0].split("\\")[0])]
+                temp2 = Batter_factor[str(temp[str(j)].tolist()[i].split("/ ")[1])]
+                temp.loc[i,str(j)] = str(temp1)+str(temp2)
     return temp
 
 def change_posision(data):
