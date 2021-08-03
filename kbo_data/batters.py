@@ -21,18 +21,21 @@
 
 import configparser
 
+config = configparser.ConfigParser()
+config.read('code_list.ini')
 Batter_factor = config["BATTER"]
 
 def change_record(temp,column):
-   '''
-   temp: 타자 DataFrame 파일을 의미한다.
-   column: 선수의 타격 기록이 있는 이닝 열을 의미한다. 
-   사용방법
-   import pandas as pd
-   temp = pd.read_json("20210409_KTSS0.json")
-   batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
-   change_record(batter,1)
-   '''
+
+    '''
+    temp: 타자 DataFrame 파일을 의미한다.
+    column: 선수의 타격 기록이 있는 이닝 열을 의미한다. 
+    사용방법
+    import pandas as pd
+    temp = pd.read_json("20210409_KTSS0.json")
+    batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
+    change_record(batter,1)
+    '''
     for i in list(Batter_factor.keys()):
         temp = temp.replace(i,Batter_factor[i])
     for i in range(0,len(temp[[str(column)]])):
