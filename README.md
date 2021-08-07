@@ -70,11 +70,12 @@ ls ~/.pyenv/versions/
 3.7.9
 ```
 
-`KBO_dev`라는 가상 환경을 만드신 다음 이 가상 환경을 아래와 같이 활성화(activate)하시면 됩니다.
+`KBO_dev`라는 가상 환경을 만드신 다음 이 가상 환경을 아래와 같이 활성화(activate)하시면 됩니다. 참고로 활성화를 취소하려면 `deactivate`을 사용하시면 됩니다.
 
 ```bash
 pyenv virtualenv 3.7.9 KBO_dev
 pyenv activate KBO_dev
+pyenv deactivate KBO_dev
 ```
 
 ### 코드 정리
