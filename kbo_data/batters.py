@@ -20,27 +20,38 @@
 """
 
 import configparser
+import re
 
+config = configparser.ConfigParser()
+config.read('code_list.ini')
 Batter_factor = config["BATTER"]
 
-def change_record(temp,column):
-   '''
-   temp: 타자 DataFrame 파일을 의미한다.
-   column: 선수의 타격 기록이 있는 이닝 열을 의미한다. 
-   사용방법
-   import pandas as pd
-   temp = pd.read_json("20210409_KTSS0.json")
-   batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
-   change_record(batter,1)
-   '''
+def change_record(data):
+
+    '''
+    data: 타자 DataFrame 파일을 의미한다.
+    사용방법
+    import pandas as pd
+    temp = pd.read_json("20210409_KTSS0.json")
+    batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
+    change_record(batter)
+    '''
+    for j in range(1,19):
+        for i in range(0,len(data[[str(j)]])):
+            if "一" in list(str(data[str(j)].tolist()[i])):
+                data.loc[i,str(j)] = re.sub("一","1",str(data[str(j)].tolist()[i]))
+            if "二" in list(str(data[str(j)].tolist()[i])):
+                data.loc[i,str(j)] = re.sub("二","2",str(data[str(j)].tolist()[i]))
+            if "三" in list(str(data[str(j)].tolist()[i])):
+                data.loc[i,str(j)] = re.sub("三","3",str(data[str(j)].tolist()[i]))
+            if "/" in list(str(data[str(j)].tolist()[i])):
+                temp1 = Batter_factor[str(data[str(j)].tolist()[i].split("/ ")[0].split("\\")[0])]
+                temp2 = Batter_factor[str(data[str(j)].tolist()[i].split("/ ")[1])]
+                data.loc[i,str(j)] = str(temp1)+str(temp2)
     for i in list(Batter_factor.keys()):
-        temp = temp.replace(i,Batter_factor[i])
-    for i in range(0,len(temp[[str(column)]])):
-        if "/" in list(str(temp[str(column)].tolist()[i])):
-            temp1 = Batter_factor[str(temp[str(column)].tolist()[i].split("/ ")[0].split("\\")[0])]
-            temp2 = Batter_factor[str(temp[str(column)].tolist()[i].split("/ ")[1])]
-            temp.loc[i,str(column)] = str(temp1)+str(temp2)
-    return temp
+        data = data.replace(i,Batter_factor[i])
+
+    return data
 
 def change_posision(data):
     '''
@@ -76,3 +87,6 @@ def change_posision(data):
     elif "타" in data:
         data = data.replace("타","H")
     return data
+
+def change_colnames(data):
+    data.columns = [ ]
