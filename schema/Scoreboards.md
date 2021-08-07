@@ -5,7 +5,7 @@
 ## schema
 
 ```python
-Idx = Column(String)
+idx = Column(String)
 result = Column(Integer)
 i_1 = Column(Integer)
 i_2 = Column(Integer)
@@ -25,10 +25,10 @@ i_15 = Column(Integer)
 i_16 = Column(Integer)
 i_17 = Column(Integer)
 i_18 = Column(Integer)
-R = Column(Integer)
-H = Column(Integer)
-E = Column(Integer)
-B = Column(Integer)
+r = Column(Integer)
+h = Column(Integer)
+e = Column(Integer)
+b = Column(Integer)
 year = Column(Integer)
 month = Column(Integer)
 day = Column(Integer)
@@ -40,14 +40,14 @@ dbheader = Column(Integer)
 
 ## 각 컬럼 설명
 
-- Idx: 해당 경기의 값들을 조합하여 만든 primary key. 선수들 table과 연결
+- idx: 해당 경기의 값들을 조합하여 만든 primary key. 선수들 table과 연결
 - result: 해당 팀 승리는 `int 1`, 패배는 `int -1`, 무승부는 `int 1` 로 저장
 - i_1 ~ i_8 (Integer) : 점수 저장
 - i_9 ~ i_18 (Integer) : 값이 `-1`이 들어있을 수도 있다. 이런 경우는 해당 이닝 경기가 발생하지 않은 경우이다. `null`값으로 하지 않은 이유는 나중에 해당 열을 `(Integer)`로 변환하기 쉽게 하기 위해서이다.
-- R: 해당 팀이 경기에서 얻은 총 득점의 수를 나타냅니다.
-- H: 해당 팀이 경기에서 얻은 총 안타의 수를 나타냅니다.
-- E: 해당 팀이 경기에서 발생한 총 실책의 수를 나타냅니다.
-- B: 해당 팀이 경기에서 발생한 총 사사구(볼넷과 데드볼의 합)의 수를 나타냅니다.
+- r: 해당 팀이 경기에서 얻은 총 득점의 수를 나타냅니다.
+- h: 해당 팀이 경기에서 얻은 총 안타의 수를 나타냅니다.
+- e: 해당 팀이 경기에서 발생한 총 실책의 수를 나타냅니다.
+- b: 해당 팀이 경기에서 발생한 총 사사구(볼넷과 데드볼의 합)의 수를 나타냅니다.
 - year: 해당 경기가 진행한 날짜 중 년도를 나타냅니다.
 - month: 해당 경기가 진행한 날짜 중 월을 나타냅니다.
 - day: 해당 경기가 진행한 날짜 중 일을 나타냅니다.
