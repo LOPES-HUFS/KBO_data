@@ -5,7 +5,8 @@
 ## schema
 
 ```python
-idx = Column(String)
+idx = Column(Integer)
+team = Cloumn(String)
 result = Column(Integer)
 i_1 = Column(Integer)
 i_2 = Column(Integer)
@@ -33,14 +34,15 @@ year = Column(Integer)
 month = Column(Integer)
 day = Column(Integer)
 week = Column(Integer)
-home = Column(Integer)
-away = Column(Integer)
+home = Column(String)
+away = Column(String)
 dbheader = Column(Integer)
 ```
 
 ## 각 컬럼 설명
 
 - idx: 해당 경기의 값들을 조합하여 만든 primary key. 선수들 table과 연결
+- team: 해당 경기 결과 값의 팀 이름
 - result: 해당 팀 승리는 `int 1`, 패배는 `int -1`, 무승부는 `int 1` 로 저장
 - i_1 ~ i_8 (Integer) : 점수 저장
 - i_9 ~ i_18 (Integer) : 값이 `-1`이 들어있을 수도 있다. 이런 경우는 해당 이닝 경기가 발생하지 않은 경우이다. `null`값으로 하지 않은 이유는 나중에 해당 열을 `(Integer)`로 변환하기 쉽게 하기 위해서이다.
@@ -52,7 +54,7 @@ dbheader = Column(Integer)
 - month: 해당 경기가 진행한 날짜 중 월을 나타냅니다.
 - day: 해당 경기가 진행한 날짜 중 일을 나타냅니다.
 - week: 해당 경기가 진행한 날의 요일을 나타냅니다. 1~6까지의 값이 있습니다. 1은 화요일, 2는 수요일 3은 목요일 ... 6은 일요일 입니다. 월요일은 경기가 진행되지 않기에 0번이 빠집니다.
-- home ~ away: 해당 경기의 홈팀과 원정팀이 어떤 팀인지 TeamID의 값을 통해 나타냅니다.
+- home ~ away: 해당 경기의 홈팀과 원정팀이 어떤 팀인지를 나타냅니다.
 - dbheader: 더불헤더가 아닌 날짜의 경기는 0, 더블헤더 경기 중 첫 번째 경기는 1, 두 번째 경기는 2를 나타냅니다.
 
 ## SQLite로 kbo DB를 만들어 테스트 하기
