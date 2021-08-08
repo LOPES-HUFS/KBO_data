@@ -6,6 +6,7 @@
 
 ```python
 idx = Column(String)
+team = Column(String)
 result = Column(Integer)
 i_1 = Column(Integer)
 i_2 = Column(Integer)
@@ -41,6 +42,7 @@ dbheader = Column(Integer)
 ## 각 컬럼 설명
 
 - idx: 해당 경기의 값들을 조합하여 만든 primary key. 선수들 table과 연결
+- team: 팀명, 3글자로 정의합니다.
 - result: 해당 팀 승리는 `int 1`, 패배는 `int -1`, 무승부는 `int 1` 로 저장
 - i_1 ~ i_8 (Integer) : 점수 저장
 - i_9 ~ i_18 (Integer) : 값이 `-1`이 들어있을 수도 있다. 이런 경우는 해당 이닝 경기가 발생하지 않은 경우이다. `null`값으로 하지 않은 이유는 나중에 해당 열을 `(Integer)`로 변환하기 쉽게 하기 위해서이다.
@@ -68,7 +70,7 @@ meta = sa.MetaData()
 scoreboard = sa.Table(
     "scoreboard",
     meta,
-    sa.Column("game_id", sa.Integer, primary_key=True),
+    sa.Column("idx", sa.Integer, primary_key=True),
     sa.Column("team", sa.String),
     sa.Column("result", sa.Integer),
     sa.Column("i_1", sa.Integer),
@@ -99,7 +101,7 @@ scoreboard = sa.Table(
     sa.Column("week", sa.Integer),
     sa.Column("home", sa.String),
     sa.Column("away", sa.String),
-    sa.Column("dbheader", sa.Boolean),
+    sa.Column("dbheader", sa.Integer),
 )
 
 meta.create_all(conn)
