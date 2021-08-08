@@ -554,7 +554,7 @@ def output_to_tuples(data):
             item["week"],
             item["home"],
             item["away"],
-            changing_dbheader_to_bool(item["dbheader"]),
+            item["dbheader"],
         )
 
         results.append(temp)
