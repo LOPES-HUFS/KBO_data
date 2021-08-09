@@ -88,5 +88,7 @@ def change_posision(data):
         data = data.replace("타","H")
     return data
 
-def change_colnames(data):
-    data.columns = [ ]
+def del_dummy(data):
+    del_inx = data[data["선수명"]=="데이터가 없습니다."].index
+    data = data.drop(del_inx)
+    return data
