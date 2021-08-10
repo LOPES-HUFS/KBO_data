@@ -17,12 +17,19 @@ config.read("config.ini")
 def changing_team_name_into_id(team_name):
     """팀명을 팀 TeamID로 바꾸는 함수
 
+    만약 빈 팀명이 들어오면, 히어로스 TeamID이 반환됩니다.
+    2008~2009까지 스폰서가 없어서 "서울 히어로즈"라고 했지만,
+    공식적으로 스폰서가 없었기 때문에 KBO에서는 "히어로즈"라고 명명하고 있다.
+    그래서 빈 팀명이 들어오게 된다.
+
     Examples:
 
         ```python
-        import modifying
-        modifying.changing_team_name_into_id("두산")
-        '1'
+        >>> import modifying
+        >>> modifying.changing_team_name_into_id("두산")
+        >>> '1'
+        >>> modifying.changing_team_name_into_id("")
+        >>> '8'
         ```
 
     Args:
@@ -32,7 +39,10 @@ def changing_team_name_into_id(team_name):
         (str): 자연수 숫자
     """
 
-    return config["TEAM"][team_name]
+    if team_name == "":
+        return "8"
+    else:
+        return config["TEAM"][team_name]
 
 
 def changing_win_or_loss_to_int(win_or_loss):
