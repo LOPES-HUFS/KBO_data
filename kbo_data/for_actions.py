@@ -80,8 +80,9 @@ if __name__ == "__main__":
         "date": today_schedule["date"],
         "is_latest": "True",
     }
-
-    r = requests.post(url, data=json.dumps(post_json))
+    headers = {'Content-Type': 'application/json; charset=utf-8'}
+    r = requests.post(url, headers=headers, data=json.dumps(post_json))
+    print(r.json())
     test_json = r.json()
     game_schedule = parsing_game_schedule.changing_format(test_json["body"])
     print(game_schedule)
