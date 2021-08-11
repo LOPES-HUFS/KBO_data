@@ -3,9 +3,9 @@ name: get KBO today's schedule
 on:
   schedule:
 #    - cron: '45 14 * * *'
-    - cron: '5 2 * * *'
+    - cron: '5 11 * * *'
     # UST 가 default라고 합니다.
-    # 2시 5분에 돌아 가도록 했으니 한국 시간으로 10시 5분 실행됩니다.
+    # 11시 5분에 돌아 가도록 했으니 한국 시간으로 10시 5분 실행됩니다.
 
 jobs:
   build-linux:
@@ -29,5 +29,5 @@ jobs:
     - name: Build
       run: |
         cd kbo_data
-        python for_actions.py ${{secrets.API_URL}}
+        python get_today_schedule_for_actions.py ${{secrets.API_URL}}
         cp *.json ../public/
