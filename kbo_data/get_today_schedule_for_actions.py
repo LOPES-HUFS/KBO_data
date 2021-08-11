@@ -48,7 +48,12 @@ if __name__ == "__main__":
     for item in game_schedule:
         if item["state"] == "종료":
             temp_data = get_data.single_game(item["gameDate"], item["gameld"])
-            temp = scoreboards.output_to_tuples(temp_data)
-            print(temp)
+            game_date.update(temp_data)
         else:
             print(item["state"])
+
+    temp_scoreboards = scoreboards.output_to_dict(game_date)
+    print(temp_scoreboards)
+    # query = db.insert(table)
+    # result_proxy = connection.execute(query, temp_scoreboards)
+    # result_proxy.close()
