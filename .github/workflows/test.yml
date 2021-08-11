@@ -48,13 +48,6 @@ jobs:
         ls
         cd kbo_data
         ls
-        python for_actions.py ${{secrets.API_URL}}
+        python get_today_schedule_for_actions.py ${{secrets.API_URL}}
         ls -l
         cp *.json ../public/
-# 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
-# https://github.com/peaceiris/actions-gh-pages
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        GITHUB_TOKEN: ${{ secrets.KBO_DEPLOY }}
-        publish_dir: ./public
