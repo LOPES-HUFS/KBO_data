@@ -18,13 +18,6 @@ import scoreboards
 if __name__ == "__main__":
 
     url = str(sys.argv[1])
-    DB_URL = str(sys.argv[2])
-
-    engine = db.create_engine(DB_URL)
-    connection = engine.connect()
-    metadata = db.MetaData()
-    table = db.Table('scoreboard', metadata, autoload=True, autoload_with=engine)
-    print(table.columns.keys())
 
 
     #today_schedule = get_game_schedule.today()
@@ -54,6 +47,17 @@ if __name__ == "__main__":
 
     temp_scoreboards = scoreboards.output_to_dict(game_date)
     print(temp_scoreboards)
-    # query = db.insert(table)
-    # result_proxy = connection.execute(query, temp_scoreboards)
-    # result_proxy.close()
+    
+    # DB에 스코어 보드 자료 입력 시작
+    DB_URL = str(sys.argv[2])
+
+    engine = db.create_engine(DB_URL)
+    connection = engine.connect()
+    metadata = db.MetaData()
+    table = db.Table('scoreboard', metadata, autoload=True, autoload_with=engine)
+    print(table.columns.keys())
+
+    query = db.insert(table)
+    result_proxy = connection.execute(query, temp_scoreboards)
+    result_proxy.close()
+    # DB에 스코어 보드 자료 입력 완료

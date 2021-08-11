@@ -45,9 +45,6 @@ jobs:
       uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
-        ls
         cd kbo_data
         ls
         python get_today_schedule_for_actions.py ${{secrets.API_URL}} ${{secrets.DB_URL}}
-        ls -l
-        cp *.json ../public/
