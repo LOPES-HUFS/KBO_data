@@ -42,6 +42,7 @@ import json
 
 import pandas as pd
 import requests
+import sqlalchemy as db
 
 import get_data
 import get_game_schedule
@@ -84,6 +85,12 @@ if __name__ == "__main__":
 
     url = str(sys.argv[1])
     DB_URL = str(sys.argv[2])
+
+    engine = db.create_engine(DB_URL)
+    connection = engine.connect()
+    metadata = db.MetaData()
+    table = db.Table('scoreboard', metadata, autoload=True, autoload_with=engine)
+    print(table.columns.keys())
 
     post_json = {
         "year": today_schedule["year"],
