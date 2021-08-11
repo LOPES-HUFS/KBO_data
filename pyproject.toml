@@ -3,7 +3,11 @@ name = "KBO_data"
 version = "0.1.0"
 description = ""
 authors = ["Jaehwan <dialektike@gmail.com>"]
-exclude = ["public/*", "kbo_data/for_actions.py"]
+exclude = [
+    "public/*", 
+    "kbo_data/for_actions.py", 
+    "kbo_data/get_today_schedule_for_actions.py"
+    ]
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
