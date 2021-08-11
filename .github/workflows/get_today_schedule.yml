@@ -1,36 +1,33 @@
-# This is a basic workflow to help you get started with Actions
+name: get KBO data
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  schedule:
+#    - cron: '45 14 * * *'
+    - cron: '5 2 * * *'
+    # UST 가 default라고 합니다.
+    # 2시 5분에 돌아 가도록 했으니 한국 시간으로 10시 5분 실행됩니다.
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  build-linux:
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        python-version: [3.7]
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - uses: actions/checkout@v2
+    - name: Set up Python {{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install python package
+      run: |
+        pip install -r requirements.txt
+    - name: Setup Chromedriver
+      uses: nanasess/setup-chromedriver@v1.0.1
+    - name: Build
+      run: |
+        cd kbo_data
+        python for_actions.py ${{secrets.API_URL}}
+        cp *.json ../public/
