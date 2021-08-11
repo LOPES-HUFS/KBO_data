@@ -1,5 +1,14 @@
 """ github actions을 이용해서 오늘 KBO 경기 자료를 모으는 모듈
 
+   이 모듈을 github action을 통해서 자동적으로 작동하게끔 만들어졌다.
+   즉 경기 schedule을 수집하고 이를 통해서, 개별 경기 자료를 모은 다음,
+   이것을 적절하게 가공하여 저장하게 한다.
+   그러나 문제는 개별 경기 자료가 
+   한 곳이 아니라 여러 곳에서 사용하는 코드들을 모아둔 모듈입니다.
+
+   - `changing_team_name_into_id()` : 팀명을 팀 id로 바꾸는 함수
+
+
 
 Example:
     오늘 경기 일정은 아래와 같이 실행하면, `2021_04_06_Schedule.json`과 같은 이름으로 
@@ -74,6 +83,7 @@ if __name__ == "__main__":
     game_schedule = parsing_game_schedule.changing_format(today_schedule)
 
     url = str(sys.argv[1])
+    DB_URL = str(sys.argv[2])
 
     post_json = {
         "year": today_schedule["year"],
