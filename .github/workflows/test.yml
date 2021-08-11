@@ -41,10 +41,10 @@ jobs:
 #        sudo apt-get install google-chrome-stable    
 #        wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
 #        unzip ./chromedriver_linux64.zip   
-    - name: Setup Chromedriver
-      uses: nanasess/setup-chromedriver@v1.0.1
+#    - name: Setup Chromedriver
+#      uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
         cd kbo_data
         ls
-        python temp_for_actions.py ${{secrets.API_URL}} ${{secrets.DB_URL}}
+        python temp_for_action.py ${{secrets.API_URL}} ${{secrets.DB_URL}}
