@@ -22,4 +22,9 @@ if __name__ == "__main__":
 
     today_schedule = get_game_schedule.today()
     # 오늘 schedule이 잘 들어왔는지 확인
-    print(f"KEY: {KEY}")
+    print(f"today_schedule: {today_schedule}")
+
+    #headers = {'Content-Type': 'application/json; charset=utf-8'}
+    #r = requests.post(url, headers=headers, data=json.dumps(post_json))
+    #print(r.json())
+    #test_json = r.json()
