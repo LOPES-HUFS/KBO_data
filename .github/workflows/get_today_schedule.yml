@@ -3,9 +3,10 @@ name: get KBO today's schedule
 on:
   schedule:
 #    - cron: '45 14 * * *'
-    - cron: '5 11 * * *'
+    - cron: '5 14 * * *'
     # UST 가 default라고 합니다.
-    # 11시 5분에 돌아 가도록 했으니 한국 시간으로 10시 5분 실행됩니다.
+    # Time (UTC) 오전 8:08가 한국 시간으로 17:08
+    # 한국 시간으로 23:05 은 UTC 14:05
 
 jobs:
   build-linux:
