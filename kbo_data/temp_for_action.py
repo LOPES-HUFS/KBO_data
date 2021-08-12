@@ -35,7 +35,7 @@ if __name__ == "__main__":
     get_json = r.json()
     game_schedule_list = eval(get_json["body"])
     game_schedule = parsing_game_schedule.changing_format(game_schedule_list)
-    # print(f"get game schedule:{game_schedule}")
+    print(f"get game schedule:{game_schedule}")
 
     game_date = {}
 
