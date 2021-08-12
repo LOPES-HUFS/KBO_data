@@ -8,6 +8,7 @@ import sys
 from datetime import date
 import json
 
+import pandas as pd
 import requests
 import sqlalchemy as db
 
@@ -15,7 +16,6 @@ import get_data
 import get_game_schedule
 import parsing_game_schedule
 import scoreboards
-
 
 if __name__ == "__main__":
 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
         "key": "get",
         "value": {"year": str(today.year), "date": temp_date},
     }
-    print(f"post_json:{post_json}")
+    #print(post_json)
 
     url = str(sys.argv[1])
 
@@ -41,12 +41,12 @@ if __name__ == "__main__":
 
     for item in game_schedule:
         if item["state"] == "종료":
-            temp_data = get_data.single_game(item["gameDate"], item["gameld"])
-            game_date.update(temp_data)
+            game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
 
     temp_scoreboards = scoreboards.output_to_dict(game_date)
+
     print(temp_scoreboards)
 
     # DB 설정 시작
