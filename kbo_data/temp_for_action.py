@@ -37,6 +37,7 @@ import requests
 import get_data
 import get_game_schedule
 import parsing_game_schedule
+import scoreboards
 
 if __name__ == "__main__":
 
@@ -78,7 +79,7 @@ if __name__ == "__main__":
         "key": "get",
         "value": {"year": str(today.year), "date": temp_date},
     }
-    print(post_json)
+    #print(post_json)
 
     url = str(sys.argv[1])
 
@@ -92,7 +93,10 @@ if __name__ == "__main__":
 
     for item in game_schedule:
         if item["state"] == "종료":
-            single_game_to_json(item["gameDate"], item["gameld"])
+            #single_game_to_json(item["gameDate"], item["gameld"])
             game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
+
+    temp = scoreboards.output_to_dict(game_date)
+    print(temp)
