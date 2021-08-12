@@ -27,4 +27,4 @@ jobs:
     - name: Build
       run: |
         cd kbo_data
-        python get_today_schedule_for_actions.py ${{secrets.API_URL}} ${{secrets.DB_URL}}
+        python get_today_schedule_for_actions.py ${{secrets.API_URL}}

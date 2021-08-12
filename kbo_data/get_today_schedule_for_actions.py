@@ -3,12 +3,9 @@
 """
 
 import sys
-from datetime import date
 import json
 
-import pandas as pd
 import requests
-import sqlalchemy as db
 
 import get_data
 import get_game_schedule
@@ -17,47 +14,63 @@ import scoreboards
 
 if __name__ == "__main__":
 
+    today_schedule = get_game_schedule.today()
+
+    # 연습용 today_schedule dict
+    # today_schedule = {
+    #     "year": "2021",
+    #     "date": "08.11",
+    #     1: {"away": "SK", "home": "LG", "state": "종료", "suspended": "0"},
+    #     2: {"away": "OB", "home": "SS", "state": "종료", "suspended": "0"},
+    #     3: {"away": "LT", "home": "NC", "state": "종료", "suspended": "0"},
+    #     4: {"away": "KT", "home": "WO", "state": "종료", "suspended": "0"},
+    #     5: {"away": "HH", "home": "HT", "state": "종료", "suspended": "0"},
+    # }
+
+    # 연습용 temp_value dict
+    # 주석처리 하지 않고 그냥 쓰지 않습니다.
+    temp_value = {
+        "value": {
+            "year": "2021",
+            "date": "08.33",
+            "1": {"away": "SK", "home": "LG", "state": "18:30", "suspended": "0"},
+            "2": {"away": "OB", "home": "SS", "state": "18:30", "suspended": "0"},
+            "3": {"away": "LT", "home": "NC", "state": "18:30", "suspended": "0"},
+            "4": {"away": "KT", "home": "WO", "state": "18:30", "suspended": "0"},
+            "5": {"away": "HH", "home": "HT", "state": "18:30", "suspended": "0"},
+        }
+    }
+
+    # print(f"Today_schedule: {today_schedule}")
+
     url = str(sys.argv[1])
 
-
-    #today_schedule = get_game_schedule.today()
-    # 오늘 스케줄이 들어왔다고 가정한다.
-    today_schedule = {
-        "year": "2021",
-        "date": "08.10",
-        "1": {"away": "SK", "home": "LG", "state": "\uc885\ub8cc", "suspended": "0"},
-        "2": {"away": "OB", "home": "SS", "state": "\ucde8\uc18c", "suspended": "0"},
-        "3": {"away": "LT", "home": "NC", "state": "\uc885\ub8cc", "suspended": "0"},
-        "4": {"away": "KT", "home": "WO", "state": "\uc885\ub8cc", "suspended": "0"},
-        "5": {"away": "HH", "home": "HT", "state": "\uc885\ub8cc", "suspended": "0"},
+    post_json = {
+        "key": "get",
+        "value": {"year": today_schedule["year"], "date": today_schedule["date"]},
     }
-    # 오늘 schedule이 잘 들어왔는지 확인
-    print(f"Today_schedule: {today_schedule}")
-    game_schedule = parsing_game_schedule.changing_format(today_schedule)
-    print(f"game_schedule: {game_schedule}")
 
-    game_date = {}
-
-    for item in game_schedule:
-        if item["state"] == "종료":
-            temp_data = get_data.single_game(item["gameDate"], item["gameld"])
-            game_date.update(temp_data)
+    try:
+        # 가장 최근 경기 스케줄을 가져옵니다.
+        r = requests.post(url, data=json.dumps(post_json))
+        get_json = r.json()
+        latest_list = eval(get_json["body"])
+        # print(f"Latest_saved_game_schedule: {latest_list}")
+        # 오늘 경기 스케줄과 가장 최근 저장된 스케줄을 비교해 다르면
+        # 오늘 경기 스케줄 저장합니다.
+        if today_schedule == latest_list:
+            print(f"오늘 것과 최근 것이 같다?: {today_schedule == latest_list}")
+            pass
         else:
-            print(item["state"])
+            temp_put_data = {"key": "put"}
+            temp_dict = {"value": today_schedule}
+            temp_put_data.update(temp_dict)
+            # 아래 코드 1줄을 연습용 코드
+            # temp_put_data.update(temp_value)
+            print(f"putting_data: {temp_put_data}")
+            r = requests.post(url, data=json.dumps(temp_put_data))
+            # 저장이 잘 되었으면 {"statusCode": 200, "body": "put done"} 나옴
+            print(f"put?: {r.text}")
 
-    temp_scoreboards = scoreboards.output_to_dict(game_date)
-    print(temp_scoreboards)
-    
-    # DB에 스코어 보드 자료 입력 시작
-    DB_URL = str(sys.argv[2])
-
-    engine = db.create_engine(DB_URL)
-    connection = engine.connect()
-    metadata = db.MetaData()
-    table = db.Table('scoreboard', metadata, autoload=True, autoload_with=engine)
-    print(table.columns.keys())
-
-    query = db.insert(table)
-    result_proxy = connection.execute(query, temp_scoreboards)
-    result_proxy.close()
-    # DB에 스코어 보드 자료 입력 완료
+    except Exception as e:
+        print(e)
