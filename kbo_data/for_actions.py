@@ -10,6 +10,7 @@ import json
 
 import pandas as pd
 import requests
+import sqlalchemy as db
 
 import get_data
 import get_game_schedule
@@ -23,21 +24,18 @@ if __name__ == "__main__":
 
     today_schedule = get_game_schedule.today()
     # 오늘 schedule이 잘 들어왔는지 확인
-    #print(f"today_schedule: {today_schedule}")
+    # print(f"today_schedule: {today_schedule}")
 
     post_json = {
         "key": "get",
-        "value": {
-            "year": today_schedule["year"],
-            "date": today_schedule["date"]
-            }
-            }
+        "value": {"year": today_schedule["year"], "date": today_schedule["date"]},
+    }
 
     r = requests.post(url, data=json.dumps(post_json))
     get_json = r.json()
-    game_schedule_list = eval(get_json['body'])
+    game_schedule_list = eval(get_json["body"])
     game_schedule = parsing_game_schedule.changing_format(game_schedule_list)
-    #print(f"get game schedule:{game_schedule}")
+    # print(f"get game schedule:{game_schedule}")
 
     game_date = {}
 
@@ -58,8 +56,8 @@ if __name__ == "__main__":
     connection = engine.connect()
     metadata = db.MetaData()
     # DB에 스코어 보드 자료 입력 시작
-    table = db.Table('scoreboard', metadata, autoload=True, autoload_with=engine)
-    print(table.columns.keys())
+    table = db.Table("scoreboard", metadata, autoload=True, autoload_with=engine)
+    print(f"table columns keys:{table.columns.keys()}")
 
     query = db.insert(table)
     result_proxy = connection.execute(query, temp_scoreboards)
