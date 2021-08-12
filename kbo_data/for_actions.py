@@ -8,7 +8,6 @@ import sys
 from datetime import date
 import json
 
-import pandas as pd
 import requests
 import sqlalchemy as db
 
@@ -20,16 +19,17 @@ import scoreboards
 
 if __name__ == "__main__":
 
-    url = str(sys.argv[1])
+    today = date.today()
 
-    today_schedule = get_game_schedule.today()
-    # 오늘 schedule이 잘 들어왔는지 확인
-    # print(f"today_schedule: {today_schedule}")
+    temp_date = f"{today.month}.{today.day}"
 
     post_json = {
         "key": "get",
-        "value": {"year": today_schedule["year"], "date": today_schedule["date"]},
+        "value": {"year": str(today.year), "date": temp_date},
     }
+    print(f"post_json:{post_json}")
+
+    url = str(sys.argv[1])
 
     r = requests.post(url, data=json.dumps(post_json))
     get_json = r.json()
