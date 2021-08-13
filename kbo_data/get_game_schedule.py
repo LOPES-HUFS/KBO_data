@@ -35,7 +35,16 @@ def today():
     exporting_dict = {}
 
     soup = BeautifulSoup(html, "lxml")
+    # 오늘 게임 경기가 있으면 is_KBO_game_schedule = 'KBO리그'이어야 한다. 
+    is_KBO_game_schedule = soup.find("h2", class_="h_sch").text
 
+    if is_KBO_game_schedule == "KBO리그":
+        return modify_today_data(soup)
+
+    else:
+        return False
+
+def modify_today_data(soup):
     exporting_dict = {}
 
     # 현재 연도를 가져온다.

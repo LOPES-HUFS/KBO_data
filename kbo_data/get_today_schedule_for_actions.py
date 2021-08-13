@@ -61,6 +61,9 @@ if __name__ == "__main__":
         if today_schedule == latest_list:
             print(f"오늘 것과 최근 것이 같다?: {today_schedule == latest_list}")
             pass
+        elif today_schedule == False:
+            print(f"오늘 KBO 경기 스케줄 있지?: {today_schedule}")
+            pass
         else:
             temp_put_data = {"key": "put"}
             temp_dict = {"value": today_schedule}
