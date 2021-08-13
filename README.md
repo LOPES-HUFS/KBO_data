@@ -45,6 +45,14 @@ utility.binding_json(temp_list, "2021", "4")
 
 앞에서도 언급한 것처럼 현재 코드는 `python 3.7`을 기준으로 작성하고 있습니다. 그리고 `poetry`를 이용해서 파이썬 관련 패키지를 관리하고 있습니다.
 
+### 코드 정리
+
+코드 정리는 `black`을 이용하여 아래와 같이 해주시면 됩니다.
+
+```bash
+python -m black get_data.py
+```
+
 ### poetry 설치
 
 맥에서는 아래와 같이 설치하시면 됩니다.
@@ -75,13 +83,21 @@ ls ~/.pyenv/versions/
 ```bash
 pyenv virtualenv 3.7.9 KBO_dev
 pyenv activate KBO_dev
-pyenv deactivate KBO_dev
+pyenv deactivate
 ```
 
-### 코드 정리
-
-코드 정리는 `black`을 이용하여 아래와 같이 해주시면 됩니다.
+만약 잘 안 되는 경우에는 아래와 같은 `poetry` 명령어로 `virtualenvs.path`을 변경해주시면 됩니다.
 
 ```bash
-python -m black get_data.py
+poetry config virtualenvs.path /Users/pi/.pyenv/versions/3.7.9/envs/KBO_dev
+```
+
+주의할 점은 `/Users/pi/.pyenv/versions/3.7.9/envs/KBO_dev` 부분은 터미널에서 `pyenv virtualenvs`을 입력했을 때, `3.7.9/envs/KBO_dev (created from /Users/pi/.pyenv/versions/3.7.9)`을 참고해서 입력하시면 됩니다. 아래 실행 결과를 참고하세요!
+
+```bash
+❯ pyenv virtualenvs
+  3.7.9/envs/KBO_dev (created from /Users/pi/.pyenv/versions/3.7.9)
+  3.9.1/envs/poetry_test (created from /Users/pi/.pyenv/versions/3.9.1)
+* KBO_dev (created from /Users/pi/.pyenv/versions/3.7.9)
+  poetry_test (created from /Users/pi/.pyenv/versions/3.9.1)
 ```
