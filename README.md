@@ -30,6 +30,26 @@ import utility
 utility.get_one_day_data_to_json(temp_schedule)
 ```
 
+### 특정 년도 특정 월 경기 정보 가져오기
+
+우선 2021년 7월 정규시즌 경기 자료를 모으려면, 우선 해당 기간의 스케줄을 모아야 합니다. 아래와 같은 코드를 입력하시면 됩니다. 그러면 스케줄 정보가 `csv` 형식 파일로 만들어 집니다. 참고로 `output_to_csv()`은 temp_schedule_2021_07 과 같은 형식으로 파일 이름을 자동으로 만들어서 파일로 저장합니다.
+
+```python
+import get_monthly_game_schedules
+temp = get_monthly_game_schedules.get(2021, 7, "정규")
+temp = get_monthly_game_schedules.modify(2021, temp)
+# 위에서 저장한 수집한 스케줄을 csv 형식으로 파일로 저장합니다.
+import utility
+get_monthly_game_schedules.output_to_csv(temp)
+```
+
+앞에서 만든 `csv` 형식 파일로 경기 자료를 수입해 보겠습니다. 아래와 같이 하시면, 경기 자료가 `game_data.json`이라는 파일 이름으로 저장됩니다.
+
+```python
+import utility
+utility.get_KBO_data("temp_schedule_2021_07.csv")
+```
+
 ### 일일 경기 파일 합쳐서 월 경기 묶음 파일로 만들기
 
 앞에서 가져온 일일 경기 자료 파일을 합쳐서 월 경기 자료로 파일로 만듭니다. 현재는 아래와 같이 함수 인수에 연도와 월을 입력하면 이를 토대로 파일 이름을 `temp_data_2021_4.json`과 같이 만들어서 저장하게 됩니다.
