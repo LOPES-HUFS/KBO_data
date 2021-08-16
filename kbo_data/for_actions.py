@@ -27,7 +27,7 @@ if __name__ == "__main__":
         "key": "get",
         "value": {"year": str(today.year), "date": temp_date},
     }
-    #print(post_json)
+    # print(post_json)
 
     url = str(sys.argv[1])
 
@@ -42,6 +42,7 @@ if __name__ == "__main__":
     for item in game_schedule:
         if item["state"] == "종료":
             game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
+            print(f'{item["gameDate"]}: 게임 자료 수집 완료!')
         else:
             print(item["state"])
 
