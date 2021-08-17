@@ -17,7 +17,17 @@ KBO 데이터를 가져와서 정리해 데이터 분석을 하기 쉽게 만드
 >>> today_schedule = get_game_schedule.today()
 200
 >>> print(today_schedule)
-{'year': '2021', 'date': '04.10', 1: {'away': 'SK', 'home': 'LG', 'state': '6회초', 'suspended': '0'}, 2: {'away': 'KT', 'home': 'SS', 'state': '5회말', 'suspended': '0'}, 3: {'away': 'WO', 'home': 'LT', 'state': '17:00', 'suspended': '0'}, 4: {'away': 'OB', 'home': 'HH', 'state': '17:00', 'suspended': '0'}, 5: {'away': 'NC', 'home': 'HT', 'state': '17:00', 'suspended': '0'}}
+# 아래 출력은 실제 화면에서 보는 것과 내용과 형태가 다를 수 있습니다.
+# 참고하세요.
+{
+    "year": "2021",
+    "date": "04.10",
+    1: {"away": "SK", "home": "LG", "state": "6회초", "suspended": "0"},
+    2: {"away": "KT", "home": "SS", "state": "5회말", "suspended": "0"},
+    3: {"away": "WO", "home": "LT", "state": "17:00", "suspended": "0"},
+    4: {"away": "OB", "home": "HH", "state": "17:00", "suspended": "0"},
+    5: {"away": "NC", "home": "HT", "state": "17:00", "suspended": "0"},
+}
 ```
 
 ### 특정 일자 경기 정보 가져오기
