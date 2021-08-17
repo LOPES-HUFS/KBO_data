@@ -25,7 +25,15 @@ KBO 데이터를 가져와서 정리해 데이터 분석을 하기 쉽게 만드
 다음과 같이 특정 일자 경기 스케줄 정보가 있다면, 이를 가지고 경기 정보를 다음과 같은 방법으로 가져올 수 있습니다. 가져온 자료는 입력된 경기 스케줄 정보를 토대로 저장 파일명을 만들어서 가져온 자료를 `json` 형식의 파일로 저장하게 됩니다. 현재 `temp_schedule`에 `"year": "2021", "date": "04.08"`라고 명시되어 있기 때문에 `2021_04.08_games.json`이라는 파일 이름을 만들어서 저장하게 됩니다.
 
 ```python
-temp_schedule = {"year": "2021", "date": "04.08", "1": { "away": "SS", "home": "OB", "state": "종료", "suspended": "0" }, "2": { "away": "LT", "home": "NC", "state": "종료", "suspended": "0" }, "3": { "away": "LG", "home": "KT", "state": "종료", "suspended": "0" },"4": { "away": "HT", "home": "WO", "state": "종료", "suspended": "0" },"5": { "away": "HH", "home": "SK", "state": "종료", "suspended": "0" }}
+temp_schedule = {
+    "year": "2021",
+    "date": "04.08",
+    "1": {"away": "SS", "home": "OB", "state": "종료", "suspended": "0"},
+    "2": {"away": "LT", "home": "NC", "state": "종료", "suspended": "0"},
+    "3": {"away": "LG", "home": "KT", "state": "종료", "suspended": "0"},
+    "4": {"away": "HT", "home": "WO", "state": "종료", "suspended": "0"},
+    "5": {"away": "HH", "home": "SK", "state": "종료", "suspended": "0"},
+}
 import utility
 utility.get_one_day_data_to_json(temp_schedule)
 ```
@@ -55,7 +63,15 @@ utility.get_KBO_data("temp_schedule_2021_07.csv")
 앞에서 가져온 일일 경기 자료 파일을 합쳐서 월 경기 자료로 파일로 만듭니다. 현재는 아래와 같이 함수 인수에 연도와 월을 입력하면 이를 토대로 파일 이름을 `temp_data_2021_4.json`과 같이 만들어서 저장하게 됩니다.
 
 ```python
-temp_list = ["2021_04.03_games.json", "2021_04.04_games.json", "2021_04.06_games.json", "2021_04.07_games.json", "2021_04.08_games.json", "2021_04.09_games.json", "2021_04.10_games.json"]
+temp_list = [
+        "2021_04.03_games.json",
+        "2021_04.04_games.json",
+        "2021_04.06_games.json",
+        "2021_04.07_games.json",
+        "2021_04.08_games.json",
+        "2021_04.09_games.json",
+        "2021_04.10_games.json",
+    ]
 
 import utility
 utility.binding_json(temp_list, "2021", "4")
