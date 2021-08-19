@@ -35,14 +35,14 @@ if __name__ == "__main__":
     get_json = r.json()
     game_schedule_list = eval(get_json["body"])
     game_schedule = parsing_game_schedule.changing_format(game_schedule_list)
-    # print(f"get game schedule:{game_schedule}")
+    print(f"get game schedule:{game_schedule}")
 
     game_date = {}
 
     for item in game_schedule:
         if item["state"] == "종료":
             game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
-            print(f'{item["gameDate"]}: 게임 자료 수집 완료!')
+            print(f'{item["gameDate"]}, {item["gameld"]} : 게임 자료 수집 완료!')
         else:
             print(item["state"])
 
