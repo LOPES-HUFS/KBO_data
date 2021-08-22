@@ -26,30 +26,13 @@ jobs:
     - name: Install python package
       run: |
         pip install -r requirements.txt
-#        pip install requests
-#        pip install bs4
-#        pip install lxml
-#        pip install pandas
-#        pip install selenium
-
-#    - name: Install ubuntu package # 우분투 관련 패키지도 설치한 후
-#      run: |
-#        sudo apt install httpie
-#        sudo apt-get install fonts-unfonts-core
-#        sudo apt-get install fonts-unfonts-extra
-#        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add        
-#        sudo apt-get install google-chrome-stable    
-#        wget https://chromedriver.storage.googleapis.com/2.40/chromedriver_linux64.zip
-#        unzip ./chromedriver_linux64.zip   
     - name: Setup Chromedriver
       uses: nanasess/setup-chromedriver@v1.0.1
     - name: Build
       run: |
-        ls
         cd kbo_data
         ls
-        python for_actions.py ${{secrets.API_URL}}
-        ls -l
+        python temp_for_action.py ${{secrets.API_URL}} ${{secrets.DB_URL}}
         cp *.json ../public/
 # 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
 # https://github.com/peaceiris/actions-gh-pages

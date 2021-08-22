@@ -554,8 +554,78 @@ def output_to_tuples(data):
             item["week"],
             item["home"],
             item["away"],
-            changing_dbheader_to_bool(item["dbheader"]),
+            item["dbheader"],
         )
+
+        results.append(temp)
+
+    return results
+
+def output_to_dict(data):
+    """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 DB에 입력하기 위해 dict로 형식으로 정리하는 함수
+
+    Examples:
+
+        ```python
+        import utility
+        temp_data = utility.get_one_day_game_data()
+        import scoreboards
+        temp = scoreboards.output_to_dict(temp_data)
+        print(temp)
+        ```
+
+    Args:
+        data (json): 수집한 한 게임 이상의 게임 자료
+
+    Returns:
+        (list): dict로 바꾼 scoreboard 자료
+
+    """
+
+    temp = output_to_raw_list(data)
+
+    results = []
+
+    for item in temp:
+        temp_primary_key = making_primary_key(
+            item["team"], item["year"], item["month"], item["day"], item["dbheader"]
+        )
+
+        temp_list = [item.values()]
+        temp = {
+            'idx': int(temp_primary_key),
+            'team': item["team"],
+            'result': changing_win_or_loss_to_int(item["result"]),
+            'i_1': item["i_1"],
+            'i_2': item["i_2"],
+            'i_3': item["i_3"],
+            'i_4': item["i_4"],
+            'i_5': item["i_5"],
+            'i_6': item["i_6"],
+            'i_7': item["i_7"],
+            'i_8': item["i_8"],
+            'i_9': is_exist_inning(item["i_9"]),
+            'i_10': is_exist_inning(item["i_10"]),
+            'i_11': is_exist_inning(item["i_11"]),
+            'i_12': is_exist_inning(item["i_12"]),
+            'i_13': is_exist_inning(item["i_13"]),
+            'i_14': is_exist_inning(item["i_14"]),
+            'i_15': is_exist_inning(item["i_15"]),
+            'i_16': is_exist_inning(item["i_16"]),
+            'i_17': is_exist_inning(item["i_17"]),
+            'i_18': is_exist_inning(item["i_18"]),
+            'r': item["R"],
+            'h': item["H"],
+            'e': item["E"],
+            'b': item["B"],
+            'year': item["year"],
+            'month': item["month"],
+            'day': item["day"],
+            'week': item["week"],
+            'home': item["home"],
+            'away': item["away"],
+            'dbheader': item["dbheader"],
+        }
 
         results.append(temp)
 

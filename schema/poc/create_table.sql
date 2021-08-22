@@ -5,13 +5,41 @@ CREATE TABLE PlayerID (
     PRIMARY KEY (playerid));
 
 /*scoreboards*/
-CREATE TABLE scoreboards(
-    idx INT(15) NOT NULL,
-    PRIMARY KEY (idx),
-    teamid INT NOT NULL,
-    year INT(4) NOT NULL,
-    month INT(3) NOT NULL,
-    day INT(3) NOT NULL);
+CREATE TABLE `scoreboard` (
+  `idx` bigint(11) NOT NULL,
+  `team` varchar(3) DEFAULT NULL,
+  `result` int(1) DEFAULT NULL,
+  `i_1` int(2) DEFAULT NULL,
+  `i_2` int(2) DEFAULT NULL,
+  `i_3` int(2) DEFAULT NULL,
+  `i_4` int(2) DEFAULT NULL,
+  `i_5` int(2) DEFAULT NULL,
+  `i_6` int(2) DEFAULT NULL,
+  `i_7` int(2) DEFAULT NULL,
+  `i_8` int(2) DEFAULT NULL,
+  `i_9` int(2) DEFAULT NULL,
+  `i_10` int(2) DEFAULT NULL,
+  `i_11` int(2) DEFAULT NULL,
+  `i_12` int(2) DEFAULT NULL,
+  `i_13` int(2) DEFAULT NULL,
+  `i_14` int(2) DEFAULT NULL,
+  `i_15` int(2) DEFAULT NULL,
+  `i_16` int(2) DEFAULT NULL,
+  `i_17` int(2) DEFAULT NULL,
+  `i_18` int(2) DEFAULT NULL,
+  `r` int(2) DEFAULT NULL,
+  `h` int(2) DEFAULT NULL,
+  `e` int(2) DEFAULT NULL,
+  `b` int(2) DEFAULT NULL,
+  `year` int(4) DEFAULT NULL,
+  `month` int(2) DEFAULT NULL,
+  `day` int(2) DEFAULT NULL,
+  `week` int(1) DEFAULT NULL,
+  `home` varchar(3) DEFAULT NULL,
+  `away` varchar(3) DEFAULT NULL,
+  `dbheader` int(1) DEFAULT NULL,
+  PRIMARY KEY (`idx`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*batters*/
 CREATE TABLE batters(

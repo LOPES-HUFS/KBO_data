@@ -5,7 +5,7 @@ on:
 #    - cron: '45 14 * * *'
     - cron: '5 2 * * *'
     # UST 가 default라고 합니다.
-    # 2시 5분에 돌아 가도록 했으니 한국 시간으로 10시 5분 실행됩니다.
+    # 2시 5분에 돌아 가도록 했으니 한국 시간으로 오전 11시 5분 실행됩니다.
 
 jobs:
   build-linux:
@@ -29,12 +29,4 @@ jobs:
     - name: Build
       run: |
         cd kbo_data
-        python for_actions.py ${{secrets.API_URL}}
-        cp *.json ../public/
-# 위 Build에서 만든 파일을 아래 코드에서 gh-pages 브랜치를 만들고 저장한다.
-# https://github.com/peaceiris/actions-gh-pages
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        GITHUB_TOKEN: ${{ secrets.KBO_DEPLOY }}
-        publish_dir: ./public
+        python for_actions.py ${{secrets.API_URL}} ${{secrets.DB_URL}}
