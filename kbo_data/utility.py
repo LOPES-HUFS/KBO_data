@@ -11,6 +11,47 @@ import get_game_schedule
 from parsing_game_schedule import changing_format
 
 
+def get_one_day_data_to_dict(input_schedule):
+    """input_schedule으로 들어온 게임 스케줄을 가지고 게임 자료를 수집하는 함수
+
+    기본적으로 input_schedule을 통해 1개 이상의 게임 스케줄이 들어옵니다.
+    이를 가지고 게임 자료를 수입해서 이를 dict로 반환합니다.
+
+    Examples:
+        ```python
+        temp_schedule = {
+            "year": "2021",
+            "date": "04.08",
+            "1": {"away": "SS", "home": "OB", "state": "종료", "suspended": "0"},
+            "2": {"away": "LT", "home": "NC", "state": "종료", "suspended": "0"},
+            "3": {"away": "LG", "home": "KT", "state": "종료", "suspended": "0"},
+            "4": {"away": "HT", "home": "WO", "state": "종료", "suspended": "0"},
+            "5": {"away": "HH", "home": "SK", "state": "종료", "suspended": "0"},
+        }
+
+        import utility
+        temp_data = utility.get_one_day_data_to_dict(temp_schedule)
+        ```
+
+    Args:
+        - input_schedule (dict): 특정 날짜의 KBO 경기 스케줄, 형식은 위에
+
+    Returns:
+        game_date (dict): 입력된 input_schedule을 가지고 수입한 KBO 경기 자료
+
+    """
+
+    game_schedule = changing_format(input_schedule)
+    game_schedule = [item for item in game_schedule if item["state"] == "종료"]
+
+    game_date = {}
+
+    for item in game_schedule:
+        game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
+
+    return game_date
+
+
 def get_one_day_data_to_json(input_schedule):
 
     game_schedule = changing_format(input_schedule)
