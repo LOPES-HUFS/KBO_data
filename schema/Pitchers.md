@@ -1,4 +1,4 @@
-## Patters
+## pitchers
 
 투수들의 정보를 담은 테이블
 
