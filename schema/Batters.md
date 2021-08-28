@@ -5,32 +5,36 @@
 ### schema
 
 ```sql
-idx = Column(Integer(11))
-playerid = Column(Integer(5))
-position = Column(String(1))
-i_1 = Column(Integer(8))
-i_2 = Column(Integer(8))
-i_3 = Column(Integer(8))
-i_4 = Column(Integer(8))
-i_5 = Column(Integer(8))
-i_6 = Column(Integer(8))
-i_7 = Column(Integer(8))
-i_8 = Column(Integer(8))
-i_9 = Column(Integer(8))
-i_10 = Column(Integer(8))
-i_11 = Column(Integer(8))
-i_12 = Column(Integer(8))
-i_13 = Column(Integer(8))
-i_14 = Column(Integer(8))
-i_15 = Column(Integer(8))
-i_16 = Column(Integer(8))
-i_17 = Column(Integer(8))
-i_18 = Column(Integer(8))
-hit = Column(Integer(2))
-bat_num = Column(Integer(2))
-hit_prob = Column(Float)
-hit_get = Column(Integer(2))
-own_get = Column(Integer(2))
+CREATE TABLE batter(
+    idx BIGINT(11) NOT NULL,
+    playerid INT(5) NOT NULL,
+    position CHAR(1) DEFAULT NULL,
+    i_1 INT(8) DEFAULT NULL,
+    i_2  INT(8) DEFAULT NULL,
+    i_3  INT(8) DEFAULT NULL,
+    i_4  INT(8) DEFAULT NULL,
+    i_5  INT(8) DEFAULT NULL,
+    i_6  INT(8) DEFAULT NULL,
+    i_7  INT(8) DEFAULT NULL,
+    i_8  INT(8) DEFAULT NULL,
+    i_9  INT(8) DEFAULT NULL,
+    i_10  INT(8) DEFAULT NULL,
+    i_11  INT(8) DEFAULT NULL,
+    i_12  INT(8) DEFAULT NULL,
+    i_13  INT(8) DEFAULT NULL,
+    i_14  INT(8) DEFAULT NULL,
+    i_15  INT(8) DEFAULT NULL,
+    i_16  INT(8) DEFAULT NULL,
+    i_17  INT(8) DEFAULT NULL,
+    i_18  INT(8) DEFAULT NULL,
+    hit  INT(2) DEFAULT NULL,
+    bat_num  INT(2) DEFAULT NULL,
+    hit_prob  DECIMAL(6,3) DEFAULT NULL,
+    hit_get  INT(2) DEFAULT NULL,
+    own_get  INT(2) DEFAULT NULL,
+    CONSTRAINT scoreboards_batter_idx_fk FOREIGN KEY (idx) REFERENCES scoreboard (idx),
+    CONSTRAINT player_id_batter_playerid_fk FOREIGN KEY (playerid) REFERENCES player_id (playerid)
+);
 ```
 
 ### Info
