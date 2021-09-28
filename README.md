@@ -61,11 +61,11 @@ import utility
 get_monthly_game_schedules.output_to_csv(temp)
 ```
 
-앞에서 만든 `csv` 형식 파일로 경기 자료를 수입해 보겠습니다. 아래와 같이 하시면, 경기 자료가 `game_data.json`이라는 파일 이름으로 저장됩니다.
+앞에서 만든 `csv` 형식 파일로 경기 자료를 수집해 보겠습니다. 아래와 같이 하시면, 경기 자료가 `game_data.json`이라는 파일 이름으로 저장됩니다.
 
 ```python
 import utility
-utility.get_KBO_data("temp_schedule_2021_07.csv")
+utility.get_KBO_data("game_schedule_2021_07.csv")
 ```
 
 ### 일일 경기 파일 합쳐서 월 경기 묶음 파일로 만들기
