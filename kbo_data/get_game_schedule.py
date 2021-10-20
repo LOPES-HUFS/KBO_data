@@ -63,8 +63,9 @@ def modify_today_data(soup):
 
     for item in temp_todaySchedule.find_all("li"):
         i = i + 1
-
-        if item.find("div", class_="vs_cnt").find("p", class_="suspended") == None :
+        if item.contents == []:
+            pass
+        elif item.find("div", class_="vs_cnt").find("p", class_="suspended") == None :
             suspended = "0"
         else:
             temp_suspended = item.find("div", class_="vs_cnt").find("p", class_="suspended")
