@@ -75,7 +75,10 @@ def modify_today_data(soup):
             else:
                 suspended = "2"
 
-        temp_list = {
+        if item.contents == []:
+            pass
+        else:
+            temp_list = {
             "away": parsing_game_schedule.chang_name_into_id(
                 item.find("div", class_="vs_lft").find_all("strong")[0].text,
                 exporting_dict["year"],
