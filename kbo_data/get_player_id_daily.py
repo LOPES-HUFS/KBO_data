@@ -31,7 +31,7 @@ import configparser
 import pandas as pd
 
 config = configparser.ConfigParser()
-config.read("config.ini")
+config.read("config.ini",encoding='utf-8')
 player_search_url = eval(config["DEFAULT"]["player_search_URL"])
 
 
