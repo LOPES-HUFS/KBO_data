@@ -37,7 +37,7 @@ import pandas as pd
 
 config = configparser.ConfigParser()
 # 설정파일을 읽어옵니다.
-config.read("config.ini")
+config.read("config.ini",encoding='utf-8')
 Game_info_URL = config["DEFAULT"]["Game_info_URL"]
 chromium_location = config["DEFAULT"]["chromium_location"]
 
