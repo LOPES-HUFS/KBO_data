@@ -11,7 +11,7 @@ import configparser
 
 # 설정파일을 읽어옵니다.
 config = configparser.ConfigParser()
-config.read("config.ini")
+config.read("config.ini",encoding='utf-8')
 
 
 def changing_team_name_into_id(team_name):
