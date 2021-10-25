@@ -26,7 +26,7 @@ import parsing_game_schedule
 def today():
 
     config = configparser.ConfigParser()
-    config.read("config.ini")
+    config.read("config.ini",encoding='utf-8')
     temp_url = config["DEFAULT"]["naver_KBO_URL"]
     req = requests.get(temp_url)
     print(req.status_code)

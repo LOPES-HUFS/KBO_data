@@ -23,7 +23,7 @@ import configparser
 import re
 
 config = configparser.ConfigParser()
-config.read('code_list.ini')
+config.read('code_list.ini',encoding='utf-8')
 Batter_factor = config["BATTER"]
 
 def change_record(data):
