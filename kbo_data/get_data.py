@@ -12,7 +12,7 @@ from pasing_page import away_batter, home_batter, away_pitcher, home_pitcher
 
 config = configparser.ConfigParser()
 # 설정파일을 읽어옵니다.
-config.read("config.ini",encoding='utf-8')
+config.read("config.ini")
 # 설정파일에 들어있는 KBO url을 가져 옵니다.
 url = config["DEFAULT"]["KBO_URL"]
 chromium_location = config["DEFAULT"]["chromium_location"]
