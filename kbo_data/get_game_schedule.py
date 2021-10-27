@@ -26,7 +26,7 @@ import parsing_game_schedule
 def today():
 
     config = configparser.ConfigParser()
-    config.read("config.ini",encoding='utf-8')
+    config.read("config.ini", encoding="utf-8")
     temp_url = config["DEFAULT"]["naver_KBO_URL"]
     req = requests.get(temp_url)
     print(req.status_code)
@@ -35,7 +35,7 @@ def today():
     exporting_dict = {}
 
     soup = BeautifulSoup(html, "lxml")
-    # 오늘 게임 경기가 있으면 is_KBO_game_schedule = 'KBO리그'이어야 한다. 
+    # 오늘 게임 경기가 있으면 is_KBO_game_schedule = 'KBO리그'이어야 한다.
     is_KBO_game_schedule = soup.find("h2", class_="h_sch").text
 
     if is_KBO_game_schedule == "KBO리그":
@@ -43,6 +43,7 @@ def today():
 
     else:
         return False
+
 
 def modify_today_data(soup):
     exporting_dict = {}
@@ -65,10 +66,12 @@ def modify_today_data(soup):
         i = i + 1
         if item.contents == []:
             pass
-        elif item.find("div", class_="vs_cnt").find("p", class_="suspended") == None :
+        elif item.find("div", class_="vs_cnt").find("p", class_="suspended") == None:
             suspended = "0"
         else:
-            temp_suspended = item.find("div", class_="vs_cnt").find("p", class_="suspended")
+            temp_suspended = item.find("div", class_="vs_cnt").find(
+                "p", class_="suspended"
+            )
             suspended = temp_suspended.text.strip()
             if suspended == "DH1":
                 suspended = "DH1"
@@ -79,18 +82,19 @@ def modify_today_data(soup):
             pass
         else:
             temp_list = {
-            "away": parsing_game_schedule.chang_name_into_id(
-                item.find("div", class_="vs_lft").find_all("strong")[0].text,
-                exporting_dict["year"],
-            ),
-            "home": parsing_game_schedule.chang_name_into_id(
-                item.find("div", class_="vs_rgt").find_all("strong")[0].text,
-                exporting_dict["year"],
-            ),
-            "state": item.find("div", class_="vs_cnt")
-            .find_all("em", class_="state")[0].text.strip(),
-            "suspended": suspended
-        }
+                "away": parsing_game_schedule.chang_name_into_id(
+                    item.find("div", class_="vs_lft").find_all("strong")[0].text,
+                    exporting_dict["year"],
+                ),
+                "home": parsing_game_schedule.chang_name_into_id(
+                    item.find("div", class_="vs_rgt").find_all("strong")[0].text,
+                    exporting_dict["year"],
+                ),
+                "state": item.find("div", class_="vs_cnt")
+                .find_all("em", class_="state")[0]
+                .text.strip(),
+                "suspended": suspended,
+            }
         exporting_dict[i] = temp_list
 
     return exporting_dict
