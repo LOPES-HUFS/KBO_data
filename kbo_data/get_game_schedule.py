@@ -70,9 +70,9 @@ def modify_today_data(soup):
             temp_suspended = item.find("div", class_="vs_cnt").find("p", class_="suspended")
             suspended = temp_suspended.text.strip()
             if suspended == "DH1":
-                suspended = "1"
+                suspended = "DH1"
             else:
-                suspended = "2"
+                suspended = "DH2"
 
         temp_list = {
             "away": parsing_game_schedule.chang_name_into_id(
