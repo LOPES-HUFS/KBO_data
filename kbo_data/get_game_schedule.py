@@ -26,7 +26,7 @@ import parsing_game_schedule
 def today():
 
     config = configparser.ConfigParser()
-    config.read("config.ini")
+    config.read("config.ini",encoding='utf-8')
     temp_url = config["DEFAULT"]["naver_KBO_URL"]
     req = requests.get(temp_url)
     print(req.status_code)
@@ -63,8 +63,9 @@ def modify_today_data(soup):
 
     for item in temp_todaySchedule.find_all("li"):
         i = i + 1
-
-        if item.find("div", class_="vs_cnt").find("p", class_="suspended") == None :
+        if item.contents == []:
+            pass
+        elif item.find("div", class_="vs_cnt").find("p", class_="suspended") == None :
             suspended = "0"
         else:
             temp_suspended = item.find("div", class_="vs_cnt").find("p", class_="suspended")
@@ -74,7 +75,10 @@ def modify_today_data(soup):
             else:
                 suspended = "DH2"
 
-        temp_list = {
+        if item.contents == []:
+            pass
+        else:
+            temp_list = {
             "away": parsing_game_schedule.chang_name_into_id(
                 item.find("div", class_="vs_lft").find_all("strong")[0].text,
                 exporting_dict["year"],
