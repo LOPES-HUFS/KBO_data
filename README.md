@@ -10,14 +10,17 @@ KBO 데이터를 가져와서 정리해 데이터 분석을 하기 쉽게 만드
 
 ### 오늘 게임 스케줄 정보 가져오기
 
-오늘 KBO 경기 스케줄 정보를 가져 오려면 다음과 같이 하면 됩니다. 조심할 점은 경기 없는 날은, 다음 경기가 있는 날짜의 정보를 가져옵니다.
+오늘 KBO 경기 스케줄 정보를 가져 오려면 다음과 같이 하면 됩니다. 조심할 점은 경기 없는 날은, 다음 경기가 있는 날짜의 정보를 가져옵니다. 다음은 작동 화면입니다.
 
 ```python
->>> import get_game_schedule
->>> today_schedule = get_game_schedule.today()
-200
->>> print(today_schedule)
-# 아래 출력은 실제 화면에서 보는 것과 내용과 형태가 다를 수 있습니다.
+>>> temp = get_game_schedule.today()
+>>> if temp['status_code'] == 200:
+...     today_schedule = get_game_schedule.modify(temp['list'], temp['date'])
+... else:
+...     print("game schedule download failed")
+... 
+>>> today_schedule
+# 아래 출력은 실행하는 날짜에 따라서 다르게 나옵니다.
 # 참고하세요.
 {
     "year": "2021",
