@@ -7,14 +7,17 @@ import json
 
 import requests
 
-import get_data
 import get_game_schedule
-import parsing_game_schedule
-import scoreboards
 
 if __name__ == "__main__":
 
-    today_schedule = get_game_schedule.today()
+    temp = get_game_schedule.today()
+    if temp['status_code'] == 200:
+        today_schedule = get_game_schedule.modify(temp['list'], temp['date'])
+    else:
+        print("game schedule download failed")
+
+    #today_schedule = get_game_schedule.today()
 
     # 연습용 today_schedule dict
     # today_schedule = {
