@@ -44,7 +44,7 @@ if __name__ == "__main__":
         }
     }
 
-    # print(f"Today_schedule: {today_schedule}")
+    print(f"Today_schedule: {today_schedule}")
 
     url = str(sys.argv[1])
 
