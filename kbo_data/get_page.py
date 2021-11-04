@@ -1,7 +1,7 @@
 """KBO 정규 시즌 게임 자료를 가져와서 사용할 수 있도록 가공하기 쉽게 수정해주는 모듈 
 
-이 모듈에는 getting_page(), single_game(), 함수 2개를 가지고 있다.
-이 함수 중 single_game()이 메인 함수이다. 이 함수는 getting_page()을 이용하여
+이 모듈에는 `getting_page()`, `single_game()`, 함수 2개를 가지고 있다.
+이 함수 중 single_game()이 메인 함수이다. 이 함수는 `getting_page()`을 이용하여
 게임 자료를 가져와 사용하기 쉽게 적절하게 정리해 준다.
 """
 
