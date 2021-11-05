@@ -109,9 +109,10 @@ def modify(data):
     """
     i = 0
 
-    for key, value in data.items():
-        temp = value["scoreboard"]
-        for item in temp:
+#    for key, value in data.items():
+    for temp in data:
+        print(temp['id'])
+        for item in temp['contents']['scoreboard']:
             if "13" in item:
                 pass
             else:
@@ -136,14 +137,14 @@ def modify(data):
                 pass
             else:
                 item["18"] = "-"
-        temp_p = pd.DataFrame(temp)
-        game_info = get_game_info(key)
+        temp_p = pd.DataFrame(temp['contents']['scoreboard'])
+        game_info = get_game_info(temp['id'])
         temp_p.loc[:, "year"] = game_info["year"]
         temp_p.loc[:, "month"] = game_info["month"]
         temp_p.loc[:, "day"] = game_info["day"]
         temp_p.loc[:, "week"] = game_info["week"]
-        temp_p.loc[:, "홈팀"] = value["scoreboard"][1]["팀"]
-        temp_p.loc[:, "원정팀"] = value["scoreboard"][0]["팀"]
+        temp_p.loc[:, "홈팀"] = temp['contents']["scoreboard"][1]["팀"]
+        temp_p.loc[:, "원정팀"] = temp['contents']["scoreboard"][0]["팀"]
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
         temp_p.rename(
             columns={
@@ -174,7 +175,7 @@ def modify(data):
             inplace=True,
         )
         temp_p.replace("-", -1, inplace=True)
-        data[list(data.keys())[i]]["scoreboard"] = ast.literal_eval(
+        data[i]['contents']["scoreboard"] = ast.literal_eval(
             temp_p.to_json(orient="records")
         )
         i = i + 1
@@ -439,7 +440,8 @@ def output_to_raw_list(data):
 
     data = modify(data)
 
-    temp = [value["scoreboard"] for key, value in data.items()]
+    #temp = [value["scoreboard"] for key, value in data.items()]
+    temp = [item['contents']["scoreboard"] for item in data]
 
     result = []
 
