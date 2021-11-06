@@ -82,7 +82,7 @@ def modify(data):
     그런 다음 다시 이렇게 작업한 스코어보드를 다시 원 자료(`data`)에 끼워 넣는다.
     아래 긴 `for`문은 18회까지 연장하기 위한 방법입니다.
     기본적으로 정규 이닝은 13회까지밖에 없지만, 예전 리크에서 18회까지 있는 경우가 있어
-    이를 반영했습니다. 
+    이를 반영했습니다.
 
     Examples:
 
@@ -109,10 +109,10 @@ def modify(data):
     """
     i = 0
 
-#    for key, value in data.items():
+    #    for key, value in data.items():
     for temp in data:
-        print(temp['id'])
-        for item in temp['contents']['scoreboard']:
+        print(temp["id"])
+        for item in temp["contents"]["scoreboard"]:
             if "13" in item:
                 pass
             else:
@@ -137,14 +137,14 @@ def modify(data):
                 pass
             else:
                 item["18"] = "-"
-        temp_p = pd.DataFrame(temp['contents']['scoreboard'])
-        game_info = get_game_info(temp['id'])
+        temp_p = pd.DataFrame(temp["contents"]["scoreboard"])
+        game_info = get_game_info(temp["id"])
         temp_p.loc[:, "year"] = game_info["year"]
         temp_p.loc[:, "month"] = game_info["month"]
         temp_p.loc[:, "day"] = game_info["day"]
         temp_p.loc[:, "week"] = game_info["week"]
-        temp_p.loc[:, "홈팀"] = temp['contents']["scoreboard"][1]["팀"]
-        temp_p.loc[:, "원정팀"] = temp['contents']["scoreboard"][0]["팀"]
+        temp_p.loc[:, "홈팀"] = temp["contents"]["scoreboard"][1]["팀"]
+        temp_p.loc[:, "원정팀"] = temp["contents"]["scoreboard"][0]["팀"]
         temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
         temp_p.rename(
             columns={
@@ -175,7 +175,7 @@ def modify(data):
             inplace=True,
         )
         temp_p.replace("-", -1, inplace=True)
-        data[i]['contents']["scoreboard"] = ast.literal_eval(
+        data[i]["contents"]["scoreboard"] = ast.literal_eval(
             temp_p.to_json(orient="records")
         )
         i = i + 1
@@ -440,8 +440,8 @@ def output_to_raw_list(data):
 
     data = modify(data)
 
-    #temp = [value["scoreboard"] for key, value in data.items()]
-    temp = [item['contents']["scoreboard"] for item in data]
+    # temp = [value["scoreboard"] for key, value in data.items()]
+    temp = [item["contents"]["scoreboard"] for item in data]
 
     result = []
 
@@ -563,6 +563,7 @@ def output_to_tuples(data):
 
     return results
 
+
 def output_to_dict(data):
     """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 DB에 입력하기 위해 dict로 형식으로 정리하는 함수
 
@@ -595,38 +596,38 @@ def output_to_dict(data):
 
         temp_list = [item.values()]
         temp = {
-            'idx': int(temp_primary_key),
-            'team': item["team"],
-            'result': changing_win_or_loss_to_int(item["result"]),
-            'i_1': item["i_1"],
-            'i_2': item["i_2"],
-            'i_3': item["i_3"],
-            'i_4': item["i_4"],
-            'i_5': item["i_5"],
-            'i_6': item["i_6"],
-            'i_7': item["i_7"],
-            'i_8': item["i_8"],
-            'i_9': is_exist_inning(item["i_9"]),
-            'i_10': is_exist_inning(item["i_10"]),
-            'i_11': is_exist_inning(item["i_11"]),
-            'i_12': is_exist_inning(item["i_12"]),
-            'i_13': is_exist_inning(item["i_13"]),
-            'i_14': is_exist_inning(item["i_14"]),
-            'i_15': is_exist_inning(item["i_15"]),
-            'i_16': is_exist_inning(item["i_16"]),
-            'i_17': is_exist_inning(item["i_17"]),
-            'i_18': is_exist_inning(item["i_18"]),
-            'r': item["R"],
-            'h': item["H"],
-            'e': item["E"],
-            'b': item["B"],
-            'year': item["year"],
-            'month': item["month"],
-            'day': item["day"],
-            'week': item["week"],
-            'home': item["home"],
-            'away': item["away"],
-            'dbheader': item["dbheader"],
+            "idx": int(temp_primary_key),
+            "team": item["team"],
+            "result": changing_win_or_loss_to_int(item["result"]),
+            "i_1": item["i_1"],
+            "i_2": item["i_2"],
+            "i_3": item["i_3"],
+            "i_4": item["i_4"],
+            "i_5": item["i_5"],
+            "i_6": item["i_6"],
+            "i_7": item["i_7"],
+            "i_8": item["i_8"],
+            "i_9": is_exist_inning(item["i_9"]),
+            "i_10": is_exist_inning(item["i_10"]),
+            "i_11": is_exist_inning(item["i_11"]),
+            "i_12": is_exist_inning(item["i_12"]),
+            "i_13": is_exist_inning(item["i_13"]),
+            "i_14": is_exist_inning(item["i_14"]),
+            "i_15": is_exist_inning(item["i_15"]),
+            "i_16": is_exist_inning(item["i_16"]),
+            "i_17": is_exist_inning(item["i_17"]),
+            "i_18": is_exist_inning(item["i_18"]),
+            "r": item["R"],
+            "h": item["H"],
+            "e": item["E"],
+            "b": item["B"],
+            "year": item["year"],
+            "month": item["month"],
+            "day": item["day"],
+            "week": item["week"],
+            "home": item["home"],
+            "away": item["away"],
+            "dbheader": item["dbheader"],
         }
 
         results.append(temp)
