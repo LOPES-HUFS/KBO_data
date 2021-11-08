@@ -11,7 +11,7 @@ import configparser
 
 # 설정파일을 읽어옵니다.
 config = configparser.ConfigParser()
-config.read("config.ini",encoding='utf-8')
+config.read("config.ini", encoding="utf-8")
 
 
 def making_primary_key(team_name, year, month, day, dbheader):
@@ -50,8 +50,6 @@ def making_primary_key(team_name, year, month, day, dbheader):
     )
 
     return result
-
-
 
 
 def changing_team_name_into_id(team_name):
