@@ -8,12 +8,10 @@ import sys
 from datetime import date
 import json
 
-import pandas as pd
 import requests
 import sqlalchemy as db
 
-import get_data
-import get_game_schedule
+import get_page
 import parsing_game_schedule
 import scoreboards
 
@@ -45,7 +43,7 @@ if __name__ == "__main__":
     for item in game_schedule:
         try:
             if item["state"] == "종료":
-                game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
+                game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
                 print(f'{item["gameDate"]}, {item["gameld"]} : 게임 자료 수집 완료!')
             else:
                 print(item["state"])
