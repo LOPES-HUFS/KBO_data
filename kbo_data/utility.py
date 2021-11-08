@@ -6,8 +6,7 @@
 import json
 import csv
 
-import get_data
-import get_game_schedule
+import get_page
 from parsing_game_schedule import changing_format
 
 
@@ -47,7 +46,7 @@ def get_one_day_data_to_dict(input_schedule):
     game_date = {}
 
     for item in game_schedule:
-        game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
+        game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
 
     return game_date
 
@@ -61,7 +60,7 @@ def get_one_day_data_to_json(input_schedule):
     for item in game_schedule:
         print(item)
         if item["state"] == "종료":
-            game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
+            game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
 
@@ -150,7 +149,7 @@ def get_KBO_data(game_list_file_name):
 
     """
 
-    game_date = {}
+    game_date = []
     count = 0
     error_list = []
 
@@ -162,9 +161,10 @@ def get_KBO_data(game_list_file_name):
                 pass
             else:
                 try:
-                    print(count, row)
-                    game_date.update(get_data.single_game(row[0], row[1]))
+                    game_date.append(get_page.single_game(row[0], row[1]))
+                    print(f"No. {count}, ID: {row}, Download completed.")
                 except:
+                    print(f"No. {count}, ID: {row}, Download Failed.")
                     error_list.append(row)
 
     # 수집한 자료를 저장하기 위한 파일 명 만들기
@@ -175,7 +175,7 @@ def get_KBO_data(game_list_file_name):
         file_name = "game_data.json"
 
     with open(file_name, "w") as outfile:
-        json.dump(game_date, outfile)
+        json.dump(game_date, outfile, ensure_ascii=False)
 
     # 수집하지 못한 경기 리스트를 저장하기 위한 파일 명 만들기
     if game_list_file_name.find("temp_schedule_") != -1:
@@ -219,12 +219,12 @@ def get_one_day_game_data():
 
     game_schedule = changing_format(temp_schedule)
 
-    game_date = {}
+    game_date = []
 
     for item in game_schedule:
         print(item)
         if item["state"] == "종료":
-            game_date.update(get_data.single_game(item["gameDate"], item["gameld"]))
+            game_date.append(get_page.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
 
