@@ -35,7 +35,7 @@ if __name__ == "__main__":
     game_schedule = parsing_game_schedule.changing_format(game_schedule_list)
     print(f"get game schedule:{game_schedule}")
     # 종료된 게임 스케줄만 뽑아냅니다.
-    game_schedule = [item for item in game_schedule if item['state'] == '종료']
+    game_schedule = [item for item in game_schedule if item["state"] == "종료"]
     print(f"종료된 game schedule:{game_schedule}")
 
     game_date = {}
@@ -55,16 +55,20 @@ if __name__ == "__main__":
     print(temp_scoreboards)
 
     # DB 설정 시작
-    DB_URL = str(sys.argv[2])
+    if len(temp_scoreboards) == 0:
+        print("DB에 입력할 자료가 없습니다!")
+        pass
+    else:
+        DB_URL = str(sys.argv[2])
 
-    engine = db.create_engine(DB_URL)
-    connection = engine.connect()
-    metadata = db.MetaData()
-    # DB에 스코어 보드 자료 입력 시작
-    table = db.Table("scoreboard", metadata, autoload=True, autoload_with=engine)
-    print(f"table columns keys:{table.columns.keys()}")
+        engine = db.create_engine(DB_URL)
+        connection = engine.connect()
+        metadata = db.MetaData()
+        # DB에 스코어 보드 자료 입력 시작
+        table = db.Table("scoreboard", metadata, autoload=True, autoload_with=engine)
+        print(f"table columns keys:{table.columns.keys()}")
 
-    query = db.insert(table)
-    result_proxy = connection.execute(query, temp_scoreboards)
-    result_proxy.close()
-    # DB에 스코어 보드 자료 입력 완료
+        query = db.insert(table)
+        result_proxy = connection.execute(query, temp_scoreboards)
+        result_proxy.close()
+        # DB에 스코어 보드 자료 입력 완료
