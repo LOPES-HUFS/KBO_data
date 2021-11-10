@@ -50,8 +50,9 @@ if __name__ == "__main__":
         except Exception as e:
             print(e)
 
-    temp_scoreboards = scoreboards.output_to_dict(game_date)
-
+    print("자료 정리 시작")
+    temp_scoreboards = scoreboards.output_to_tuples(game_date)
+    print("자료 정리 완료 & 정리한 자료 보기")
     print(temp_scoreboards)
 
     # DB 설정 시작
