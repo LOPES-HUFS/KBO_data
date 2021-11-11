@@ -38,12 +38,12 @@ if __name__ == "__main__":
     game_schedule = [item for item in game_schedule if item["state"] == "종료"]
     print(f"종료된 game schedule:{game_schedule}")
 
-    game_date = {}
+    game_date = []
 
     for item in game_schedule:
         try:
             if item["state"] == "종료":
-                game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
+                game_date.append(get_page.single_game(item["gameDate"], item["gameld"]))
                 print(f'{item["gameDate"]}, {item["gameld"]} : 게임 자료 수집 완료!')
             else:
                 print(item["state"])

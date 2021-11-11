@@ -43,10 +43,10 @@ def get_one_day_data_to_dict(input_schedule):
     game_schedule = changing_format(input_schedule)
     game_schedule = [item for item in game_schedule if item["state"] == "종료"]
 
-    game_date = {}
+    game_date = []
 
     for item in game_schedule:
-        game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
+        game_date.append(get_page.single_game(item["gameDate"], item["gameld"]))
 
     return game_date
 
@@ -55,12 +55,12 @@ def get_one_day_data_to_json(input_schedule):
 
     game_schedule = changing_format(input_schedule)
 
-    game_date = {}
+    game_date = []
 
     for item in game_schedule:
         print(item)
         if item["state"] == "종료":
-            game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
+            game_date.append(get_page.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
 
