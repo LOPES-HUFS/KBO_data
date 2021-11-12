@@ -171,6 +171,13 @@ def get_KBO_data(game_list_file_name):
     if game_list_file_name.find("temp_schedule_") != -1:
         file_name = game_list_file_name.replace("schedule", "data")
         file_name = file_name.replace("csv", "json")
+    elif game_list_file_name.find("/") >= 2:
+        file_name_list = game_list_file_name.split('/')
+        file_name = file_name_list.pop()
+        try:
+            file_name = file_name.replace("csv", "json")
+        except:
+            pass
     else:
         file_name = "game_data.json"
 
