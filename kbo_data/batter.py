@@ -18,6 +18,7 @@ import pandas as pd
 
 from modifying import get_game_info
 
+
 def modify(data):
     """수집한 여러 개의 경기가 들어 있는 자료에서 타자 자료만 정리하는 함수
 
@@ -121,6 +122,7 @@ def modify(data):
             print(ast.literal_eval(home_or_away))
             print(data[i]["contents"][home_or_away])
             data[i]["contents"][home_or_away] = ast.literal_eval(
-            temp_batter.to_json(orient="records"))
+                temp_batter.to_json(orient="records")
+            )
     i = i + 1
     return data
