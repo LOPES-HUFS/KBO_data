@@ -98,7 +98,7 @@ def modify(data):
                     pass
                 else:
                     item["18"] = "-"
-                print(item['포지션'])
+                print(item["포지션"])
             temp_batter = pd.DataFrame(batter)
             game_info = get_game_info(temp["id"])
             temp_batter.loc[:, "year"] = game_info["year"]
