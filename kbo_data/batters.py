@@ -50,7 +50,7 @@ def modify(data):
     import batters
     with open("../sample_data/2017/2017_03.json", 'r') as json_file:
         kbo_2017_03 = json.load(json_file)
-    batter_data = batters.modify(kbo_2017_03)
+    kbo_2017_03_modifed = batters.modify(kbo_2017_03)
     ```
 
     Note:
@@ -70,9 +70,10 @@ def modify(data):
     i = 0
 
     for temp in data:
-        batter = [temp["contents"]["away_batter"], temp["contents"]["home_batter"]]
-        for home_or_away in batter:
-            for item in home_or_away:
+        batters = [temp["contents"]["away_batter"], temp["contents"]["home_batter"]]
+        home_or_away_list = ["away_batter", "home_batter"]
+        for batter, home_or_away in zip(batters, home_or_away_list):
+            for item in batter:
                 if "13" in item:
                     pass
                 else:
@@ -97,7 +98,8 @@ def modify(data):
                     pass
                 else:
                     item["18"] = "-"
-            temp_batter = pd.DataFrame(home_or_away)
+                print(item['포지션'])
+            temp_batter = pd.DataFrame(batter)
             game_info = get_game_info(temp["id"])
             temp_batter.loc[:, "year"] = game_info["year"]
             temp_batter.loc[:, "month"] = game_info["month"]
@@ -135,8 +137,6 @@ def modify(data):
                 inplace=True,
             )
             temp_batter.replace("-", -1, inplace=True)
-            print(temp_batter)
-            print(data[i]["contents"][home_or_away])
             data[i]["contents"][home_or_away] = ast.literal_eval(
                 temp_batter.to_json(orient="records")
             )
