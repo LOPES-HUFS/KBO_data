@@ -144,6 +144,85 @@ def modify(data):
     return data
 
 
+def output(data):
+    """수집한 여러개의 경기가 들어 있는 자료에서 타자 자료만 뽑아 정리해 사용하기 쉽게 만드는 함수
+
+    여러 경기 자료가 같이 들어가 있는 자료에서 타자 자료만 모두 뽑아서 위 `modify` 함수를
+    이용하여 처리한다. 따라서 반환하는 값에는 여러 경기의 타자 자료만 들어 있다.
+
+    ### Examples:
+
+    ```python
+    import json
+    import batters
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    data = batters.output(kbo_2017_03)
+    ```
+
+    ### Args:
+        data (json): 수집된 한 게임 이상의 게임 자료
+
+    ### Returns:
+        temp_data (json): 여려 경기 타자 자료
+    """
+    data = modify(data)
+
+    temp_data = []
+
+    for item in data:
+        batters = [item["contents"]["away_batter"], item["contents"]["home_batter"]]
+        for batter in batters:
+            for sub_item in batter:
+                temp_data.append(sub_item)
+
+    return temp_data
+
+
+def output_to_pd(data):
+    """수집한 여러개의 경기가 들어 있는 자료에서 타자 자료만 뽑아 정리해 pandas로 변환하는 함수
+
+    여러 경기 자료가 같이 들어가 있는 자료에서 `output`함수를 이용하여
+     타자 자료만 모두 뽑고 정리해서 이렇게 처리한 자료를 pandas로 반환해 준다.
+    이렇게 반환하면 아래 예에서처럼 pandas를 이용해 여러가지 분석을 할 수 있다.
+    아래 활용법 참고!
+
+    ### Examples:
+
+    ```python
+    import json
+    import batters
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    data = batters.output_to_pd(kbo_2017_03)
+    ## 활용법
+    ## 위 2017월 3월 경기 중 9회에 1점 이상 득점한 팀은?
+    >>> data['team'][data.i_9 >= 1]
+    0     롯데
+    6    KIA
+    7     삼성
+    Name: team, dtype: object
+    ## 위 2017월 3월 경기 중 승리한 팀은?
+    >>> data['team'][data.result == "승"]
+    1     NC
+    3     두산
+    4     KT
+    6    KIA
+    8     LG
+    Name: team, dtype: object
+    ```
+    ### Args:
+        data (json): 수집된 한 게임 이상의 게임 자료
+
+    ### Returns:
+        temp_data (df): 여러 경기 스코어보드 자료
+    """
+
+    data = output(data)
+
+    return pd.DataFrame(data)
+
+
 def change_record(data):
 
     """
