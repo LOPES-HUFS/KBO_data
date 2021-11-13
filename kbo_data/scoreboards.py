@@ -20,25 +20,7 @@ import pandas as pd
 from modifying import changing_win_or_loss_to_int
 from modifying import is_exist_inning
 from modifying import making_primary_key
-
-
-def get_game_info(game_list):
-
-    temp_date = game_list.split("_")[0]
-    temp_date = datetime.datetime.strptime(temp_date.split("_")[0], "%Y%m%d")
-    temp = {
-        "year": temp_date.year,
-        "month": temp_date.month,
-        "day": temp_date.day,
-        "week": temp_date.weekday(),
-    }
-    temp_team = game_list.split("_")[1]
-    temp_team = {
-        "더블헤더": int(temp_team[4:]),
-    }
-    temp.update(temp_team)
-
-    return temp
+from modifying import get_game_info
 
 
 def modify(data):

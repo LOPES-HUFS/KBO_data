@@ -8,6 +8,7 @@
 
 """
 import configparser
+import datetime
 
 # 설정파일을 읽어옵니다.
 config = configparser.ConfigParser()
@@ -50,6 +51,25 @@ def making_primary_key(team_name, year, month, day, dbheader):
     )
 
     return result
+
+
+def get_game_info(game_list):
+
+    temp_date = game_list.split("_")[0]
+    temp_date = datetime.datetime.strptime(temp_date.split("_")[0], "%Y%m%d")
+    temp = {
+        "year": temp_date.year,
+        "month": temp_date.month,
+        "day": temp_date.day,
+        "week": temp_date.weekday(),
+    }
+    temp_team = game_list.split("_")[1]
+    temp_team = {
+        "더블헤더": int(temp_team[4:]),
+    }
+    temp.update(temp_team)
+
+    return temp
 
 
 def changing_team_name_into_id(team_name):
