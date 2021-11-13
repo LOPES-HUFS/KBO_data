@@ -47,10 +47,10 @@ def modify(data):
 
     ```python
     import json
-    import batter
+    import batters
     with open("../sample_data/2017/2017_03.json", 'r') as json_file:
         kbo_2017_03 = json.load(json_file)
-    batter_data = batter.modify(kbo_2017_03)
+    batter_data = batters.modify(kbo_2017_03)
     ```
 
     Note:
@@ -65,7 +65,7 @@ def modify(data):
         data (json): 수집한 하나 이상의 경기 자료
 
     Returns:
-        data (json): scoreboard만 수정한, 하나 이상의 경기 자료
+        data (json): 타자 자료만 수정한 하나 이상의 경기 자료
     """
     i = 0
 
@@ -135,7 +135,7 @@ def modify(data):
                 inplace=True,
             )
             temp_batter.replace("-", -1, inplace=True)
-            print(ast.literal_eval(home_or_away))
+            print(temp_batter)
             print(data[i]["contents"][home_or_away])
             data[i]["contents"][home_or_away] = ast.literal_eval(
                 temp_batter.to_json(orient="records")
