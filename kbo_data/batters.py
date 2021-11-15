@@ -69,46 +69,48 @@ def modify(data):
     """
     i = 0
 
-    for temp in data:
-        batters = [temp["contents"]["away_batter"], temp["contents"]["home_batter"]]
+    for single_game in data:
         home_or_away_list = ["away_batter", "home_batter"]
-        for batter, home_or_away in zip(batters, home_or_away_list):
-            for item in batter:
-                if "13" in item:
+        game_info = get_game_info(single_game["id"])
+        for home_or_away in home_or_away_list:
+            batters = single_game['contents'][home_or_away]
+            # 여기서 투수 자료에서 아래와 같은 것을 추가하고 있다.
+            for batter in batters:
+                if "13" in batter:
                     pass
                 else:
-                    item["13"] = "-"
-                if "14" in item:
+                    batter["13"] = "-"
+                if "14" in batter:
                     pass
                 else:
-                    item["14"] = "-"
-                if "15" in item:
+                    batter["14"] = "-"
+                if "15" in batter:
                     pass
                 else:
-                    item["15"] = "-"
-                if "16" in item:
+                    batter["15"] = "-"
+                if "16" in batter:
                     pass
                 else:
-                    item["16"] = "-"
-                if "17" in item:
+                    batter["16"] = "-"
+                if "17" in batter:
                     pass
                 else:
-                    item["17"] = "-"
-                if "18" in item:
+                    batter["17"] = "-"
+                if "18" in batter:
                     pass
                 else:
-                    item["18"] = "-"
-                print(item["포지션"])
-            temp_batter = pd.DataFrame(batter)
-            game_info = get_game_info(temp["id"])
-            temp_batter.loc[:, "year"] = game_info["year"]
-            temp_batter.loc[:, "month"] = game_info["month"]
-            temp_batter.loc[:, "day"] = game_info["day"]
-            temp_batter.loc[:, "week"] = game_info["week"]
-            temp_batter.loc[:, "홈팀"] = temp["contents"]["scoreboard"][1]["팀"]
-            temp_batter.loc[:, "원정팀"] = temp["contents"]["scoreboard"][0]["팀"]
-            temp_batter.loc[:, "더블헤더"] = game_info["더블헤더"]
-            temp_batter.rename(
+                    batter["18"] = "-"
+                print(batter["포지션"])
+                batter["year"] = game_info["year"]
+                batter["month"] = game_info["month"]
+                batter["day"] = game_info["day"]
+                batter["week"] = game_info["week"]
+                batter["홈팀"] = single_game["contents"]["scoreboard"][1]["팀"]
+                batter["원정팀"] = single_game["contents"]["scoreboard"][0]["팀"]
+                batter["더블헤더"] = game_info["더블헤더"]
+                ##print(batter)
+            batters = pd.DataFrame(batters)
+            batters.rename(
                 columns={
                     "팀": "team",
                     "승패": "result",
@@ -136,10 +138,9 @@ def modify(data):
                 },
                 inplace=True,
             )
-            temp_batter.replace("-", -1, inplace=True)
-            data[i]["contents"][home_or_away] = ast.literal_eval(
-                temp_batter.to_json(orient="records")
-            )
+            batters.replace("-", -1, inplace=True)
+            #print(batters)
+            data[i]["contents"][home_or_away] = ast.literal_eval(batters.to_json(orient="records"))
     i = i + 1
     return data
 
@@ -164,17 +165,18 @@ def output(data):
         data (json): 수집된 한 게임 이상의 게임 자료
 
     ### Returns:
-        temp_data (json): 여려 경기 타자 자료
+        temp_data (json): 여러 경기 타자 자료
     """
     data = modify(data)
 
     temp_data = []
 
-    for item in data:
-        batters = [item["contents"]["away_batter"], item["contents"]["home_batter"]]
-        for batter in batters:
-            for sub_item in batter:
-                temp_data.append(sub_item)
+    for single_game in data:
+        home_or_away_list = ["away_batter", "home_batter"]
+        for home_or_away in home_or_away_list:
+            batters = single_game['contents'][home_or_away]
+            for batter in batters:
+                temp_data.append(batter)
 
     return temp_data
 

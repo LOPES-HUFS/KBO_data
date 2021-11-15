@@ -14,6 +14,8 @@ import sqlalchemy as db
 import get_page
 import parsing_game_schedule
 import scoreboards
+import pitchers
+import batters
 
 if __name__ == "__main__":
 
@@ -52,8 +54,13 @@ if __name__ == "__main__":
 
     print("자료 정리 시작")
     temp_scoreboards = scoreboards.output_to_tuples(game_date)
+    temp_pitchers = pitchers.output_to_pd(game_date)
+    temp_batters = batters.output(game_date)
     print("자료 정리 완료 & 정리한 자료 보기")
     print(temp_scoreboards)
+    print(temp_pitchers)
+    print(temp_batters)
+    print("테이터 받고 정리하고 변환하는 작업 완료")
 
     # DB 설정 시작
     if len(temp_scoreboards) == 0:
