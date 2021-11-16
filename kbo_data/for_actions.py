@@ -1,7 +1,6 @@
 """ github actions을 이용해서 오늘 KBO 경기 자료를 모으는 모듈
 
    이 모듈을 github action을 통해서 자동적으로 작동하게끔 만들어졌다.
-
 """
 
 import sys
@@ -77,6 +76,9 @@ if __name__ == "__main__":
         print(f"table columns keys:{table.columns.keys()}")
 
         query = db.insert(table)
+
+       ## 수정 필요: TypeError: '<' not supported between instances of 'str' and 'int'
+       
         result_proxy = connection.execute(query, temp_scoreboards)
         result_proxy.close()
         # DB에 스코어 보드 자료 입력 완료
