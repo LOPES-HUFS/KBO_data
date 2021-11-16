@@ -43,10 +43,10 @@ def get_one_day_data_to_dict(input_schedule):
     game_schedule = changing_format(input_schedule)
     game_schedule = [item for item in game_schedule if item["state"] == "종료"]
 
-    game_date = {}
+    game_date = []
 
     for item in game_schedule:
-        game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
+        game_date.append(get_page.single_game(item["gameDate"], item["gameld"]))
 
     return game_date
 
@@ -55,12 +55,12 @@ def get_one_day_data_to_json(input_schedule):
 
     game_schedule = changing_format(input_schedule)
 
-    game_date = {}
+    game_date = []
 
     for item in game_schedule:
         print(item)
         if item["state"] == "종료":
-            game_date.update(get_page.single_game(item["gameDate"], item["gameld"]))
+            game_date.append(get_page.single_game(item["gameDate"], item["gameld"]))
         else:
             print(item["state"])
 
@@ -171,6 +171,13 @@ def get_KBO_data(game_list_file_name):
     if game_list_file_name.find("temp_schedule_") != -1:
         file_name = game_list_file_name.replace("schedule", "data")
         file_name = file_name.replace("csv", "json")
+    elif game_list_file_name.find("/") >= 2:
+        file_name_list = game_list_file_name.split('/')
+        file_name = file_name_list.pop()
+        try:
+            file_name = file_name.replace("csv", "json")
+        except:
+            pass
     else:
         file_name = "game_data.json"
 

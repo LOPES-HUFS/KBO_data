@@ -73,7 +73,9 @@ def getting_page(gameDate, gameld):
         # 혹은 options.add_argument("--disable-gpu")
 
         driver = webdriver.Chrome(chromium_location, chrome_options=options)
-        temp_url = url + gameDate + "&gameId=" + gameDate + gameld + "&section=REVIEW"
+        # 주소 보기
+        # 20180801&amp;gameId=20180801WOSK0&amp;section=REVIEW
+        temp_url = url + gameDate + "&amp;gameId=" + gameDate + gameld + "&amp;section=REVIEW"
         driver.get(temp_url)
         driver.implicitly_wait(5)
         soup = BeautifulSoup(driver.page_source, "lxml")

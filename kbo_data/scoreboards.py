@@ -1,9 +1,14 @@
 """스코어보드 정리 모듈
 
-   수집한 자료에서 스코어보드를 정리하기 위한 모듈입니다.
+   수집한 자료에서 스코어보드만을 뽑아서 정리하기 위한 모듈입니다.
 
    - `get_game_info()` : `modify(data)`가 사용하는 함수
-
+   - `modify()`: 수집한 여러개의 경기가 들어 있는 자료에서 스코어보드만 정리하는 함수
+   - `output()`: 수집한 여러개의 경기가 들어 있는 자료에서 스코어보드만 뽑아 정리해 사용하기 쉽게 만드는 함수
+   - `output_to_pd()`: 수집한 여러개의 경기가 들어 있는 자료에서 스코어보드만 뽑아 정리해 pandas로 변환하는 함수
+   - `output_to_raw_list()`: 스코어보드만 뽑아 정리해 `dict`가 들어 있는 `list`로 반환하는 함수
+   - `output_to_csv()`: 수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 `csv` 형식 파일을 생성하는 함수
+   - `output_to_tuples()`: 수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 DB에 입력하기 위해 `tuple`로 형식으로 정리하는 함수
 
 """
 
@@ -12,86 +17,29 @@ import datetime
 
 import pandas as pd
 
-from modifying import changing_team_name_into_id
 from modifying import changing_win_or_loss_to_int
-from modifying import changing_dbheader_to_bool
 from modifying import is_exist_inning
-
-
-def get_game_info(game_list):
-
-    temp_date = game_list.split("_")[0]
-    temp_date = datetime.datetime.strptime(temp_date.split("_")[0], "%Y%m%d")
-    temp = {
-        "year": temp_date.year,
-        "month": temp_date.month,
-        "day": temp_date.day,
-        "week": temp_date.weekday(),
-    }
-    temp_team = game_list.split("_")[1]
-    temp_team = {
-        "더블헤더": int(temp_team[4:]),
-    }
-    temp.update(temp_team)
-
-    return temp
-
-
-def making_primary_key(team_name, year, month, day, dbheader):
-    """스코어보드 DB에서 사용할 Primary Key를 작성하는 함수
-
-    Examples:
-
-        ```python
-        year = 2021
-        month = 4
-        day = 29
-        team_name = '두산'
-        dbheader = 0
-
-        import scoreboards
-        scoreboards.making_primary_key(team_name, year, month, day, dbheader)
-        '20210429001'
-        ```
-
-    Args:
-        year (int):
-        month (int) :
-        day (int) :
-        team_name (str) : 팀명 EG: 두산
-        dbheader (int) : 더블해더 경기 유무.  아니다: 0, 1차전: 1, 2차전: 2
-
-    Returns:
-        (str): 숫자 길이가 11인 자연수. E.G.: '20210429001'
-    """
-    result = (
-        str(year)
-        + str(month).zfill(2)
-        + str(day).zfill(2)
-        + str(dbheader)
-        + changing_team_name_into_id(team_name).zfill(2)
-    )
-
-    return result
+from modifying import making_primary_key
+from modifying import get_game_info
 
 
 def modify(data):
-    """수집한 게임 자료에서 스코어보드만 뽑아서 정리하는 함수
+    """수집한 여러개의 경기가 들어 있는 자료에서 스코어보드만 정리하는 함수
 
-    이 함수는 여러 게임 자료(`data`)에서 스코어보드만 뽑아서 내용을 고치고 변경합니다.
-    그런 다음 다시 이렇게 작업한 스코어보드를 다시 원 자료(`data`)에 끼워 넣는다.
-    아래 긴 `for`문은 18회까지 연장하기 위한 방법입니다.
-    기본적으로 정규 이닝은 13회까지밖에 없지만, 예전 리크에서 18회까지 있는 경우가 있어
-    이를 반영했습니다.
+    이 함수는 여러 경기자료(`data`)에서 스코어보드만 뽑아서 내용을 고치고 변경한 다음
+    다시 원 자료(`data`)에 끼워 넣는다. 즉 반환 값에는 모든 수집한 내용이 들어 있다.
+    참고로 아래 긴 `for`문은 18회까지 연장하기 위한 방법이다. 기본적으로 현재 정규 이닝은
+    13회까지밖에 없지만, 예전 정규 KBO 리그에서 18회까지 있는 경우가 있어 이를 반영했다.
 
     Examples:
 
-        ```python
-        import utility
-        temp_data = utility.get_one_day_game_data()
-        import scoreboards
-        temp_data_scoreboards_modified = scoreboards.modify(temp_data)
-        ```
+    ```python
+    import json
+    import scoreboards
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    data = scoreboards.modify(kbo_2017_03)
+    ```
 
     Note:
         현재 수정하고 있는 컬럼 이름
@@ -102,16 +50,14 @@ def modify(data):
         - 더블헤더
 
     Args:
-        data (json): 수집한 하나 이상의 게임 자료
+        data (json): 수집한 하나 이상의 경기 자료
 
     Returns:
-        data (json): scoreboard만 수정한 하나 이상의 게임 자료
+        data (json): scoreboard만 수정한, 하나 이상의 경기 자료
     """
     i = 0
 
-    #    for key, value in data.items():
     for temp in data:
-        print(temp["id"])
         for item in temp["contents"]["scoreboard"]:
             if "13" in item:
                 pass
@@ -175,6 +121,9 @@ def modify(data):
             inplace=True,
         )
         temp_p.replace("-", -1, inplace=True)
+        temp_p["i_9"] = pd.to_numeric(temp_p["i_9"])
+        # print(f'{temp["id"]}: modifed!')
+        # print(temp_p)
         data[i]["contents"]["scoreboard"] = ast.literal_eval(
             temp_p.to_json(orient="records")
         )
@@ -184,202 +133,107 @@ def modify(data):
 
 
 def output(data):
-    """수집한 게임 자료에서 스코어보드만 뽑아서 정리하는 함수
+    """수집한 여러개의 경기가 들어 있는 자료에서 스코어보드만 뽑아 정리해 사용하기 쉽게 만드는 함수
 
-    이 함수는 여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
-    사용 사례를 다음과 같이 하루치 자료를 뽑아서 이 함수를 돌리면 확인할 수 있다.
+    여러 경기 자료가 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 위 `modify` 함수를
+    이용하여 처리한다. 따라서 반환하는 값에는 여러 경기의 스코어보드만 들어 있다.
 
-    Examples:
-        ```python
-        import json
-        file_name = "2021_04.29_games.json"
-        temp_data = {}
-        with open(file_name) as json_file:
-                temp_data = json.load(json_file)
-        import scoreboards
-        temp_scoreboards = scoreboards.output(scoreboards.modify(temp_data))
-        temp_scoreboards['20210429_OBWO0']
-        ```
+    참고로 반환값이 `list` 안의 `list`로 되어 있는 이유는 한 경기가 2개의 `dict`로
+    되어 있기 때문에 이 두 개를 `list`로 묶고 여러 경기를 `list`롤 다시 한 번 묶기 때문이다.
+    그리고 `list`로 되어 있는 이유는 pandas를 염두에 두었기 때문이다. pandas를 통해서
+    다양한 포멧으로 변환할 수 있게 만들고자 한다.
 
-    다음과 같은 값을 반환한다. `list`로 되어 있는 이유는 아래와 같이 pandas를 염두에 두었기 때문이다.
+    ### Examples:
 
-    Examples:
-        ```python
-        [
-        {
-            "team": "두산",
-            "result": "승",
-            "i_1": 9,
-            "i_2": 0,
-            "i_3": 4,
-            "i_4": 0,
-            "i_5": 0,
-            "i_6": 0,
-            "i_7": 0,
-            "i_8": 0,
-            "i_9": 2,
-            "i_10": "-",
-            "i_11": "-",
-            "i_12": "-",
-            "R": 15,
-            "H": 13,
-            "E": 0,
-            "B": 14,
-            "year": 2021,
-            "month": 4,
-            "day": 29,
-            "week": 3,
-            "home": "두산",
-            "away": "키움",
-            "dbheader": 0,
-        },
-        {
-            "team": "키움",
-            "result": "패",
-            "i_1": 0,
-            "i_2": 1,
-            "i_3": 0,
-            "i_4": 1,
-            "i_5": 0,
-            "i_6": 1,
-            "i_7": 0,
-            "i_8": 0,
-            "i_9": 1,
-            "i_10": "-",
-            "i_11": "-",
-            "i_12": "-",
-            "R": 4,
-            "H": 7,
-            "E": 0,
-            "B": 1,
-            "year": 2021,
-            "month": 4,
-            "day": 29,
-            "week": 3,
-            "home": "두산",
-            "away": "키움",
-            "dbheader": 0,
-            },
-        ]
-        ```
+    ```python
+    import json
+    import scoreboards
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    data = scoreboards.output(kbo_2017_03)
+    ```
 
-    pandas를 이용한 방법은 다음과 같다. 적절하게 `df`로 변환되는 것을 볼 수 있다.
-
-    Examples:
-        ```python
-        import pandas as pd
-        pd.DataFrame(temp_scoreboards['20210429_OBWO0'])
-        ```
-
-    Args:
+    ### Args:
         data (json): 수집된 한 게임 이상의 게임 자료
 
-    Returns:
-        temp_data (json): '20210429_OBWO0'와 같은 단일 게임 key 와 scoreboard를 포함하고 있는 여러 게임 자료
+    ### Returns:
+        temp_data (json): 여려 경기 스코어보드 자료
     """
-    temp_data = {}
+    data = modify(data)
+
+    temp_data = []
 
     i = 0
 
-    for key, value in data.items():
-        temp_p = pd.DataFrame(value["scoreboard"])
-        # print(list(data.keys())[i])
+    for item in data:
+        # print(item['contents']['scoreboard'])
+        temp_p = pd.DataFrame(item["contents"]["scoreboard"])
+        # print(temp_p)
         # print(ast.literal_eval(temp_p.to_json(orient='records')))
-        temp_data[list(data.keys())[i]] = ast.literal_eval(
-            temp_p.to_json(orient="records")
-        )
+        temp_data.append(ast.literal_eval(temp_p.to_json(orient="records")))
         i = i + 1
 
     return temp_data
 
 
 def output_to_pd(data):
+    """수집한 여러개의 경기가 들어 있는 자료에서 스코어보드만 뽑아 정리해 pandas로 변환하는 함수
 
-    """수집한 게임 자료에서 스코어보드만 뽑아서 정리해 pandas로 변환하는 함수
+    여러 경기 자료가 같이 들어가 있는 자료에서 `output` 함수를 이용하여
+    스코어보드만 모두 뽑고 정리해서 이렇게 처리한 자료를 pandas로 반환해 준다.
+    이렇게 반환하면 아래 예에서처럼 pandas를 이용해 여러가지 분석을 할 수 있다.
+    아래 활용법 참고!
 
-    여러 게임 자료를 같이 들어가 있는 자료에서 스코어보드만 모두 뽑아서 처리한다.
-    처라한 자료를 pandas로 반환한다.
-    사용 사례는 다음과 같이 2020년 전체 자료를 뽑아서 이 함수를 돌리면 확인할 수 있다.
-    temp_data_2020.json 파일은 다음과 같이 다운받을 수 있습니다.
+    ### Examples:
 
-    ```bash
-    wget https://raw.githubusercontent.com/LOPES-HUFS/KBO_data/main/sample_data/temp_data_2020.json
+    ```python
+    import json
+    import scoreboards
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    data = scoreboards.output_to_pd(kbo_2017_03)
+    ## 활용법
+    ## 위 2017월 3월 경기 중 9회에 1점 이상 득점한 팀은?
+    >>> data['team'][data.i_9 >= 1]
+    0     롯데
+    6    KIA
+    7     삼성
+    Name: team, dtype: object
+    ## 위 2017월 3월 경기 중 승리한 팀은?
+    >>> data['team'][data.result == "승"]
+    1     NC
+    3     두산
+    4     KT
+    6    KIA
+    8     LG
+    Name: team, dtype: object
     ```
-
-
-    Examples:
-        ```python
-        import json
-        file_name = "temp_data_2020.json"
-        temp_data = {}
-        with open(file_name) as json_file:
-            temp_data = json.load(json_file)
-
-        import scoreboards
-        temp_2020 = scoreboards.output_to_pd(scoreboards.modify(temp_data))
-        # csv 파일로 내보내기
-        temp_2020.to_csv('out.csv', index=False)
-        ```
-
-    pandas를 이용한 방법은 다음과 같다.
-    적절하게 `df`로 변환된 자료를 이용해
-    입력된 2020년 자료에서 안타를 3개 미만으로 친 경기를 한 팀만 뽑아보자.
-
-    Examples:
-        ```python
-        temp_2020['team'][temp_2020.H < 3]
-        ```
-
-        결과는 다음과 같다.
-
-        ```csv
-        3        SK
-        71       키움
-        85       SK
-        137      삼성
-        218      한화
-        454     KIA
-        464     KIA
-        546      LG
-        582      LG
-        778     KIA
-        785      KT
-        827      한화
-        857      한화
-        908      KT
-        1033     LG
-        1116     KT
-        1135     두산
-        1194     두산
-        1268     NC
-        1287     한화
-        1418     키움
-    ```
-
-    Args:
+    ### Args:
         data (json): 수집된 한 게임 이상의 게임 자료
 
-    Returns:
-        temp_data (df): scoreboard를 포함하고 있는 여러 게임 자료
+    ### Returns:
+        temp_data (df): 여러 경기 스코어보드 자료
     """
+
+    data = output(data)
 
     temp_data = []
 
-    for key, value in data.items():
-        temp_p = pd.DataFrame(value["scoreboard"])
-        temp_data.extend(ast.literal_eval(temp_p.to_json(orient="records")))
+    for item in data:
+        for sub_item in item:
+            temp_data.append(sub_item)
 
     return pd.DataFrame(temp_data)
 
 
 def output_to_raw_list(data):
+    """스코어보드만 뽑아 정리해 `dict`가 들어 있는 `list`로 반환하는 함수
 
-    """수집한 게임 자료에서 스코어보드만 뽑아 정리해서 dict가 들어 있는 list로 반환하는 함수
+    여러 게임 자료를 같이 들어가 있는 자료를 `modify()`을 이용하여 스코어보드 부분만 정리한다.
+    그런 다음 그 게임 자료에서 스코어보드만 뽑아서 dict로 변환한다. 다음과 같은 형식이 들어간다.
 
-    여러 게임 자료를 같이 들어가 있는 자료를 modify()을 이용하여 스코어보드 부분만 정리합니다.
-    그런 다음 그 게임 자료에서 스코어보드만 뽑아서 dict로 변환한다. 다음과 같이 변합니다.
-
-        {
+    ```json
+    {
         "team": "두산",
         "result": "패",
         "i_1": 0,
@@ -406,35 +260,24 @@ def output_to_raw_list(data):
         "away": "두산",
         "dbheader": 0,
     }
-
-    각 게임 당 2개가 됩니다. 결국 이런 dict가 차례차례로 들어 있는 list을 반환합니다.
-    사용 사례는 다음과 같이 2020년 전체 자료를 뽑아서 이 함수를 돌리면 확인할 수 있습니다.
-    temp_data_2020.json 파일은 다음과 같이 다운받을 수 있습니다.
-
-    ```bash
-    wget https://raw.githubusercontent.com/LOPES-HUFS/KBO_data/main/sample_data/temp_data_2020.json
     ```
 
-    앞에서 다운받은 파일을 이용하면, 아래 Examples를 실행하실 수 있습니다.
+    위와 같은 것이 각 경기 당 2개가 들어가면 결국 이런 `dict`가 차례로 들어가 있는 `list`을 반환한다.
 
-    Examples:
-        ```python
-        import json
-        file_name = "temp_data_2020.json"
-        temp_data = {}
-        with open(file_name) as json_file:
-            temp_data = json.load(json_file)
+    ### Examples:
 
-        import scoreboards
-        temp_2020 = scoreboards.output_to_raw_list(temp_data)
-        ```
+    ```python
+    import json
+    import scoreboards
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    scoreboards.output_to_raw_list(kbo_2017_03)
+    ```
 
-    결과는 앞에서 보여드린 `dict` 형식의 게임 스코어 자료가 들어있는 `list`로 나올 것입니다.
-
-    Args:
+    ### Args:
         data (dict): 수집한 한 게임 이상의 KBO 게임 자료
 
-    Returns:
+    ### Returns:
         temp_data (list): scoreboard를 포함하고 있는 여러 게임 자료
     """
 
@@ -452,35 +295,38 @@ def output_to_raw_list(data):
 
 
 def output_to_csv(data, file_name="kbo_scoreboards"):
-    """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 csv 형식 파일로 출력하는 함수
+    """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 `csv` 형식 파일을 생성하는 함수
 
-    앞의 `output_to_raw_list()`을 이용해서 스코어보드만 뽑아 정리합니다.
-    그리고 이렇게 뽑아 정리한 자료를 csv 형식 파일로 출력합니다.
+    앞의 `output_to_raw_list()`을 이용해서 스코어보드만 뽑아 정리한 다음
+    그리고 이렇게 뽑아 정리한 자료를 csv 형식 파일을 생성한다.
+    인수 `file_name`에 적절한 파일 명을 입력하면 그 파일명으로 파일을 생성한다.
 
-    사용 사례는 다음과 같이 2020년 전체 자료를 뽑아서 이 함수를 돌리면 확인할 수 있습니다.
-    temp_data_2020.json 파일은 다음과 같이 다운받을 수 있습니다.
+    ### Examples:
 
-    ```bash
-    wget https://raw.githubusercontent.com/LOPES-HUFS/KBO_data/main/sample_data/temp_data_2020.json
+    ```python
+    import json
+    import scoreboards
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    scoreboards.output_to_csv(kbo_2017_03)
     ```
 
-    앞에서 다운받은 파일을 이용하면, 아래 Examples를 실행하실 수 있습니다.
+    앞의 Example를 실행하면 현재 폴더에 아래와 같은 내용을 가진
+    `kbo_scoreboards_2020.csv`이라는 파일이 생성된다.
 
-    Example:
-        ```python
-        import json
-        file_name = "temp_data_2020.json"
-        temp_data = {}
-        with open(file_name) as json_file:
-            temp_data = json.load(json_file)
-
-        import scoreboards
-        temp_file_name = "kbo_scoreboards_2020"
-        scoreboards.output_to_csv(temp_data, file_name = temp_file_name)
-        ```
-
-    앞의 Example를 실행하면
-    현재 폴더에 `kbo_scoreboards_2020.csv`이라는 파일이 생성됩니다.
+    ```csv
+    team,result,i_1,i_2,i_3,i_4,i_5,i_6,i_7,i_8,i_9,i_10,i_11,i_12,R,H,E,B,i_13,i_14,i_15,i_16,i_17,i_18,year,month,day,week,home,away,dbheader
+    롯데,패,0,0,0,1,0,0,0,3,1,-1,-1,-1,5,7,2,1,-1,-1,-1,-1,-1,-1,2017,3,31,4,NC,롯데,0
+    NC,승,0,0,0,0,0,3,3,0,-1,-1,-1,-1,6,11,2,6,-1,-1,-1,-1,-1,-1,2017,3,31,4,NC,롯데,0
+    한화,패,0,0,0,0,0,0,0,0,0,-1,-1,-1,0,4,4,3,-1,-1,-1,-1,-1,-1,2017,3,31,4,두산,한화,0
+    두산,승,0,0,1,0,0,1,1,0,-1,-1,-1,-1,3,4,1,4,-1,-1,-1,-1,-1,-1,2017,3,31,4,두산,한화,0
+    KT,승,1,1,0,1,0,0,0,0,0,-1,-1,-1,3,9,1,2,-1,-1,-1,-1,-1,-1,2017,3,31,4,SK,KT,0
+    SK,패,0,0,1,0,1,0,0,0,0,-1,-1,-1,2,8,2,1,-1,-1,-1,-1,-1,-1,2017,3,31,4,SK,KT,0
+    KIA,승,0,1,0,0,0,1,0,4,1,-1,-1,-1,7,7,1,8,-1,-1,-1,-1,-1,-1,2017,3,31,4,삼성,KIA,0
+    삼성,패,0,0,0,1,0,0,0,0,1,-1,-1,-1,2,7,1,1,-1,-1,-1,-1,-1,-1,2017,3,31,4,삼성,KIA,0
+    LG,승,0,1,1,0,0,0,0,0,0,-1,-1,-1,2,4,1,3,-1,-1,-1,-1,-1,-1,2017,3,31,4,넥센,LG,0
+    넥센,패,0,0,0,0,0,1,0,0,0,-1,-1,-1,1,5,1,4,-1,-1,-1,-1,-1,-1,2017,3,31,4,넥센,LG,0
+    ```
 
     Args:
         data (json): 수집한 한 게임 이상의 게임 자료
@@ -495,23 +341,26 @@ def output_to_csv(data, file_name="kbo_scoreboards"):
 
 
 def output_to_tuples(data):
-    """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 DB에 입력하기 위해 tuples로 형식으로 정리하는 함수
+    """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 DB에 입력하기 위해 `tuple`로 형식으로 정리하는 함수
 
-    Examples:
+    앞의 `output_to_raw_list()`을 이용해서 스코어보드만 뽑아 정리한 다음
+    그리고 이렇게 뽑아 정리한 자료를 각 팀 결과를 `tuple`로 바꾼 다음 이를 `list`으로 묶어서 반환한다.
 
-        ```python
-        import utility
-        temp_data = utility.get_one_day_game_data()
-        import scoreboards
-        temp = scoreboards.output_to_tuples(temp_data)
-        print(temp)
-        ```
+    ### Examples:
+
+    ```python
+    import json
+    import scoreboards
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    scoreboards.output_to_tuples(kbo_2017_03)
+    ```
 
     Args:
         data (json): 수집한 한 게임 이상의 게임 자료
 
     Returns:
-        (list): tuple로 바꾼 scoreboard 자료
+        (list): `tuple`로 바꾼 scoreboard 자료
 
     """
 
@@ -567,15 +416,15 @@ def output_to_tuples(data):
 def output_to_dict(data):
     """수집한 게임 자료에서 스코어보드만 뽑아 정리한 자료를 DB에 입력하기 위해 dict로 형식으로 정리하는 함수
 
-    Examples:
+    ### Examples:
 
-        ```python
-        import utility
-        temp_data = utility.get_one_day_game_data()
-        import scoreboards
-        temp = scoreboards.output_to_dict(temp_data)
-        print(temp)
-        ```
+    ```python
+    import json
+    import scoreboards
+    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
+        kbo_2017_03 = json.load(json_file)
+    scoreboards.output_to_dict(kbo_2017_03)
+    ```
 
     Args:
         data (json): 수집한 한 게임 이상의 게임 자료
