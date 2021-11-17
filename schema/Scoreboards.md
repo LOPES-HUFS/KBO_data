@@ -4,39 +4,42 @@
 
 ## schema
 
-```python
-idx = Column(Integer)
-team = Cloumn(String)
-result = Column(Integer)
-i_1 = Column(Integer)
-i_2 = Column(Integer)
-i_3 = Column(Integer)
-i_4 = Column(Integer)
-i_5 = Column(Integer)
-i_6 = Column(Integer)
-i_7 = Column(Integer)
-i_8 = Column(Integer)
-i_9 = Column(Integer)
-i_10 = Column(Integer)
-i_11 = Column(Integer)
-i_12 = Column(Integer)
-i_13 = Column(Integer)
-i_14 = Column(Integer)
-i_15 = Column(Integer)
-i_16 = Column(Integer)
-i_17 = Column(Integer)
-i_18 = Column(Integer)
-r = Column(Integer)
-h = Column(Integer)
-e = Column(Integer)
-b = Column(Integer)
-year = Column(Integer)
-month = Column(Integer)
-day = Column(Integer)
-week = Column(Integer)
-home = Column(String)
-away = Column(String)
-dbheader = Column(Integer)
+```sql
+CREATE TABLE scoreboard(
+    dx BIGINT(11) NOT NULL COMMENT "조합키(시합날짜+더블헤더+팀ID)",
+    team VARCHAR(4)  DEFAULT NULL COMMENT "선수ID",
+    result INT(1) DEFAULT NULL COMMENT "결과",
+    i_1 INT(2) DEFAULT NULL COMMENT  "1이닝",
+    i_2 INT(2) DEFAULT NULL COMMENT  "2이닝",
+    i_3 INT(2) DEFAULT NULL COMMENT  "3이닝",
+    i_4 INT(2) DEFAULT NULL COMMENT  "4이닝",
+    i_5 INT(2) DEFAULT NULL COMMENT  "5이닝",
+    i_6 INT(2) DEFAULT NULL COMMENT  "6이닝",
+    i_7 INT(2) DEFAULT NULL COMMENT  "7이닝",
+    i_8 INT(2) DEFAULT NULL COMMENT  "8이닝",
+    i_9 INT(2) DEFAULT NULL COMMENT  "9이닝",
+    i_10 INT(2) DEFAULT NULL COMMENT  "10이닝",
+    i_11 INT(2) DEFAULT NULL COMMENT  "11이닝",
+    i_12 INT(2) DEFAULT NULL COMMENT  "12이닝",
+    i_13 INT(2) DEFAULT NULL COMMENT  "13이닝",
+    i_14 INT(2) DEFAULT NULL COMMENT  "14이닝",
+    i_15 INT(2) DEFAULT NULL COMMENT  "15이닝",
+    i_16 INT(2) DEFAULT NULL COMMENT  "16이닝",
+    i_17 INT(2) DEFAULT NULL COMMENT  "17이닝",
+    i_18 INT(2) DEFAULT NULL COMMENT  "18이닝",
+    r INT(2) DEFAULT NULL COMMENT "득점",
+    h INT(2) DEFAULT NULL COMMENT "안타",
+    e INT(2) DEFAULT NULL COMMENT "실책",
+    b INT(2) DEFAULT NULL COMMENT "사사구",
+    year INT(4) DEFAULT NULL COMMENT "년도",
+    month INT(2) DEFAULT NULL COMMENT "월",
+    day INT(2) DEFAULT NULL COMMENT "일",
+    week INT(1) DEFAULT NULL COMMENT "주",
+    home VARCHAR(4) DEFAULT NULL COMMENT "홈팀",
+    away VARCHAR(4) DEFAULT NULL COMMENT "원정팀",
+    dbheader INT(1) DEFAULT NULL COMMENT "더블헤더",
+    PRIMARY KEY (`idx`)
+);
 ```
 
 ## primary key
