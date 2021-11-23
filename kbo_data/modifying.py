@@ -4,7 +4,7 @@
    한 곳이 아니라 여러 곳에서 사용하는 코드들을 모아둔 모듈입니다.
 
    - `changing_team_name_into_id()` : 팀명을 팀 id로 바꾸는 함수
-   - 
+   - `get_game_info()`: 입력된 정보를 토대로 해당 경기 연도, 날짜, 요일 등을 만드는 함수
 
 """
 import configparser
@@ -54,6 +54,17 @@ def making_primary_key(team_name, year, month, day, dbheader):
 
 
 def get_game_info(game_list):
+    """입력된 정보를 토대로 해당 경기 연도, 날짜, 요일 등을 만드는 함수
+
+    `20211115001`과 같은 정보가 들어오면 이를 가지고
+    해당 경기 연도, 날짜, 요일 등을 만든다.
+
+    Args:
+        game_list (str): `20211115001`
+
+    Returns:
+        (dict): "year", "month", "day", "week", "더블헤더"를 키로 포함한다.
+    """
 
     temp_date = game_list.split("_")[0]
     temp_date = datetime.datetime.strptime(temp_date.split("_")[0], "%Y%m%d")
