@@ -11,15 +11,14 @@
 
 """
 import configparser
-
+import ast
 import pandas as pd
-
+from scoreboards import making_primary_key
 from modifying import get_game_info
 
 config = configparser.ConfigParser()
 config.read("code_list.ini", encoding="utf-8")
 Batter_factor = config["BATTER"]
-
 
 def modify(data):
     """수집한 여러 개의 경기가 들어 있는 자료에서 투수 자료만 정리하는 함수
@@ -28,23 +27,6 @@ def modify(data):
     다시 원 자료(`data`)에 끼워 넣는다. 즉 반환 값에는 모든 수집한 내용이 들어 있다.
     참고로 아래 긴 `for`문은 18회까지 연장하기 위한 방법이다. 기본적으로 현재 정규 이닝은
     13회까지밖에 없지만, 예전 정규 KBO 리그에서 18회까지 있는 경우가 있어 이를 반영했다.
-
-    Examples:
-
-    ```python
-    import json
-    import pitchers
-    with open("../sample_data/2017/2017_03.json", 'r') as json_file:
-        kbo_2017_03 = json.load(json_file)
-    kbo_2017_03_modifed = pitchers.modify(kbo_2017_03)
-    ```
-
-    Note:
-        현재 수정하거나 추가하고 있는 컬럼 이름
-        - 승패
-        - 홈팀
-        - 원정팀
-        - 더블헤더
 
     Args:
         data (json): 수집한 하나 이상의 경기 자료
@@ -59,16 +41,32 @@ def modify(data):
         game_info = get_game_info(single_game["id"])
         for home_or_away in home_or_away_list:
             pitchers = single_game['contents'][home_or_away]
-            # 여기서 투수 자료에서 아래와 같은 것을 추가하고 있다.
+            # 투수 자료의 경우 필요 없는 키들이 있어서 리스트를 새로 만들어서 덮어씌우기
+            fin_pitchers=[]
             for pitcher in pitchers:
-                pitcher["year"] = game_info["year"]
-                pitcher["month"] = game_info["month"]
-                pitcher["day"] = game_info["day"]
-                pitcher["week"] = game_info["week"]
-                pitcher["홈팀"] = single_game["contents"]["scoreboard"][1]["팀"]
-                pitcher["원정팀"] = single_game["contents"]["scoreboard"][0]["팀"]
-                pitcher["더블헤더"] = game_info["더블헤더"]
+                new_info={}
+                new_info['idx'] = making_primary_key(pitcher["팀"], game_info["year"], game_info["month"], game_info["day"], game_info["더블헤더"])
+                new_info['playerid'] = pitcher["선수명"] #함수 만들어야 함
+                new_info['mound'] = pitcher['등판']
+                new_info['inning'] = '0' if len(pitcher['이닝'].split())==1 else pitcher['이닝'].split()[0]
+                new_info['rest'] = pitcher['이닝'].split()[-1][0]
+                new_info['saved'] = pitcher['세']
+                new_info['hold'] = pitcher['세'] #어디선가 홀드값이 날라간 것 같아요..찾아올게여
+                new_info['strikeout'] = pitcher['삼진']
+                new_info['dead4ball'] = pitcher['4사구']
+                new_info['losescore'] = pitcher['실점']
+                new_info['earnedrun'] = pitcher['자책']
+                new_info['pitchnum'] = pitcher['투구수']
+                new_info['hitted'] = pitcher['피안타']
+                new_info['homerun'] = pitcher['홈런']
+                new_info['battednum'] = pitcher['타수']
+                new_info['batternum'] = pitcher['타자']
+                fin_pitchers.append(new_info)
+
+            fin_pitchers= pd.DataFrame(fin_pitchers)
+            data[i]["contents"][home_or_away] = ast.literal_eval(fin_pitchers.to_json(orient="records"))
     i = i + 1
+
     return data
 
 def output(data):
