@@ -9,6 +9,7 @@ import json
 
 import requests
 import sqlalchemy as db
+import configparser
 
 import get_page
 import parsing_game_schedule
