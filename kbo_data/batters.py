@@ -48,9 +48,20 @@ def modify(config, data):
     ```python
     import json
     import batters
+    import configparser
+    import ast
+    import pandas as  pd
+    
+    from modifying import get_game_info
+    from scoreboards import making_primary_key
+    from batters import change_position
+    
+    config = configparser.ConfigParser()
+    config.read("code_list.ini", encoding="utf-8")
+    
     with open("../sample_data/2017/2017_03.json", 'r') as json_file:
         kbo_2017_03 = json.load(json_file)
-    kbo_2017_03_modifed = batters.modify(kbo_2017_03)
+    kbo_2017_03_modifed = batters.modify(config["BATTER"],kbo_2017_03)
     ```
     Args:
         data (json): 수집한 하나 이상의 경기 자료
@@ -82,7 +93,7 @@ def modify(config, data):
 
             fin_batters= pd.DataFrame(fin_batters)
             data[i]["contents"][home_or_away] = ast.literal_eval(fin_batters.to_json(orient="records"))
-    i = i + 1
+      i = i + 1
 
     return data
 
@@ -250,9 +261,21 @@ def add_ining(config,new_data,data):
     for i in range(1,19):
         if str(i) in data:
             #키 이름 변경
-            new_data["i_"+str(i)] = int(config[str(data.pop(str(i)))])
+            new_data["i_"+str(i)] = trans_code(config, str(data.pop(str(i))))
         else:
             #데이터 추가
             new_data["i_"+str(i)] = "-"
             
     return new_data
+
+
+def trans_code(config, data):
+    """붙어있는 이닝 결과값들을 변환해주는 코드
+    Args:
+        data (sting): 한글로 기록된 타격기록
+    Returns:
+        data (int): "code_list.ini"로 변환된 코드
+    """
+    temp = [config[x] for x in re.split("\W",data) if x != '']
+    
+    return "".join(temp)

@@ -9,6 +9,7 @@ import json
 
 import requests
 import sqlalchemy as db
+import configparser
 
 import get_page
 import parsing_game_schedule
@@ -52,9 +53,12 @@ if __name__ == "__main__":
             print(e)
 
     print("자료 정리 시작")
+    config = configparser.ConfigParser()
+    config.read("code_list.ini", encoding="utf-8")
+   
     temp_scoreboards = scoreboards.output_to_dict(game_date)
     temp_pitchers = pitchers.output(game_date)
-    temp_batters = batters.output(game_date)
+    temp_batters = batters.output(config["BATTER"], game_date)
     print("자료 정리 완료 & 정리한 자료 보기")
     print(temp_scoreboards)
     print(temp_pitchers)

@@ -65,7 +65,7 @@ def modify(data):
 
             fin_pitchers= pd.DataFrame(fin_pitchers)
             data[i]["contents"][home_or_away] = ast.literal_eval(fin_pitchers.to_json(orient="records"))
-    i = i + 1
+        i = i + 1
 
     return data
 
