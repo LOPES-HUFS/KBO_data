@@ -49,6 +49,12 @@ def modify(config, data):
     import json
     import batters
     import configparser
+    import ast
+    import pandas as  pd
+    
+    from modifying import get_game_info
+    from scoreboards import making_primary_key
+    from batters import change_position
     
     config = configparser.ConfigParser()
     config.read("code_list.ini", encoding="utf-8")
