@@ -206,30 +206,33 @@ def change_position(data):
     batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
     change_posision(batter)
     """
-    if "一" in data:
-        data = data.replace("一", "3")
-    elif "二" in data:
-        data = data.replace("二", "4")
-    elif "三" in data:
-        data = data.replace("三", "5")
-    elif "투" in data:
-        data = data.replace("투", "1")
-    elif "포" in data:
-        data = data.replace("포", "2")
-    elif "유" in data:
-        data = data.replace("유", "6")
-    elif "좌" in data:
-        data = data.replace("좌", "7")
-    elif "중" in data:
-        data = data.replace("중", "8")
-    elif "우" in data:
-        data = data.replace("우", "9")
-    elif "지" in data:
-        data = data.replace("지", "D")
-    elif "주" in data:
-        data = data.replace("주", "R")
-    elif "타" in data:
-        data = data.replace("타", "H")
+    pst = re.split("\B",data)
+
+    for word in pst:
+        if "一" in data:
+            data = data.replace("一", "3")
+        elif "二" in data:
+            data = data.replace("二", "4")
+        elif "三" in data:
+            data = data.replace("三", "5")
+        elif "투" in data:
+            data = data.replace("투", "1")
+        elif "포" in data:
+            data = data.replace("포", "2")
+        elif "유" in data:
+            data = data.replace("유", "6")
+        elif "좌" in data:
+            data = data.replace("좌", "7")
+        elif "중" in data:
+            data = data.replace("중", "8")
+        elif "우" in data:
+            data = data.replace("우", "9")
+        elif "지" in data:
+            data = data.replace("지", "D")
+        elif "주" in data:
+            data = data.replace("주", "R")
+        elif "타" in data:
+            data = data.replace("타", "H")
     return data
 
 
