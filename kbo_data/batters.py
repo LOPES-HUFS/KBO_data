@@ -48,9 +48,14 @@ def modify(config, data):
     ```python
     import json
     import batters
+    import configparser
+    
+    config = configparser.ConfigParser()
+    config.read("code_list.ini", encoding="utf-8")
+    
     with open("../sample_data/2017/2017_03.json", 'r') as json_file:
         kbo_2017_03 = json.load(json_file)
-    kbo_2017_03_modifed = batters.modify(kbo_2017_03)
+    kbo_2017_03_modifed = batters.modify(config["BATTER"],kbo_2017_03)
     ```
     Args:
         data (json): 수집한 하나 이상의 경기 자료
