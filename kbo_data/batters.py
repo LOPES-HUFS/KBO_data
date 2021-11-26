@@ -73,7 +73,8 @@ def modify(data):
         home_or_away_list = ["away_batter", "home_batter"]
         game_info = get_game_info(single_game["id"])
         for home_or_away in home_or_away_list:
-            batters = single_game['contents'][home_or_away]
+            print(home_or_away)
+            batters = single_game["contents"][home_or_away]
             # 여기서 투수 자료에서 아래와 같은 것을 추가하고 있다.
             for batter in batters:
                 if "13" in batter:
@@ -100,7 +101,7 @@ def modify(data):
                     pass
                 else:
                     batter["18"] = "-"
-                print(batter["포지션"])
+                # print(batter["포지션"])
                 batter["year"] = game_info["year"]
                 batter["month"] = game_info["month"]
                 batter["day"] = game_info["day"]
@@ -108,7 +109,6 @@ def modify(data):
                 batter["홈팀"] = single_game["contents"]["scoreboard"][1]["팀"]
                 batter["원정팀"] = single_game["contents"]["scoreboard"][0]["팀"]
                 batter["더블헤더"] = game_info["더블헤더"]
-                ##print(batter)
             batters = pd.DataFrame(batters)
             batters.rename(
                 columns={
@@ -139,8 +139,10 @@ def modify(data):
                 inplace=True,
             )
             batters.replace("-", -1, inplace=True)
-            #print(batters)
-            data[i]["contents"][home_or_away] = ast.literal_eval(batters.to_json(orient="records"))
+            # print(batters)
+            data[i]["contents"][home_or_away] = ast.literal_eval(
+                batters.to_json(orient="records")
+            )
     i = i + 1
     return data
 
@@ -174,8 +176,9 @@ def output(data):
     for single_game in data:
         home_or_away_list = ["away_batter", "home_batter"]
         for home_or_away in home_or_away_list:
-            batters = single_game['contents'][home_or_away]
+            batters = single_game["contents"][home_or_away]
             for batter in batters:
+                # print(batter)
                 temp_data.append(batter)
 
     return temp_data
