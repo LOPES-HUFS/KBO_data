@@ -208,7 +208,7 @@ def change_position(data):
     """
     pst = re.split("\B",data)
 
-    for word in pst:
+    for _ in pst:
         if "一" in data:
             data = data.replace("一", "3")
         elif "二" in data:
