@@ -93,7 +93,7 @@ def modify(config, data):
 
             fin_batters= pd.DataFrame(fin_batters)
             data[i]["contents"][home_or_away] = ast.literal_eval(fin_batters.to_json(orient="records"))
-      i = i + 1
+        i = i + 1
 
     return data
 
