@@ -97,7 +97,7 @@ def modify(data):
     return data
 
 
-def output(config, data):
+def output(data):
     """수집한 여러개의 경기가 들어 있는 자료에서 타자 자료만 뽑아 정리해 사용하기 쉽게 만드는 함수
 
     여러 경기 자료가 같이 들어가 있는 자료에서 타자 자료만 모두 뽑아서 위 `modify` 함수를
@@ -119,7 +119,7 @@ def output(config, data):
     ### Returns:
         temp_data (json): 여러 경기 타자 자료
     """
-    data = modify(config, data)
+    data = modify(data)
 
     temp_data = []
 
@@ -134,7 +134,7 @@ def output(config, data):
     return temp_data
 
 
-def output_to_pd(config, data):
+def output_to_pd(data):
     """수집한 여러개의 경기가 들어 있는 자료에서 타자 자료만 뽑아 정리해 pandas로 변환하는 함수
 
     여러 경기 자료가 같이 들어가 있는 자료에서 `output`함수를 이용하여
@@ -173,7 +173,7 @@ def output_to_pd(config, data):
         temp_data (df): 여러 경기 스코어보드 자료
     """
 
-    data = output(config, data)
+    data = output(data)
 
     return pd.DataFrame(data)
 
