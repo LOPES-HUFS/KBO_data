@@ -8,7 +8,7 @@
 CREATE TABLE batter(
     idx BIGINT(11) NOT NULL COMMENT "조합키(시합날짜+더블헤더+팀ID)",
     playerid INT(5) NOT NULL COMMENT "선수ID",
-    position CHAR(1) DEFAULT NULL COMMENT "포지션",
+    position VARCHAR(2) DEFAULT NULL COMMENT "포지션",
     i_1 INT(8) DEFAULT NULL COMMENT "1이닝",
     i_2  INT(8) DEFAULT NULL COMMENT "2이닝",
     i_3  INT(8) DEFAULT NULL COMMENT "3이닝",
