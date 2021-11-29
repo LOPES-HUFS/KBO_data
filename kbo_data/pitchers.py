@@ -151,14 +151,14 @@ def output_to_pd(data):
     return pd.DataFrame(data)
    
    
-   def change_inning(data):
-"""이닝수와 나머지를 정리해주는 코드. 이닝수와 나머지 값을 순차적으로 나열한다. 이닝수의 경우 0-18까지 가능하며, 나머지의 경우 0-2까지만 가능하다.
+def change_inning(data):
+    """이닝수와 나머지를 정리해주는 코드. 이닝수와 나머지 값을 순차적으로 나열한다. 이닝수의 경우 0-18까지 가능하며, 나머지의 경우 0-2까지만 가능하다.
 
- ### Examples:
-   - '5' -> 50
-   - '2\\/3' -> 02
-   - '1 2\\/3' -> 12
-"""
+    ### Examples:
+        - '5' -> 50
+        - '2\\/3' -> 02
+    - '1 2\\/3' -> 12
+    """
     temp = data.split()
     
     if len(temp) == 1 and "\\" not in temp[0]:
