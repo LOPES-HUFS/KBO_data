@@ -35,7 +35,8 @@ config = configparser.ConfigParser()
 config.read("code_list.ini", encoding="utf-8")
 Batter_factor = config["BATTER"]
 
-def modify(config, data):
+
+def modify(data):
     """수집한 여러 개의 경기가 들어 있는 자료에서 타자 자료만 정리하는 함수
 
     이 함수는 여러 경기자료(`data`)에서 스코어보드만 뽑아서 내용을 고치고 변경한 다음
@@ -48,22 +49,10 @@ def modify(config, data):
     ```python
     import json
     import batters
-    import configparser
-    import ast
-    import re
-    import pandas as  pd
-    
-    from modifying import get_game_info
-    from scoreboards import making_primary_key
-    from batters import change_position
-    
-    config = configparser.ConfigParser()
-    config.read("code_list.ini", encoding="utf-8")
-    inning_info = config["BATTER"]
-    
+
     with open("../sample_data/2017/2017_03.json", 'r') as json_file:
         kbo_2017_03 = json.load(json_file)
-    kbo_2017_03_modifed = batters.modify(inning_info,kbo_2017_03)
+    kbo_2017_03_modifed = batters.modify(kbo_2017_03)
     ```
     Args:
         data (json): 수집한 하나 이상의 경기 자료
@@ -77,24 +66,32 @@ def modify(config, data):
         home_or_away_list = ["away_batter", "home_batter"]
         game_info = get_game_info(single_game["id"])
         for home_or_away in home_or_away_list:
-            batters = single_game['contents'][home_or_away]
+            batters = single_game["contents"][home_or_away]
             # 타자 자료의 경우 필요 없는 키들이 있어서 리스트를 새로 만들어서 덮어씌우기
-            fin_batters=[]
+            fin_batters = []
             for batter in batters:
-                new_info={}
-                new_info['idx'] = making_primary_key(batter["팀"], game_info["year"], game_info["month"], game_info["day"], game_info["더블헤더"])
-                new_info['playerid'] = batter["선수명"] #함수 만들어야 함
-                new_info['team'] = batter["팀"]
-                new_info['position'] = change_position(batter["포지션"])
-                new_info = add_ining(config,new_info,batter)
+                new_info = {}
+                new_info["idx"] = making_primary_key(
+                    batter["팀"],
+                    game_info["year"],
+                    game_info["month"],
+                    game_info["day"],
+                    game_info["더블헤더"],
+                )
+                new_info["playerid"] = batter["선수명"]  # 함수 만들어야 함
+                new_info["team"] = batter["팀"]
+                new_info["position"] = change_position(batter["포지션"])
+                new_info = add_ining(Batter_factor, new_info, batter)
                 new_info["hit"] = batter["안타"]
                 new_info["bat_num"] = batter["타수"]
                 new_info["hit_get"] = batter["타점"]
                 new_info["own_get"] = batter["득점"]
                 fin_batters.append(new_info)
 
-            fin_batters= pd.DataFrame(fin_batters)
-            data[i]["contents"][home_or_away] = ast.literal_eval(fin_batters.to_json(orient="records"))
+            fin_batters = pd.DataFrame(fin_batters)
+            data[i]["contents"][home_or_away] = ast.literal_eval(
+                fin_batters.to_json(orient="records")
+            )
         i = i + 1
 
     return data
@@ -220,7 +217,7 @@ def change_position(data):
     batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
     change_posision(batter)
     """
-    pst = re.split("\B",data)
+    pst = re.split("\B", data)
 
     for _ in pst:
         if "一" in data:
@@ -256,19 +253,19 @@ def del_dummy(data):
     return data
 
 
-def add_ining(config,new_data,data):
+def add_ining(config, new_data, data):
     """
     이닝 수를 최대값인 18에 맞춰서 추가해주고 키 이름도 변경해주는 함수
     """
-    
-    for i in range(1,19):
+
+    for i in range(1, 19):
         if str(i) in data:
-            #키 이름 변경
-            new_data["i_"+str(i)] = trans_code(config, str(data.pop(str(i))))
+            # 키 이름 변경
+            new_data["i_" + str(i)] = trans_code(config, str(data.pop(str(i))))
         else:
-            #데이터 추가
-            new_data["i_"+str(i)] = "-"
-            
+            # 데이터 추가
+            new_data["i_" + str(i)] = "-"
+
     return new_data
 
 
@@ -279,6 +276,6 @@ def trans_code(config, data):
     Returns:
         data (int): "code_list.ini"로 변환된 코드
     """
-    temp = [config[x] for x in re.split("\W",data) if x != '']
-    
+    temp = [config[x] for x in re.split("\W", data) if x != ""]
+
     return "".join(temp)
