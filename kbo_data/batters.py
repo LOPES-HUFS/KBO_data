@@ -84,7 +84,7 @@ def modify(config, data):
                 new_info={}
                 new_info['idx'] = making_primary_key(batter["팀"], game_info["year"], game_info["month"], game_info["day"], game_info["더블헤더"])
                 new_info['playerid'] = batter["선수명"] #함수 만들어야 함
-                new_info['team'] batter["팀"]
+                new_info['team'] = batter["팀"]
                 new_info['position'] = change_position(batter["포지션"])
                 new_info = add_ining(config,new_info,batter)
                 new_info["hit"] = batter["안타"]
