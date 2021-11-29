@@ -264,9 +264,21 @@ def add_ining(config,new_data,data):
     for i in range(1,19):
         if str(i) in data:
             #키 이름 변경
-            new_data["i_"+str(i)] = int(config[str(data.pop(str(i)))])
+            new_data["i_"+str(i)] = trans_code(config, str(data.pop(str(i))))
         else:
             #데이터 추가
             new_data["i_"+str(i)] = "-"
             
     return new_data
+
+
+def trans_code(config, data):
+    """붙어있는 이닝 결과값들을 변환해주는 코드
+    Args:
+        data (sting): 한글로 기록된 타격기록
+    Returns:
+        data (int): "code_list.ini"로 변환된 코드
+    """
+    temp = [config[x] for x in re.split("\W",data) if x != '']
+    
+    return "".join(temp)

@@ -47,11 +47,10 @@ def modify(data):
                 new_info={}
                 new_info['idx'] = making_primary_key(pitcher["팀"], game_info["year"], game_info["month"], game_info["day"], game_info["더블헤더"])
                 new_info['playerid'] = pitcher["선수명"] #함수 만들어야 함
-                new_info['mound'] = pitcher['등판']
-                new_info['inning'] = '0' if len(pitcher['이닝'].split())==1 else pitcher['이닝'].split()[0]
-                new_info['rest'] = pitcher['이닝'].split()[-1][0]
-                new_info['saved'] = pitcher['세']
-                new_info['hold'] = pitcher['세'] #어디선가 홀드값이 날라간 것 같아요..찾아올게여
+                new_info['team'] = pitcher["팀"]
+                new_info['mound'] = '1' if pitcher['등판'] == '선발' else '0'
+                new_info['inning'] = change_inning(pitcher['이닝'])
+                new_info['result'] = '세이브' if pitcher['결과'] == '세' else pitcher['결과']
                 new_info['strikeout'] = pitcher['삼진']
                 new_info['dead4ball'] = pitcher['4사구']
                 new_info['losescore'] = pitcher['실점']
@@ -65,7 +64,7 @@ def modify(data):
 
             fin_pitchers= pd.DataFrame(fin_pitchers)
             data[i]["contents"][home_or_away] = ast.literal_eval(fin_pitchers.to_json(orient="records"))
-    i = i + 1
+        i = i + 1
 
     return data
 
@@ -150,3 +149,21 @@ def output_to_pd(data):
     data = output(data)
 
     return pd.DataFrame(data)
+   
+   
+   def change_inning(data):
+"""이닝수와 나머지를 정리해주는 코드. 이닝수와 나머지 값을 순차적으로 나열한다. 이닝수의 경우 0-18까지 가능하며, 나머지의 경우 0-2까지만 가능하다.
+
+ ### Examples:
+   - '5' -> 50
+   - '2\\/3' -> 02
+   - '1 2\\/3' -> 12
+"""
+    temp = data.split()
+    
+    if len(temp) == 1 and "\\" not in temp[0]:
+        return temp[0]+"0"
+    elif len(temp) == 1 and "\\" in temp[0]:
+        return "0"+temp[-1][0]
+    else:
+        return temp[0] + temp[-1][0]
