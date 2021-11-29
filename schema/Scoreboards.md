@@ -7,7 +7,7 @@
 ```sql
 CREATE TABLE scoreboard(
     dx BIGINT(11) NOT NULL COMMENT "조합키(시합날짜+더블헤더+팀ID)",
-    team VARCHAR(4)  DEFAULT NULL COMMENT "선수ID",
+    team VARCHAR(4)  DEFAULT NULL COMMENT "팀이름",
     result INT(1) DEFAULT NULL COMMENT "결과",
     i_1 INT(2) DEFAULT NULL COMMENT  "1이닝",
     i_2 INT(2) DEFAULT NULL COMMENT  "2이닝",
