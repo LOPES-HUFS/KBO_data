@@ -50,6 +50,7 @@ def modify(config, data):
     import batters
     import configparser
     import ast
+    import re
     import pandas as  pd
     
     from modifying import get_game_info
@@ -58,10 +59,11 @@ def modify(config, data):
     
     config = configparser.ConfigParser()
     config.read("code_list.ini", encoding="utf-8")
+    inning_info = config["BATTER"]
     
     with open("../sample_data/2017/2017_03.json", 'r') as json_file:
         kbo_2017_03 = json.load(json_file)
-    kbo_2017_03_modifed = batters.modify(config["BATTER"],kbo_2017_03)
+    kbo_2017_03_modifed = batters.modify(inning_info,kbo_2017_03)
     ```
     Args:
         data (json): 수집한 하나 이상의 경기 자료
