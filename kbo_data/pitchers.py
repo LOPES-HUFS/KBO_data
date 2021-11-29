@@ -159,7 +159,7 @@ def change_inning(data):
         - '2\\/3' -> 02
     - '1 2\\/3' -> 12
     """
-    temp = data.split()
+    temp = str(data).split()
     
     if len(temp) == 1 and "\\" not in temp[0]:
         return temp[0]+"0"
