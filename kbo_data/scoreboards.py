@@ -12,7 +12,6 @@
 """
 
 import ast
-
 import pandas as pd
 
 from modifying import changing_win_or_loss_to_int
@@ -20,17 +19,13 @@ from modifying import is_exist_inning
 from modifying import making_primary_key
 from modifying import get_game_info
 
-
 def modify(data):
     """수집한 여러개의 경기가 들어 있는 자료에서 스코어보드만 정리하는 함수
-
     이 함수는 여러 경기자료(`data`)에서 스코어보드만 뽑아서 내용을 고치고 변경한 다음
     다시 원 자료(`data`)에 끼워 넣는다. 즉 반환 값에는 모든 수집한 내용이 들어 있다.
     참고로 아래 긴 `for`문은 18회까지 연장하기 위한 방법이다. 기본적으로 현재 정규 이닝은
     13회까지밖에 없지만, 예전 정규 KBO 리그에서 18회까지 있는 경우가 있어 이를 반영했다.
-
     Examples:
-
     ```python
     import json
     import scoreboards
@@ -38,7 +33,6 @@ def modify(data):
         kbo_2017_03 = json.load(json_file)
     data = scoreboards.modify(kbo_2017_03)
     ```
-
     Note:
         현재 수정하고 있는 컬럼 이름
         - 이닝 이름 12개
@@ -46,84 +40,51 @@ def modify(data):
         - 홈팀
         - 원정팀
         - 더블헤더
-
     Args:
         data (json): 수집한 하나 이상의 경기 자료
-
     Returns:
         data (json): scoreboard만 수정한, 하나 이상의 경기 자료
     """
     i = 0
 
     for temp in data:
-        for item in temp["contents"]["scoreboard"]:
-            if "13" in item:
-                pass
-            else:
-                item["13"] = "-"
-            if "14" in item:
-                pass
-            else:
-                item["14"] = "-"
-            if "15" in item:
-                pass
-            else:
-                item["15"] = "-"
-            if "16" in item:
-                pass
-            else:
-                item["16"] = "-"
-            if "17" in item:
-                pass
-            else:
-                item["17"] = "-"
-            if "18" in item:
-                pass
-            else:
-                item["18"] = "-"
-        temp_p = pd.DataFrame(temp["contents"]["scoreboard"])
+        fin_boards = []
+        etc_info = temp["contents"]["ETC_info"]
         game_info = get_game_info(temp["id"])
-        temp_p.loc[:, "year"] = game_info["year"]
-        temp_p.loc[:, "month"] = game_info["month"]
-        temp_p.loc[:, "day"] = game_info["day"]
-        temp_p.loc[:, "week"] = game_info["week"]
-        temp_p.loc[:, "홈팀"] = temp["contents"]["scoreboard"][1]["팀"]
-        temp_p.loc[:, "원정팀"] = temp["contents"]["scoreboard"][0]["팀"]
-        temp_p.loc[:, "더블헤더"] = game_info["더블헤더"]
-        temp_p.rename(
-            columns={
-                "팀": "team",
-                "승패": "result",
-                "1": "i_1",
-                "2": "i_2",
-                "3": "i_3",
-                "4": "i_4",
-                "5": "i_5",
-                "6": "i_6",
-                "7": "i_7",
-                "8": "i_8",
-                "9": "i_9",
-                "10": "i_10",
-                "11": "i_11",
-                "12": "i_12",
-                "13": "i_13",
-                "14": "i_14",
-                "15": "i_15",
-                "16": "i_16",
-                "17": "i_17",
-                "18": "i_18",
-                "홈팀": "home",
-                "원정팀": "away",
-                "더블헤더": "dbheader",
-            },
-            inplace=True,
-        )
-        temp_p.replace("-", -1, inplace=True)
-        temp_p["i_9"] = pd.to_numeric(temp_p["i_9"])
-        # print(f'{temp["id"]}: modifed!')
-        # print(temp_p)
+        for old_info in temp["contents"]["scoreboard"]:
+            new_info = {}
+            new_info["idx"] = making_primary_key(
+                old_info["팀"],
+                game_info["year"],
+                game_info["month"],
+                game_info["day"],
+                game_info["더블헤더"],
+                )
+            new_info["team"] = old_info["팀"]
+            new_info["result"] = 1 if old_info["승패"] == "승" else 0 if old_info["승패"] == "무" else -1
+            new_info = add_ining(new_info, old_info)
+            new_info["r"] = old_info['R']
+            new_info["h"] = old_info['H']
+            new_info["e"] = old_info['E']
+            new_info["b"] = old_info['B']
+            new_info["year"] = game_info["year"]
+            new_info["month"] = game_info["month"]
+            new_info["day"] = game_info["day"]
+            new_info["week"] = game_info["week"]
+            new_info["home"]= temp["contents"]["scoreboard"][1]["팀"]
+            new_info["away"] = temp["contents"]["scoreboard"][0]["팀"]
+            new_info["dbheader"] = game_info["더블헤더"]
+            new_info["judge"] = str(etc_info["심판"])
+            new_info["place"] = etc_info["구장"]
+            new_info["audience"] = etc_info["관중"]
+            new_info["starttime"] =  etc_info["개시"]
+            new_info["endtime"] =  etc_info["종료"]
+            new_info["gametime"] =  etc_info["경기시간"]
+            fin_boards.append(new_info)
+
+        fin_boards = pd.DataFrame(fin_boards)
         data[i]["contents"]["scoreboard"] = ast.literal_eval(
-            temp_p.to_json(orient="records")
+                fin_boards.to_json(orient="records")
         )
         i = i + 1
 
