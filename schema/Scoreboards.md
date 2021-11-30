@@ -6,7 +6,7 @@
 
 ```sql
 CREATE TABLE scoreboard(
-    dx BIGINT(11) NOT NULL COMMENT "조합키(시합날짜+더블헤더+팀ID)",
+    idx BIGINT(11) NOT NULL COMMENT "조합키(시합날짜+더블헤더+팀ID)",
     team VARCHAR(4)  DEFAULT NULL COMMENT "팀이름",
     result INT(1) DEFAULT NULL COMMENT "결과",
     i_1 INT(2) DEFAULT NULL COMMENT  "1이닝",
@@ -38,6 +38,12 @@ CREATE TABLE scoreboard(
     home VARCHAR(4) DEFAULT NULL COMMENT "홈팀",
     away VARCHAR(4) DEFAULT NULL COMMENT "원정팀",
     dbheader INT(1) DEFAULT NULL COMMENT "더블헤더",
+    judge VARCHAR(35) DEFAULT NULL COMMENT "심판",
+    place VARCHAR(3) DEFAULT NULL COMMENT "구장",
+    audience INT(6) DEFAULT NULL COMMENT "관중",
+    starttime CHAR(5) DEFAULT NULL  COMMENT "개시",
+    endtime CHAR(5) DEFAULT NULL  COMMENT "종료",
+    gametime CHAR(5) DEFAULT NULL  COMMENT "경기시간",
     PRIMARY KEY (`idx`)
 );
 ```
