@@ -77,7 +77,7 @@ def modify(data):
             new_info["judge"] = str(etc_info["심판"])
             new_info["place"] = etc_info["구장"]
             new_info["audience"] = etc_info["관중"]
-            new_info["startime"] =  etc_info["개시"]
+            new_info["starttime"] =  etc_info["개시"]
             new_info["endtime"] =  etc_info["종료"]
             new_info["gametime"] =  etc_info["경기시간"]
             fin_boards.append(new_info)
