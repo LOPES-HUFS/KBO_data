@@ -441,3 +441,17 @@ def output_to_dict(data):
         results.append(temp)
 
     return results
+
+def add_ining(new_data, data):
+    """
+    이닝 수를 최대값인 18에 맞춰서 추가해주고 키 이름도 변경해주는 함수
+    """
+
+    for i in range(1, 19):
+        if str(i) in data:
+            new_data["i_"+str(i)] = data[str(i)]
+        else:
+            # 데이터 추가
+            new_data["i_" + str(i)] = "-"
+
+    return new_data
