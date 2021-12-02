@@ -179,32 +179,9 @@ def output_to_pd(data):
 
 
 def change_record(data):
-
-    """
-    data: 타자 DataFrame 파일을 의미한다.
-    사용방법
-    import pandas as pd
-    temp = pd.read_json("20210409_KTSS0.json")
-    batter = pd.DataFrame(temp['20210409_KTSS0']["away_batter"])
-    change_record(batter)
-    """
-    for j in range(1, 19):
-        for i in range(0, len(data[[str(j)]])):
-            if "一" in list(str(data[str(j)].tolist()[i])):
-                data.loc[i, str(j)] = re.sub("一", "1", str(data[str(j)].tolist()[i]))
-            if "二" in list(str(data[str(j)].tolist()[i])):
-                data.loc[i, str(j)] = re.sub("二", "2", str(data[str(j)].tolist()[i]))
-            if "三" in list(str(data[str(j)].tolist()[i])):
-                data.loc[i, str(j)] = re.sub("三", "3", str(data[str(j)].tolist()[i]))
-            if "/" in list(str(data[str(j)].tolist()[i])):
-                temp1 = Batter_factor[
-                    str(data[str(j)].tolist()[i].split("/ ")[0].split("\\")[0])
-                ]
-                temp2 = Batter_factor[str(data[str(j)].tolist()[i].split("/ ")[1])]
-                data.loc[i, str(j)] = str(temp1) + str(temp2)
-    for i in list(Batter_factor.keys()):
-        data = data.replace(i, Batter_factor[i])
-
+    data = data.replace("一","1")
+    data = data.replace("二","2")
+    data = data.replace("三","3")
     return data
 
 
@@ -276,6 +253,6 @@ def trans_code(config, data):
     Returns:
         data (int): "code_list.ini"로 변환된 코드
     """
-    temp = [config[x] for x in re.split("\W", data) if x != ""]
+    temp = [config[change_record(x)] for x in re.split("\W", data) if x != ""]
 
     return "".join(temp)
