@@ -116,7 +116,7 @@ def game_data(location):
         game_id = item[1]["id"]
         if is_home_or_away == "away_batter" or is_home_or_away == "home_batter":
             temp = fix.batters_data(item[0], item[1])
-            # print(temp)
+            #print(temp)
             temp_file_location = location + "/2009/" + item[1]["fixed_file_name"]
             # print(temp_file_location)
             with open(temp_file_location, "r") as json_file:
@@ -124,7 +124,7 @@ def game_data(location):
 
                 for game in games:
                     if game["id"] == game_id:
-                        game["contents"][is_home_or_away] = temp
+                        game["contents"][is_home_or_away] = temp[is_home_or_away]
 
                 with open(temp_file_location, "w") as outfile:
                     json.dump(games, outfile, ensure_ascii=False)
@@ -161,23 +161,23 @@ def changing_team_names(location):
                 for team_scoreboard in game["contents"]["scoreboard"]:
                     if team_scoreboard["팀"] == "":
                         team_scoreboard["팀"] = "서울"
-                        print("스코어 보드에 팀명이 없습니다. 서울로 입력")
+                        #print("스코어 보드에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["away_batter"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        print("원정팀 타자 자료에 팀명이 없습니다. 서울로 입력")
+                        #print("원정팀 타자 자료에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["home_batter"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        print("홈팀 타자 자료에 팀명이 없습니다. 서울로 입력")
+                        #print("홈팀 타자 자료에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["away_pitcher"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        print("원정팀 투수 자료에 팀명이 없습니다. 서울로 입력")
+                        #print("원정팀 투수 자료에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["home_pitcher"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        print("원정팀 투수 자료에 팀명이 없습니다. 서울로 입력")
+                        #print("원정팀 투수 자료에 팀명이 없습니다. '서울'로 입력")
         with open(temp_file_location, "w") as outfile:
             json.dump(games, outfile, ensure_ascii=False)
 
