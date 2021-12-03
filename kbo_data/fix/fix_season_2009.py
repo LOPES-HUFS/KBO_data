@@ -7,6 +7,19 @@
 - `fix_team_names()`을 이용하여 팀 이름이 잘못되어 있는 것을 고친다.
 - 4월 4일 서울(현 키움)과 롯데 경기(20090404,WOLT0)에 타자 자료가 없는 것을 추가한다.
 
+Examples:
+
+```python
+    >>> import fix
+    >>> fix.season_2009("../sample_date")
+    수집한 KBO 자료가 해당 디렉토리에 없습니다.
+    >>> fix.season_2009("../sample_data")
+    ../sample_data/2021/2021_04.json
+    ../sample_data
+    patch complete!
+    patch complete!
+```
+
 """
 
 import ast
@@ -107,7 +120,6 @@ def game_data(location):
 
     Args:
         location (str) : 우리가 수집한 자료 파일이 들어 있는 위치
-
     """
 
     print(location)
@@ -116,7 +128,7 @@ def game_data(location):
         game_id = item[1]["id"]
         if is_home_or_away == "away_batter" or is_home_or_away == "home_batter":
             temp = fix.batters_data(item[0], item[1])
-            #print(temp)
+            # print(temp)
             temp_file_location = location + "/2009/" + item[1]["fixed_file_name"]
             # print(temp_file_location)
             with open(temp_file_location, "r") as json_file:
@@ -126,9 +138,12 @@ def game_data(location):
                     if game["id"] == game_id:
                         game["contents"][is_home_or_away] = temp[is_home_or_away]
 
-                with open(temp_file_location, "w") as outfile:
-                    json.dump(games, outfile, ensure_ascii=False)
-                    print("파일 내용 변경!")
+                try:
+                    with open(temp_file_location, "w") as outfile:
+                        json.dump(games, outfile, ensure_ascii=False)
+                        print("patch complete!")
+                except Exception as e:
+                    print(e)
 
 
 def changing_team_names(location):
@@ -161,25 +176,28 @@ def changing_team_names(location):
                 for team_scoreboard in game["contents"]["scoreboard"]:
                     if team_scoreboard["팀"] == "":
                         team_scoreboard["팀"] = "서울"
-                        #print("스코어 보드에 팀명이 없습니다. '서울'로 입력")
+                        # print("스코어 보드에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["away_batter"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        #print("원정팀 타자 자료에 팀명이 없습니다. '서울'로 입력")
+                        # print("원정팀 타자 자료에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["home_batter"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        #print("홈팀 타자 자료에 팀명이 없습니다. '서울'로 입력")
+                        # print("홈팀 타자 자료에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["away_pitcher"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        #print("원정팀 투수 자료에 팀명이 없습니다. '서울'로 입력")
+                        # print("원정팀 투수 자료에 팀명이 없습니다. '서울'로 입력")
                 for away_batter in game["contents"]["home_pitcher"]:
                     if away_batter["팀"] == "":
                         away_batter["팀"] = "서울"
-                        #print("원정팀 투수 자료에 팀명이 없습니다. '서울'로 입력")
-        with open(temp_file_location, "w") as outfile:
-            json.dump(games, outfile, ensure_ascii=False)
+                        # print("원정팀 투수 자료에 팀명이 없습니다. '서울'로 입력")
+        try:
+            with open(temp_file_location, "w") as outfile:
+                json.dump(games, outfile, ensure_ascii=False)
+        except Exception as e:
+            print(e)
 
 
 def pitchers_data():
