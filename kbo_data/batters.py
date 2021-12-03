@@ -179,6 +179,14 @@ def output_to_pd(data):
 
 
 def change_record(data):
+   """2010년 이전데이터에서 존재하는 타격기록의 한자를 숫자로 변경하는 함수
+  
+    ### Args:
+        data (str): 한자가 포함된 타격기록
+
+    ### Returns:
+        temp_data (str): 숫자로 변경된 타격기록
+   """
     data = data.replace("一","1")
     data = data.replace("二","2")
     data = data.replace("三","3")
