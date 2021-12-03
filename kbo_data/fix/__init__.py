@@ -1,11 +1,13 @@
 """ KBO 자료에서 부족한 것들을 수정 보완하는 라이브러리
 수집한 수집한 장소의 자료가 누락되거나 잘못되어 있어 이 프로젝트 코드로 모은 KBO 자료도 
-당연히 누락되거나 잘못되어 있는 자료가 있다.
-이 모듈이 이를 보완하기 위한 것이다. 이 모듈은 다른 곳에 있는 자료를 가지고 여기서 모은 
-자료를 보완한다.
+당연히 누락되거나 잘못되어 있는 자료가 있다. 이 모듈이 이를 보완하기 위한 것이다.
+이 모듈은 다른 곳에 있는 자료를 가지고 여기서 모은 자료를 보완한다.
+물론 이 것을 실행하기 위해서는 이미 KBO 자료를 다 받은 상태에서 가능하다.
 """
 
 import csv
+import json
+import os
 
 from . import fix_season_2009
 
@@ -14,13 +16,66 @@ def season_2009(location):
     """2009년 시즌 자료를 수정 보완하는 코드
 
     2009년 시즌 자료에서는 다음을 수정한다.
+    해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
 
     - `fix_team_names()`을 이용하여 팀 이름이 잘못되어 있는 것을 고친다.
     - 4월 4일 서울(현 키움)과 롯데 경기(20090404,WOLT0)에 타자 자료가 없는 것을 추가한다.
 
+Examples:
+
+```python
+    >>> import fix
+    >>> fix.season_2009("../sample_date")
+    수집한 KBO 자료가 해당 디렉토리에 없습니다.
+    >>> fix.season_2009("../sample_data")
+    ../sample_data/2021/2021_04.json
+    ../sample_data
+    patch complete!
+    patch complete!
+```
+
     """
-    fix_season_2009.changing_team_names(location)
-    fix_season_2009.game_data(location)
+    kbo_is_exist = is_exist(location)
+    if kbo_is_exist["path"] and kbo_is_exist["path"] == True:
+        try:
+            fix_season_2009.changing_team_names(location)
+            fix_season_2009.game_data(location)
+        except Exception as e:
+            print(e)
+    else:
+        print("수집한 KBO 자료가 해당 디렉토리에 없습니다.")
+
+
+def is_exist(path):
+    """입력한 디렉토리가 있는지 적절한지를 검사하는 함수
+
+    fix를 하기 위해서는 이미 KBO 자료를 다 받은 상태에서 가능하다.
+    입력한 디렉토리가 있는지 확인한다.  csv 형식이지만 `str`으로 저장된 자료에서 csv.reader을 이용해서
+    그 안에 들어 있는 각각의 요소를 분리해서 `list` 형식으로 반환한다.
+
+    Args:
+        path (str) : 디렉토리(폴더)가 문자열로 들어 있다.
+
+    Returns:
+        (dict): 디렉토리가 있는지 적절한지 `bool` 형식으로 보내고 에러 메세지도 함께 보낸다.
+    """
+
+    temp_error_meg = "자료를 다 아직 모으지 않아 패치를 할 수 없습니다."
+
+    if os.path.isdir(path) == True:
+        temp_file_location = path + "/2021/2021_04.json"
+        print(temp_file_location)
+        if os.path.isfile(temp_file_location) == True:
+            with open(temp_file_location, "r") as json_file:
+                temp_2021_04 = json.load(json_file)
+                if "id" in temp_2021_04[1] and "contents" in temp_2021_04[1]:
+                    return {"path": True, "file": True}
+                else:
+                    return {"path": True, "file": True, "meg": temp_error_meg}
+        else:
+            return {"path": True, "file": False, "meg": temp_error_meg}
+    else:
+        return {"path": False, "meg": "자료가 들어 있는 적절한 위치를 지정하지 않았습니다."}
 
 
 def changing_str_to_list_in_csv(str_in_csv):
