@@ -10,7 +10,39 @@ import json
 import os
 
 from . import fix_season_2009
+from . import fix_season_2008
 
+
+def season_2008(location):
+    """2008년 시즌 자료를 수정 보완하는 코드
+
+    2008년 시즌 자료에서는 다음을 수정한다.
+    해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
+
+    - 3월 30일 한화와 롯데 경기(20080330,LTHH0)에 타자 자료가 없는 것을 추가한다.
+
+Examples:
+
+```python
+    >>> import fix
+    >>> fix.season_2008("../sample_date")
+    수집한 KBO 자료가 해당 디렉토리에 없습니다.
+    >>> fix.season_2008("../sample_data")
+    ../sample_data/2021/2021_03.json
+    ../sample_data
+    patch complete!
+    patch complete!
+```
+
+    """
+    kbo_is_exist = is_exist(location)
+    if kbo_is_exist["path"] and kbo_is_exist["path"] == True:
+        try:
+            fix_season_2008.game_data(location)
+        except Exception as e:
+            print(e)
+    else:
+        print("수집한 KBO 자료가 해당 디렉토리에 없습니다.")
 
 def season_2009(location):
     """2009년 시즌 자료를 수정 보완하는 코드
