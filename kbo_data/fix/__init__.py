@@ -9,30 +9,71 @@ import csv
 import json
 import os
 
+from . import fix_season_2015
 from . import fix_season_2009
 from . import fix_season_2008
+
+
+def season_2015(location):
+    """2015년 시즌 자료를 수정 보완하는 코드
+
+        2015년 시즌 자료에서는 다음을 수정한다.
+        해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
+
+        - 3월 30일 한화와 롯데 경기(20080330,LTHH0)에 타자 자료가 없는 것을 추가한다.
+
+    Examples:
+
+    ```python
+    >>> import fix
+    >>> location = "../sample_data"
+    >>> fix.season_2015(location)
+    ../sample_data/2021/2021_04.json
+    ../sample_data
+    수정 전 경기 숫자: 100
+    home_batter 20150708_HTWO0
+    dict_keys(['home_batter'])
+    away_batter 20150708_HTWO0
+    dict_keys(['home_batter', 'away_batter'])
+    home_pitcher 20150708_HTWO0
+    dict_keys(['home_batter', 'away_batter', 'home_pitcher'])
+    away_pitcher 20150708_HTWO0
+    dict_keys(['home_batter', 'away_batter', 'home_pitcher', 'away_pitcher'])
+    수정 후 경기 숫자: 101
+    patch complete!
+    ```
+
+    """
+    kbo_is_exist = is_exist(location)
+    if kbo_is_exist["path"] and kbo_is_exist["path"] == True:
+        try:
+            fix_season_2015.game_data(location)
+        except Exception as e:
+            print(e)
+    else:
+        print("수집한 KBO 자료가 해당 디렉토리에 없습니다.")
 
 
 def season_2008(location):
     """2008년 시즌 자료를 수정 보완하는 코드
 
-    2008년 시즌 자료에서는 다음을 수정한다.
-    해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
+        2008년 시즌 자료에서는 다음을 수정한다.
+        해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
 
-    - 3월 30일 한화와 롯데 경기(20080330,LTHH0)에 타자 자료가 없는 것을 추가한다.
+        - 3월 30일 한화와 롯데 경기(20080330,LTHH0)에 타자 자료가 없는 것을 추가한다.
 
-Examples:
+    Examples:
 
-```python
-    >>> import fix
-    >>> fix.season_2008("../sample_date")
-    수집한 KBO 자료가 해당 디렉토리에 없습니다.
-    >>> fix.season_2008("../sample_data")
-    ../sample_data/2021/2021_03.json
-    ../sample_data
-    patch complete!
-    patch complete!
-```
+    ```python
+        >>> import fix
+        >>> fix.season_2008("../sample_date")
+        수집한 KBO 자료가 해당 디렉토리에 없습니다.
+        >>> fix.season_2008("../sample_data")
+        ../sample_data/2021/2021_03.json
+        ../sample_data
+        patch complete!
+        patch complete!
+    ```
 
     """
     kbo_is_exist = is_exist(location)
@@ -44,27 +85,28 @@ Examples:
     else:
         print("수집한 KBO 자료가 해당 디렉토리에 없습니다.")
 
+
 def season_2009(location):
     """2009년 시즌 자료를 수정 보완하는 코드
 
-    2009년 시즌 자료에서는 다음을 수정한다.
-    해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
+        2009년 시즌 자료에서는 다음을 수정한다.
+        해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
 
-    - `fix_team_names()`을 이용하여 팀 이름이 잘못되어 있는 것을 고친다.
-    - 4월 4일 서울(현 키움)과 롯데 경기(20090404,WOLT0)에 타자 자료가 없는 것을 추가한다.
+        - `fix_team_names()`을 이용하여 팀 이름이 잘못되어 있는 것을 고친다.
+        - 4월 4일 서울(현 키움)과 롯데 경기(20090404,WOLT0)에 타자 자료가 없는 것을 추가한다.
 
-Examples:
+    Examples:
 
-```python
-    >>> import fix
-    >>> fix.season_2009("../sample_date")
-    수집한 KBO 자료가 해당 디렉토리에 없습니다.
-    >>> fix.season_2009("../sample_data")
-    ../sample_data/2021/2021_04.json
-    ../sample_data
-    patch complete!
-    patch complete!
-```
+    ```python
+        >>> import fix
+        >>> fix.season_2009("../sample_date")
+        수집한 KBO 자료가 해당 디렉토리에 없습니다.
+        >>> fix.season_2009("../sample_data")
+        ../sample_data/2021/2021_04.json
+        ../sample_data
+        patch complete!
+        patch complete!
+    ```
 
     """
     kbo_is_exist = is_exist(location)
@@ -129,6 +171,55 @@ def changing_str_to_list_in_csv(str_in_csv):
     for row in reader:
         temp_list.append(row)
     return temp_list
+
+
+def pitchers_data(pitchers_text, pitchers_patch):
+    """투수 자료를 추가하는 함수
+
+    이 프로젝트에서 수집한 자료에 없는 투수 자료를 추가하고자 한다.
+
+    Args:
+        - pitchers_text: 이건 `csv` 형식으로 자료를 저장하고 있는 것 같지만, 실제로는 `str` 형식이다.
+        - pitchers_patch (dict) : 순수하게 `dict`로 저장한다.
+
+    Returns:
+        temp_dict (json): 투수 자료
+    """
+
+    temp = changing_naver_pitchers_col_name(pitchers_text)
+    temp = changing_str_to_list_in_csv(temp)
+    temp = changing_naver_pitchers_list_to_dict(temp, pitchers_patch)
+    temp = changing_naver_pitchers_inning_format(temp)
+    temp_pitchers = {}
+    temp_pitchers[pitchers_patch["home_or_away"]] = temp
+    return temp_pitchers
+
+
+def both_batters_and_pitchers_data(total_fix_list):
+    """투수 자료와 타자 자료를 모두 동시에 추가하는 함수
+
+    이 프로젝트에서 수집한 자료에 없는 투수 자료를 추가하고자 한다.
+
+    Args:
+        - total_fix_list: 수집한 자료 목록
+    Returns:
+        total_game_data (json): 투수 자료와 타자 자료가 모두 들어 있다.
+    """
+
+    total_game_data = {}
+    for item in total_fix_list:
+        is_home_or_away = item[1]["home_or_away"]
+        game_id = item[1]["id"]
+        print(is_home_or_away, game_id)
+        if is_home_or_away == "away_batter" or is_home_or_away == "home_batter":
+            temp = batters_data(item[0], item[1])
+            total_game_data.update(temp)
+        elif is_home_or_away == "away_pitcher" or is_home_or_away == "home_pitcher":
+            temp = pitchers_data(item[0], item[1])
+            total_game_data.update(temp)
+        print(total_game_data.keys())
+
+    return total_game_data
 
 
 def batters_data(batters_text, batters_patch):
