@@ -9,9 +9,50 @@ import csv
 import json
 import os
 
+from . import fix_season_2018
 from . import fix_season_2015
 from . import fix_season_2009
 from . import fix_season_2008
+
+
+def season_2018(location):
+    """2018년 시즌 자료를 수정 보완하는 코드
+
+    2018년 시즌 자료에서는 다음을 수정한다.
+    해당 디렉토리에 적절한 자료 파일이 없으면 수정하지 않는다.
+
+     - 8월 1일 넥센과 SK 경기(20180801,WOSK0)는 전체 자료가 없습니다.
+
+    Examples:
+
+    ```python
+    >>> import fix
+    >>> location = "../sample_data"
+    >>> fix.season_2018(location)
+    ../sample_data/2021/2021_04.json
+    ../sample_data
+    수정 전 경기 숫자: 62
+    home_batter 20180801_WOSK0
+    dict_keys(['home_batter'])
+    away_batter 20180801_WOSK0
+    dict_keys(['home_batter', 'away_batter'])
+    home_batter 20180801_WOSK0
+    dict_keys(['home_batter', 'away_batter'])
+    away_pitcher 20180801_WOSK0
+    dict_keys(['home_batter', 'away_batter', 'away_pitcher'])
+    수정 후 경기 숫자: 63
+    patch complete!
+    ```
+
+    """
+    kbo_is_exist = is_exist(location)
+    if kbo_is_exist["path"] and kbo_is_exist["path"] == True:
+        try:
+            fix_season_2018.game_data(location)
+        except Exception as e:
+            print(e)
+    else:
+        print("수집한 KBO 자료가 해당 디렉토리에 없습니다.")
 
 
 def season_2015(location):
