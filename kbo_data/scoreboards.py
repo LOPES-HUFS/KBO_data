@@ -76,7 +76,7 @@ def modify(data):
             new_info["dbheader"] = game_info["더블헤더"]
             new_info["judge"] = str(etc_info["심판"])
             new_info["place"] = etc_info["구장"]
-            new_info["audience"] = etc_info["관중"]
+            new_info["audience"] = int(etc_info["관중"].replace(',',''))
             new_info["starttime"] =  etc_info["개시"]
             new_info["endtime"] =  etc_info["종료"]
             new_info["gametime"] =  etc_info["경기시간"]
@@ -207,10 +207,10 @@ def output_to_raw_list(data):
         "i_10": -1,
         "i_11": -1,
         "i_12": -1,
-        "R": 2,
-        "H": 6,
-        "E": 0,
-        "B": 3,
+        "r": 2,
+        "h": 6,
+        "e": 0,
+        "b": 3,
         "year": 2020,
         "month": 5,
         "day": 5,
@@ -354,10 +354,10 @@ def output_to_tuples(data):
             is_exist_inning(item["i_16"]),
             is_exist_inning(item["i_17"]),
             is_exist_inning(item["i_18"]),
-            item["R"],
-            item["H"],
-            item["E"],
-            item["B"],
+            item["r"],
+            item["h"],
+            item["e"],
+            item["b"],
             item["year"],
             item["month"],
             item["day"],
@@ -365,6 +365,12 @@ def output_to_tuples(data):
             item["home"],
             item["away"],
             item["dbheader"],
+            item["judge"],
+            item["place"],
+            item["audience"],
+            item["starttime"],
+            item["endtime"],
+            item["gametime"],
         )
 
         results.append(temp)
@@ -425,10 +431,10 @@ def output_to_dict(data):
             "i_16": is_exist_inning(item["i_16"]),
             "i_17": is_exist_inning(item["i_17"]),
             "i_18": is_exist_inning(item["i_18"]),
-            "r": item["R"],
-            "h": item["H"],
-            "e": item["E"],
-            "b": item["B"],
+            "r": item["r"],
+            "h": item["h"],
+            "e": item["e"],
+            "b": item["b"],
             "year": item["year"],
             "month": item["month"],
             "day": item["day"],
@@ -436,6 +442,13 @@ def output_to_dict(data):
             "home": item["home"],
             "away": item["away"],
             "dbheader": item["dbheader"],
+            "judge": item["judge"],
+            "place": item["place"],
+            "audience": item["audience"],
+            "starttime": item["starttime"],
+            "endtime": item["endtime"],
+            "gametime": item["gametime"],
+
         }
 
         results.append(temp)

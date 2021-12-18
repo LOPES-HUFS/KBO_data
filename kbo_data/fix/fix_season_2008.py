@@ -21,7 +21,6 @@ Examples:
 
 """
 
-import ast
 import json
 import configparser
 
