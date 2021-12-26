@@ -1,3 +1,7 @@
+"""
+INFO: 스크래핑 해오는 페이지가 선수 정보를 2011년부터 제공합니다.
+"""
+
 import requests
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
