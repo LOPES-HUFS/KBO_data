@@ -11,3 +11,7 @@ ID	team	이름	현재 상태
 .
 .
 ```
+# 유의할 점
+- 선수 정보를 가져오는 링크의 경우 2011년 경기부터 데이터가 존재합니다.(https://www.koreabaseball.com/Player/RegisterAll.aspx)
+- 이전 SK 소속 선수들은 현재 정보에서 가져오기에 팀이 SSG로 표기가 됩니다.
+- 각 파일은 모두 중복제거가 된 상태입니다.
