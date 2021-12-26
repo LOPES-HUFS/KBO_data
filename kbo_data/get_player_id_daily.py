@@ -31,8 +31,8 @@ import configparser
 import pandas as pd
 
 config = configparser.ConfigParser()
-config.read("config.ini",encoding='utf-8')
-player_search_url = eval(config["DEFAULT"]["player_search_URL"])
+config.read("../kbo_data/config.ini",encoding='utf-8')
+player_search_url = config["DEFAULT"]["player_search_URL"]
 
 
 def searching(name):
@@ -43,14 +43,16 @@ def searching(name):
         table = soup.find("table")
         table_rows = table.find_all("a")
         tds = table.find_all("td")
-        temp = [parsing_player_table(table_row, tds) for table_row in table_rows]
+        temp = [parsing_player_table(table_row, tds, num) for num, table_row in enumerate(table_rows)]
         res = [{item["ID"]: item} for item in temp]
     except:
         res = False
     return res
 
 
-def parsing_player_table(table_row, tds):
+def parsing_player_table(table_row, tds, num):
+    idx = 2 + 7*num
+    cnt = 4 + 7*num
     if str(table_row).split("/")[1] == "Futures":
         status = "Futures"
     elif str(table_row).split("/")[2] == "Retire":
@@ -58,15 +60,15 @@ def parsing_player_table(table_row, tds):
     else:
         status = "KBO"
     player_id = str(table_row).split("playerId=")[1].split('">')[0]
-    team = tds[2].get_text()
+    team = tds[idx].get_text()
     name = table_row.get_text()
-    return {"ID": player_id, "이름": name, "현재 상태": status, "team": team}
+    birth = tds[cnt].get_text()
+    return {"ID": player_id, "이름": name, "생년월일":birth, "현재 상태": status, "team": team}
 
 
 def searching_players(players_list):
     total = []
     error_list = []
-
     for name in players_list:
         temp = searching(name)
         if len(temp) == 0:
