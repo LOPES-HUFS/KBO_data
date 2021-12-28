@@ -31,8 +31,8 @@ import configparser
 import pandas as pd
 
 config = configparser.ConfigParser()
-config.read("../kbo_data/config.ini",encoding='utf-8')
-player_search_url = config["DEFAULT"]["player_search_URL"]
+config.read("config.ini",encoding='utf-8')
+player_search_url = eval(config["DEFAULT"]["player_search_URL"])
 
 
 def searching(name):

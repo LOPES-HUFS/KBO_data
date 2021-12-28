@@ -331,7 +331,6 @@ def output_to_tuples(data):
         temp_primary_key = making_primary_key(
             item["team"], item["year"], item["month"], item["day"], item["dbheader"]
         )
-        temp_list = [item.values()]
         temp = (
             int(temp_primary_key),
             item["team"],
@@ -408,7 +407,6 @@ def output_to_dict(data):
             item["team"], item["year"], item["month"], item["day"], item["dbheader"]
         )
 
-        temp_list = [item.values()]
         temp = {
             "idx": int(temp_primary_key),
             "team": item["team"],
