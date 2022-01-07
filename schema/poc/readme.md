@@ -11,8 +11,8 @@
                           [Batters]                    ㅣ
 [PlayerID]                - idx(foreign key) ----------ㅣ
 - playerID(key) -ㅣ------ - playerID(foreign key)       ㅣ
-- name           ㅣ                                     ㅣ
-                 ㅣ       [Pitchers]                    ㅣ
+- team           ㅣ                                     ㅣ
+- name           ㅣ       [Pitchers]                    ㅣ
                  ㅣ       - idx(foreign key) -----------ㅣ
                  ㅣ------ - playerID(foreign key)
 ```
