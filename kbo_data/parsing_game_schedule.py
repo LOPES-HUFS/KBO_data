@@ -57,7 +57,7 @@ def chang_name_into_id(team_name, year):
         "KT": "KT",
     }
 
-    if year == "2021":
+    if year >= "2021":
         return team_list_2021[team_name]
     else:
         return team_list[team_name]
