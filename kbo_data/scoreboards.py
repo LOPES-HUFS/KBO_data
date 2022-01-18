@@ -74,7 +74,6 @@ def modify(data):
             new_info["home"]= temp["contents"]["scoreboard"][1]["팀"]
             new_info["away"] = temp["contents"]["scoreboard"][0]["팀"]
             new_info["dbheader"] = game_info["더블헤더"]
-            new_info["judge"] = str(etc_info["심판"])
             new_info["place"] = etc_info["구장"]
             new_info["audience"] = int(etc_info["관중"].replace(',',''))
             new_info["starttime"] =  etc_info["개시"]
@@ -364,7 +363,6 @@ def output_to_tuples(data):
             item["home"],
             item["away"],
             item["dbheader"],
-            item["judge"],
             item["place"],
             item["audience"],
             item["starttime"],
@@ -440,7 +438,6 @@ def output_to_dict(data):
             "home": item["home"],
             "away": item["away"],
             "dbheader": item["dbheader"],
-            "judge": item["judge"],
             "place": item["place"],
             "audience": item["audience"],
             "starttime": item["starttime"],

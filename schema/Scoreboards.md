@@ -38,7 +38,6 @@ CREATE TABLE scoreboard(
     home VARCHAR(4) DEFAULT NULL COMMENT "홈팀",
     away VARCHAR(4) DEFAULT NULL COMMENT "원정팀",
     dbheader INT(1) DEFAULT NULL COMMENT "더블헤더",
-    judge VARCHAR(35) DEFAULT NULL COMMENT "심판",
     place VARCHAR(3) DEFAULT NULL COMMENT "구장",
     audience INT(6) DEFAULT NULL COMMENT "관중",
     starttime CHAR(5) DEFAULT NULL  COMMENT "개시",
