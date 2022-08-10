@@ -2,17 +2,65 @@
 
 ## 목표
 
-KBO 데이터를 가져와서 정리해 데이터 분석을 하기 쉽게 만드는 코드를 작성하고자 합니다.
+KBO 데이터를 가져와서 정리해 데이터 분석을 하기 쉽게 만드는 파이썬 스크립트를 작성하고자 합니다.
 
 ## 사용 방법
 
-현재 이 프로젝트는 `python 3.7`을 기준으로 작성하고 있습니다. 이 버젼 이상을 사용하시면 무리없이 작동할 것입니다.
+현재 이 프로젝트는 `conda`를 사용하여 `python 3.8`으로 가상환경을 구성하여 작동하는 것을 원칙으로 하고 있습니다. 가상 환경을 설치하고 이 프로젝트에서 필요한 패키지를 설치하는 방법은 아래 글을 참고하세요.
+
+### `conda`를 시용하여 가상 환경을 만들고 패키지 설치하기
+
+앞에서는 이 프로젝트를 사용하기 위해서는 `python 3.8`이 필요합니다. 여기서는 [miniforge](https://github.com/conda-forge/miniforge)를 사용할 것입니다. **miniforge** 설치는 다음 링크를 참고하세요.
+
+- [conda-forge-miniforge- A conda-forge distribution](https://github.com/conda-forge/miniforge#download)
+
+그러면 `conda`를 이용하여 이 프로젝트에서 사용할 가상 환경을 만들어 보겠습니다.
+
+```console
+conda create -n kbo_data python=3.8
+conda activate kbo_data
+```
+
+1번째 줄은 `kbo_data`이라는 이름으로 가상 환경을 만드는 것이고 2번째 줄은 그 가상 환경을 활성화하는 것입니다. 이제 앞에서 만든 `kbo_data`이라는 가상 환경에 이 프로젝트에서 필요한 패키지를 설치해 보겠습니다. `black`은 이 프로젝트의 코드를 작성하고 나서 코드를 정리하는 패키지입니다.
+
+```console
+conda install requests
+conda install pandas
+conda install selenium
+conda install bs4
+conda install lxml
+conda install black
+```
+
+만약 가상환경에서는 나가시려면 `deactivate`를 아래와 같이 사용하면 되고, 앞에서 설치한 `kbo_data`이라는 가상환경을 제거하려면 `remove`를 아래와 같이 사용하면 됩니다.
+
+```console
+conda deactivate
+conda remove -n kbo_data --all
+```
+
+### 프로젝트 파일 실행 방법
+
+실행하기 위해서는 우선 아래와 같이 프로젝트 폴더가 보이는 상태에서 터미널이나 윈도우에서는 윈도우 콘솔 또는 cmd을 시작합니다.
+
+```console
+README.md       kbo_data        league-schedule public          sample_data     schema
+```
+
+그런 다음 다음과 같이 폴더를 이동하여 앞에서 만든 가상 환경을 활성화 한 다음 본 프로젝트의 파이썬 코드를 실행하면 됩니다.
+
+```console
+cd kbo_data
+conda activate kbo_data
+python
+```
 
 ### 오늘 게임 스케줄 정보 가져오기
 
 오늘 KBO 경기 스케줄 정보를 가져 오려면 다음과 같이 하면 됩니다. 조심할 점은 경기 없는 날은, 다음 경기가 있는 날짜의 정보를 가져옵니다. 다음은 작동 화면입니다.
 
 ```python
+>>> import get_game_schedule
 >>> temp = get_game_schedule.today()
 >>> if temp['status_code'] == 200:
 ...     today_schedule = get_game_schedule.modify(temp['list'], temp['date'])
@@ -90,63 +138,10 @@ import utility
 utility.binding_json(temp_list, "2021", "4")
 ```
 
-## 코드 작성시 참고할 점
+## 코드 정리
 
-앞에서도 언급한 것처럼 현재 코드는 `python 3.7`을 기준으로 작성하고 있습니다. 그리고 `poetry`를 이용해서 파이썬 관련 패키지를 관리하고 있습니다.
-
-### 코드 정리
-
-코드 정리는 `black`을 이용하여 아래와 같이 해주시면 됩니다.
+만약 이 프로젝트에 문제가 있는 코드를 고치시거나 개선해서 코드를 '풀 리퀘스트(pull request)'를 하시려는 분이 있다면 아래와 같이 `black`을 이용하여 정리해 '풀 리퀘스트'를 해주시면 고맙겠습니다.
 
 ```bash
 python -m black get_data.py
-```
-
-### poetry 설치
-
-맥에서는 아래와 같이 설치하시면 됩니다.
-
-```bash
-brew install poetry
-```
-
-### 파이썬 가상 환경 설정
-
-맥에도 `python 3`이 설치되어 있으니 안정적으로 사용하기 위해서 파이썬 가상 환경을 만들어서 사용하시는 편이 좋습니다. 맥에서 `python 3.7` 가상 환경을 만드는 방법은 아래와 `pyenv`과 `pyenv-virtualenv`을 설치하신 다음,
-
-```bash
-brew install pyenv
-brew install pyenv-virtualenv
-pyenv install 3.7.9
-```
-
-아래왜 같이 설치된 것을 확인한 다음,
-
-```bash
-ls ~/.pyenv/versions/
-3.7.9
-```
-
-`KBO_dev`라는 가상 환경을 만드신 다음 이 가상 환경을 아래와 같이 활성화(activate)하시면 됩니다. 참고로 활성화를 취소하려면 `deactivate`을 사용하시면 됩니다.
-
-```bash
-pyenv virtualenv 3.7.9 KBO_dev
-pyenv activate KBO_dev
-pyenv deactivate
-```
-
-만약 잘 안 되는 경우에는 아래와 같은 `poetry` 명령어로 `virtualenvs.path`을 변경해주시면 됩니다.
-
-```bash
-poetry config virtualenvs.path /Users/pi/.pyenv/versions/3.7.9/envs/KBO_dev
-```
-
-주의할 점은 `/Users/pi/.pyenv/versions/3.7.9/envs/KBO_dev` 부분은 터미널에서 `pyenv virtualenvs`을 입력했을 때, `3.7.9/envs/KBO_dev (created from /Users/pi/.pyenv/versions/3.7.9)`을 참고해서 입력하시면 됩니다. 아래 실행 결과를 참고하세요!
-
-```bash
-❯ pyenv virtualenvs
-  3.7.9/envs/KBO_dev (created from /Users/pi/.pyenv/versions/3.7.9)
-  3.9.1/envs/poetry_test (created from /Users/pi/.pyenv/versions/3.9.1)
-* KBO_dev (created from /Users/pi/.pyenv/versions/3.7.9)
-  poetry_test (created from /Users/pi/.pyenv/versions/3.9.1)
 ```
