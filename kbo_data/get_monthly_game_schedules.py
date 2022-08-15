@@ -32,12 +32,13 @@ import re
 import configparser
 
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 import pandas as pd
 
 
 config = configparser.ConfigParser()
 # 설정파일을 읽어옵니다.
-config.read("config.ini",encoding='utf-8')
+config.read("config.ini", encoding="utf-8")
 Game_info_URL = config["DEFAULT"]["Game_info_URL"]
 chromium_location = config["DEFAULT"]["chromium_location"]
 
@@ -93,30 +94,17 @@ def get(year, month, season):
         driver = webdriver.Chrome(chromium_location, chrome_options=options)
         driver.get(url)
         time.sleep(1)
-        driver.find_element_by_id("ddlYear").send_keys(year)
+        driver.find_element(By.ID, "ddlYear").send_keys(year)
         time.sleep(1)
-        driver.find_element_by_id("ddlMonth").send_keys(month)
+        driver.find_element(By.ID, "ddlMonth").send_keys(month)
         time.sleep(1)
-        table = driver.find_element_by_css_selector("table")
-        gamelist = []
-        for row in table.find_elements_by_css_selector("tr"):
-            gamelist.append([d.text for d in row.find_elements_by_css_selector("td")])
+        table = driver.find_element(By.CSS_SELECTOR, "table")
+        gamelist = pd.read_html(table.get_attribute("outerHTML"))
+        gamelist = gamelist[0]
 
-        del gamelist[0]
-
-        [
-            gamelist[i].insert(0, gamelist[i - 1][0])
-            for i in range(0, len(gamelist))
-            if len(gamelist[i]) == 8
-        ]
-        if gamelist[0][0] == "데이터가 없습니다.":
-            return (
+        if gamelist.values[0].all() == "데이터가 없습니다.":
+            print(
                 "Please check the date, there are no games in the month of that year."
-            )
-        else:
-            gamelist_df = pd.DataFrame(
-                gamelist,
-                columns=["날짜", "시간", "경기", "게임센터", "하이라이트", "TV", "라디오", "구장", "비고"],
             )
 
     except Exception as e:
@@ -126,7 +114,7 @@ def get(year, month, season):
         print("finally...")
         driver.quit()
 
-    return gamelist_df
+    return gamelist
 
 
 def modify(year, data):
