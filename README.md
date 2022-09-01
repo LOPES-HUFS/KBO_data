@@ -105,8 +105,8 @@ utility.get_one_day_data_to_json(temp_schedule)
 
 ```python
 import get_monthly_game_schedules
-temp = get_monthly_game_schedules.get(2021, 7, "정규")
-temp = get_monthly_game_schedules.modify(2021, temp)
+temp = get_monthly_game_schedules.get(2022, 8, "정규")
+temp = get_monthly_game_schedules.modify(2022, temp)
 # 위에서 저장한 수집한 스케줄을 csv 형식으로 파일로 저장합니다.
 import utility
 get_monthly_game_schedules.output_to_csv(temp)
@@ -116,7 +116,7 @@ get_monthly_game_schedules.output_to_csv(temp)
 
 ```python
 import utility
-utility.get_KBO_data("game_schedule_2021_07.csv")
+utility.get_KBO_data("game_schedule_2022_08.csv")
 ```
 
 ### 일일 경기 파일 합쳐서 월 경기 묶음 파일로 만들기
