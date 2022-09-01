@@ -159,18 +159,16 @@ def get_KBO_data(game_list_file_name):
     # 그 숫자를 이용해서 파일 이름 만듬
     file_name = re.sub(r"[^0-9]", " ", game_list_file_name).strip()
     if len(file_name) != 0:
-        temp_file_name = file_name.strip().replace(" ", "_")
-        file_name = "game_data_" + temp_file_name.strip().replace(" ", "_") + ".json"
+        file_name = file_name.strip().replace(" ", "_")
+        file_name = "game_data_" + file_name.strip().replace(" ", "_") + ".json"
     else:
         file_name = "game_data.json"
 
     print(f"File Name to Save game data: {file_name}")
 
     # 수집하지 못한 경기 리스트를 저장하기 위한 파일 명 만들기
-    if game_list_file_name.find("game_schedule_") != -1:
-        error_list_file_name = game_list_file_name.replace(
-            "schedule", "schedule_error_list"
-        )
+    if file_name != "game_data.json":
+        error_list_file_name = file_name.replace("game_data_", "schedule_error_list_")
     else:
         error_list_file_name = "schedule_error_list.csv"
 
