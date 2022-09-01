@@ -5,6 +5,7 @@
 """
 import json
 import csv
+import re
 
 import get_page
 from parsing_game_schedule import changing_format
@@ -153,6 +154,30 @@ def get_KBO_data(game_list_file_name):
     count = 0
     error_list = []
 
+    # 수집한 자료를 저장하기 위한 파일 명 만들기
+    # 경기 일정 파일 이름에서 알파벳를 제거한 다음 만약 숫자가 남아있으면
+    # 그 숫자를 이용해서 파일 이름 만듬
+    file_name = re.sub(r"[^0-9]", " ", game_list_file_name).strip()
+    if len(file_name) != 0:
+        temp_file_name = file_name.strip().replace(" ", "_")
+        file_name = "game_data_" + temp_file_name.strip().replace(" ", "_") + ".json"
+    else:
+        file_name = "game_data.json"
+
+    print(f"File Name to Save game data: {file_name}")
+
+    # 수집하지 못한 경기 리스트를 저장하기 위한 파일 명 만들기
+    if game_list_file_name.find("game_schedule_") != -1:
+        error_list_file_name = game_list_file_name.replace(
+            "schedule", "schedule_error_list"
+        )
+    else:
+        error_list_file_name = "schedule_error_list.csv"
+
+    print(
+        f"Name of the file to save the inactive game schedule: {error_list_file_name}"
+    )
+
     with open(game_list_file_name, newline="") as f:
         game_list = csv.reader(f)
         for row in game_list:
@@ -167,30 +192,8 @@ def get_KBO_data(game_list_file_name):
                     print(f"No. {count}, ID: {row}, Download Failed.")
                     error_list.append(row)
 
-    # 수집한 자료를 저장하기 위한 파일 명 만들기
-    if game_list_file_name.find("temp_schedule_") != -1:
-        file_name = game_list_file_name.replace("schedule", "data")
-        file_name = file_name.replace("csv", "json")
-    elif game_list_file_name.find("/") >= 2:
-        file_name_list = game_list_file_name.split('/')
-        file_name = file_name_list.pop()
-        try:
-            file_name = file_name.replace("csv", "json")
-        except:
-            pass
-    else:
-        file_name = "game_data.json"
-
     with open(file_name, "w") as outfile:
         json.dump(game_date, outfile, ensure_ascii=False)
-
-    # 수집하지 못한 경기 리스트를 저장하기 위한 파일 명 만들기
-    if game_list_file_name.find("temp_schedule_") != -1:
-        error_list_file_name = game_list_file_name.replace(
-            "schedule", "schedule_error_list"
-        )
-    else:
-        error_list_file_name = "schedule_error_list.csv"
 
     with open(error_list_file_name, "w", newline="") as f:
         writer = csv.writer(f)
